@@ -1,0 +1,5 @@
+nric,password,age,maritalStatus,role
+S1234567A,password,35,SINGLE,APPLICANT
+T2345678B,password,45,MARRIED,HDB_OFFICER
+S3456789C,password,50,MARRIED,HDB_MANAGER
+A0000000Z,password,99,SINGLE,APPLICANT  ← invalid NRIC format (for test)

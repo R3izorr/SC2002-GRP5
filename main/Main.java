@@ -2,11 +2,14 @@ package main;
 
 import controller.UserManager;
 import model.User;
+import utils.InputValidator;
+
 
 import java.util.Scanner;
 
 public class Main {
-    private static final Scanner scanner = new Scanner(System.in);
+    //initiate scanner for option
+    private static final Scanner sc = new Scanner(System.in);
     private static final UserManager userManager = new UserManager();
 
     public static void main(String[] args) {
@@ -14,7 +17,7 @@ public class Main {
 
         while (running) {
             printMainMenu();
-            String choice = scanner.nextLine().trim();
+            String choice = sc.nextLine().trim();
 
             switch (choice) {
                 case "1":
@@ -29,10 +32,11 @@ public class Main {
             }
         }
 
-        scanner.close();
+        sc.close();
     }
 
-    private static void printMainMenu() {
+    private static void printMainMenu() 
+    {
         System.out.println("\n=== BTO Management System ===");
         System.out.println("1. Login");
         System.out.println("2. Exit");
@@ -41,17 +45,22 @@ public class Main {
 
     private static void handleLogin() {
         System.out.print("Enter NRIC: ");
-        String nric = scanner.nextLine();
+        String nric = sc.nextLine().toUpperCase();
+    
+        if (!InputValidator.isValidNRIC(nric)) {
+            System.out.println(" Invalid NRIC format. Format must be S/T + 7 digits + 1 letter (e.g., S1234567A).");
+            return;
+        }
+    
         System.out.print("Enter Password: ");
-        String password = scanner.nextLine();
-
+        String password = sc.nextLine();
+    
         User user = userManager.authenticate(nric, password);
         if (user != null) {
-            System.out.println("✅ Login successful!");
+            System.out.println("Login successful!");
             System.out.println("Welcome, " + user.getRole());
-            // Placeholder for role-specific dashboard
         } else {
-            System.out.println("❌ Invalid NRIC or password. Please try again.");
+            System.out.println(" Invalid NRIC or password. Please try again.");
         }
     }
 }

@@ -1,12 +1,12 @@
 package controller;
 
-import model.Applicant;
-import model.HDBOfficer;
-import model.HDBManager;
-import model.User;
+import model.*;
 import utils.MaritalStatus;
 import utils.Role;
+import utils.InputValidator;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +15,45 @@ public class UserManager {
 
     public UserManager() {
         users = new ArrayList<>();
-        loadMockUsers(); // simulate loading users from file
+        loadUsersFromCSV("data/users.csv");  // load from file
     }
 
-    private void loadMockUsers() {
-        users.add(new Applicant("S1234567A", "password", 36, MaritalStatus.SINGLE));
-        users.add(new HDBOfficer("S2345678B", "password", 40, MaritalStatus.MARRIED));
-        users.add(new HDBManager("S3456789C", "password", 45, MaritalStatus.MARRIED));
+    private void loadUsersFromCSV(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            boolean skipHeader = true;
+
+            while ((line = br.readLine()) != null) {
+                if (skipHeader) {
+                    skipHeader = false;
+                    continue;
+                }
+
+                String[] parts = line.split(",");
+                if (parts.length != 5) continue;
+
+                String nric = parts[0].trim();
+                String password = parts[1].trim();
+                int age = Integer.parseInt(parts[2].trim());
+                MaritalStatus status = MaritalStatus.valueOf(parts[3].trim().toUpperCase());
+                Role role = Role.valueOf(parts[4].trim().toUpperCase());
+
+                if (!InputValidator.isValidNRIC(nric)) {
+                    System.out.println(" Invalid NRIC format skipped: " + nric);
+                    continue;
+                }
+
+                switch (role) {
+                    case APPLICANT -> users.add(new Applicant(nric, password, age, status));
+                    case HDB_OFFICER -> users.add(new HDBOfficer(nric, password, age, status));
+                    case HDB_MANAGER -> users.add(new HDBManager(nric, password, age, status));
+                    default -> System.out.println(" Unknown role: " + role);
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println(" Error loading users: " + e.getMessage());
+        }
     }
 
     public User authenticate(String nric, String password) {
