@@ -1,9 +1,7 @@
 package controller;
 
 import model.*;
-import utils.MaritalStatus;
-import utils.Role;
-import utils.InputValidator;
+import utils.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,11 +13,11 @@ public class UserManager {
 
     public UserManager() {
         users = new ArrayList<>();
-        loadUsersFromCSV("data/users.csv");  // load from file
+        loadUsers("../data/users.csv");
     }
 
-    private void loadUsersFromCSV(String filename) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+    private void loadUsers(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             boolean skipHeader = true;
 
@@ -39,7 +37,7 @@ public class UserManager {
                 Role role = Role.valueOf(parts[4].trim().toUpperCase());
 
                 if (!InputValidator.isValidNRIC(nric)) {
-                    System.out.println(" Invalid NRIC format skipped: " + nric);
+                    System.out.println("⚠ Invalid NRIC format: " + nric);
                     continue;
                 }
 
@@ -47,19 +45,18 @@ public class UserManager {
                     case APPLICANT -> users.add(new Applicant(nric, password, age, status));
                     case HDB_OFFICER -> users.add(new HDBOfficer(nric, password, age, status));
                     case HDB_MANAGER -> users.add(new HDBManager(nric, password, age, status));
-                    default -> System.out.println(" Unknown role: " + role);
                 }
             }
 
         } catch (Exception e) {
-            System.out.println(" Error loading users: " + e.getMessage());
+            System.out.println(" Failed to load users: " + e.getMessage());
         }
     }
 
     public User authenticate(String nric, String password) {
-        for (User user : users) {
-            if (user.getNric().equalsIgnoreCase(nric) && user.getPassword().equals(password)) {
-                return user;
+        for (User u : users) {
+            if (u.getNric().equalsIgnoreCase(nric) && u.getPassword().equals(password)) {
+                return u;
             }
         }
         return null;
