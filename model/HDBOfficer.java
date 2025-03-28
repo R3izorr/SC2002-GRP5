@@ -5,8 +5,8 @@ import utils.Role;
 
 public class HDBOfficer extends Applicant {
 
-    public HDBOfficer(String nric, String password, int age, MaritalStatus maritalStatus) {
-        super(nric, password, age, maritalStatus);
+    public HDBOfficer(String name, String nric, String password, int age, MaritalStatus maritalStatus) {
+        super(name, nric, password, age, maritalStatus);
         this.role = Role.HDB_OFFICER; // override role inherited from Applicant
     }
 

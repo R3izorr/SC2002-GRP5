@@ -1,20 +1,20 @@
 package model;
 
-import utils.MaritalStatus;
-import utils.Role;
-import utils.FlatType;
 import controller.ProjectManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import utils.FlatType;
+import utils.MaritalStatus;
+import utils.Role;
 
 public class Applicant extends User {
     private Project appliedProject;
     private String applicationStatus; // "Pending", "Successful", "Unsuccessful", "Booked"
     private FlatType appliedFlatType;
     private List<Enquiry> enquiries;
-    public Applicant(String nric, String password, int age, MaritalStatus maritalStatus) {
-        super(nric, password, age, maritalStatus, Role.APPLICANT);
+    public Applicant(String name, String nric, String password, int age, MaritalStatus maritalStatus) {
+        super(name, nric, password, age, maritalStatus, Role.APPLICANT);
         this.appliedProject = null;
         this.applicationStatus = null;
         this.appliedFlatType = null;

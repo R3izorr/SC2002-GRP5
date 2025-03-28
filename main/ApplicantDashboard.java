@@ -2,12 +2,11 @@ package main;
 
 import controller.ApplicationManager;
 import controller.ProjectManager;
+import java.util.List;
+import java.util.Scanner;
 import model.Applicant;
 import model.Application;
 import model.Project;
-
-import java.util.List;
-import java.util.Scanner;
 
 public class ApplicantDashboard {
     private final ProjectManager projectManager;

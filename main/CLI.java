@@ -1,14 +1,13 @@
 package main;
 
 import controller.ApplicationManager;
+import controller.EnquiryManager;
 import controller.ProjectManager;
 import controller.UserManager;
-import model.User;
+import java.util.Scanner;
 import model.Applicant;
 import model.HDBOfficer;
-import controller.EnquiryManager;
-
-import java.util.Scanner;
+import model.User;
 
 public class CLI {
     private final UserManager userManager;
