@@ -1,20 +1,19 @@
 package controller;
 
+import model.*;
+import utils.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import model.*;
-import utils.*;
 
 public class UserManager {
     private List<User> users;
 
     public UserManager() {
-        users = new ArrayList<>(); 
-        loadUsers("data\\ApplicantList.csv");
-        loadUsers("data\\ManagerList.csv");
-        loadUsers("data\\OfficerList.csv");
+        users = new ArrayList<>();
+        loadUsers("../data/users.csv");
     }
 
     private void loadUsers(String filePath) {
@@ -31,17 +30,11 @@ public class UserManager {
                 String[] parts = line.split(",");
                 if (parts.length != 5) continue;
 
-                String name = parts[0].trim();
-                String nric = parts[1].trim();
+                String nric = parts[0].trim();
+                String password = parts[1].trim();
                 int age = Integer.parseInt(parts[2].trim());
                 MaritalStatus status = MaritalStatus.valueOf(parts[3].trim().toUpperCase());
-                String password = parts[4].trim();
-                Role role = switch (filePath) {
-                    case "data\\ApplicantList.csv" -> Role.APPLICANT;
-                    case "data\\ManagerList.csv" -> Role.HDB_MANAGER;
-                    case "data\\OfficerList.csv" -> Role.HDB_OFFICER;
-                    default -> throw new IllegalArgumentException("Unknown file path: " + filePath);
-                };
+                Role role = Role.valueOf(parts[4].trim().toUpperCase());
 
                 if (!InputValidator.isValidNRIC(nric)) {
                     System.out.println("⚠ Invalid NRIC format: " + nric);
@@ -49,9 +42,9 @@ public class UserManager {
                 }
 
                 switch (role) {
-                    case APPLICANT -> users.add(new Applicant(name, nric, password, age, status));
-                    case HDB_OFFICER -> users.add(new HDBOfficer(name, nric, password, age, status));
-                    case HDB_MANAGER -> users.add(new HDBManager(name,nric, password, age, status));
+                    case APPLICANT -> users.add(new Applicant(nric, password, age, status));
+                    case HDB_OFFICER -> users.add(new HDBOfficer(nric, password, age, status));
+                    case HDB_MANAGER -> users.add(new HDBManager(nric, password, age, status));
                 }
             }
 

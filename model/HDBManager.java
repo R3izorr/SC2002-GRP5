@@ -6,8 +6,8 @@ import utils.Role;
 
 public class HDBManager extends User {
 
-    public HDBManager(String name,String nric, String password, int age, MaritalStatus maritalStatus) {
-        super(name, nric, password, age, maritalStatus, Role.HDB_MANAGER);
+    public HDBManager(String nric, String password, int age, MaritalStatus maritalStatus) {
+        super(nric, password, age, maritalStatus, Role.HDB_MANAGER);
     }
 
     public void createProject() {}

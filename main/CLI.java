@@ -1,13 +1,17 @@
 package main;
 
 import controller.ApplicationManager;
-import controller.EnquiryManager;
 import controller.ProjectManager;
 import controller.UserManager;
-import java.util.Scanner;
+import model.User;
 import model.Applicant;
 import model.HDBOfficer;
-import model.User;
+import controller.EnquiryManager;
+import model.HDBManager;
+import controller.ReportManager;
+
+
+import java.util.Scanner;
 
 public class CLI {
     private final UserManager userManager;
@@ -15,12 +19,14 @@ public class CLI {
     private final ApplicationManager applicationManager;
     private final Scanner scanner;
     private final EnquiryManager enquiryManager;
+    private final ReportManager reportManager;
 
     public CLI() {
         userManager = new UserManager();
         projectManager = new ProjectManager();
         applicationManager = new ApplicationManager();
-        enquiryManager = new EnquiryManager(); 
+        enquiryManager = new EnquiryManager();
+        reportManager = new ReportManager(); 
         scanner = new Scanner(System.in);
     }
     
@@ -64,9 +70,11 @@ public class CLI {
             case APPLICANT -> new ApplicantDashboard(projectManager, applicationManager, scanner)
                                     .launch((Applicant) user);
             case HDB_OFFICER -> new OfficerDashboard(projectManager, applicationManager, enquiryManager, scanner)
-                                    .launch((HDBOfficer) user);
-        
+                                    .launch((model.HDBOfficer) user);
+            case HDB_MANAGER -> new ManagerDashboard(projectManager, applicationManager, enquiryManager, reportManager, scanner)
+                                    .launch((HDBManager) user);
             default -> System.out.println("Dashboard for this role is not implemented yet.");
         }
     }
+    
 }
