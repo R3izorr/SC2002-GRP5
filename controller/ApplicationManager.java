@@ -52,4 +52,11 @@ public class ApplicationManager {
         }
         return result;
     }
+    public List<Application> getWithdrawalRequests() {
+        return applications.stream()
+            .filter(app -> app.getStatus() == ApplicationStatus.WITHDRAWAL_REQUESTED)
+            .toList();
+    }
+    
+    
 }

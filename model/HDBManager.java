@@ -20,4 +20,10 @@ public class HDBManager extends User {
     public void approveWithdrawal(Application application) {}
     public void generateReport() {}
     public void replyEnquiry(Enquiry enquiry, String reply) {}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof User other)) return false;
+        return this.getNric().equals(other.getNric());
+    }   
 }

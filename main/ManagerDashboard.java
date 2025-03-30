@@ -4,12 +4,15 @@ import controller.ProjectManager;
 import controller.ApplicationManager;
 import controller.EnquiryManager;
 import controller.ReportManager;
+import model.Application;
 import model.HDBManager;
 import model.Project;
+import utils.ApplicationStatus;
 import utils.FlatType;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -55,8 +58,8 @@ public class ManagerDashboard {
                 case "3" -> deleteProject();
                 case "4" -> toggleProjectVisibility();
                 case "5" -> approveOfficerRegistration();                
-                case "6" -> System.out.println("Approve/Reject applications - coming soon");
-                case "7" -> System.out.println("Approve withdrawal - coming soon");
+                case "6" -> approveOrRejectApplications();
+                case "7" -> approveOrRejectWithdrawalRequests();
                 case "8" -> System.out.println("Reply to enquiry - coming soon");
                 case "9" -> System.out.println("Generate report - coming soon");
                 case "10" -> {
@@ -228,6 +231,95 @@ public class ManagerDashboard {
             System.out.println("Error approving officer.");
         }
     }
+    private void approveOrRejectApplications() {
+    List<Application> pendingApps = applicationManager.getAllApplications().stream()
+        .filter(app -> app.getStatus() == ApplicationStatus.PENDING)
+        .toList();
+
+    if (pendingApps.isEmpty()) {
+        System.out.println("No pending applications found.");
+        return;
+    }
+
+    System.out.println("Pending Applications:");
+    for (int i = 0; i < pendingApps.size(); i++) {
+        Application app = pendingApps.get(i);
+        System.out.printf("%d. %s applied for %s%n",
+            i + 1,
+            app.getApplicant().getNric(),
+            app.getProject().getName()
+        );
+    }
+
+    System.out.print("Select application to process: ");
+    try {
+        int index = Integer.parseInt(scanner.nextLine().trim()) - 1;
+        if (index < 0 || index >= pendingApps.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
+
+        Application selectedApp = pendingApps.get(index);
+        System.out.print("Approve (A) or Reject (R)? ");
+        String decision = scanner.nextLine().trim().toUpperCase();
+
+        if (decision.equals("A")) {
+            applicationManager.updateApplicationStatus(selectedApp, ApplicationStatus.SUCCESSFUL);
+            System.out.println("Application approved.");
+        } else if (decision.equals("R")) {
+            applicationManager.updateApplicationStatus(selectedApp, ApplicationStatus.UNSUCCESSFUL);
+            System.out.println("Application rejected.");
+        } else {
+            System.out.println("Invalid input.");
+        }
+
+    } catch (Exception e) {
+        System.out.println("Error processing application.");
+    }
+    }
+    private void approveOrRejectWithdrawalRequests() {
+        List<Application> requests = applicationManager.getWithdrawalRequests();
+        if (requests.isEmpty()) {
+            System.out.println("No withdrawal requests found.");
+            return;
+        }
+    
+        for (int i = 0; i < requests.size(); i++) {
+            Application app = requests.get(i);
+            System.out.printf("%d. %s requested withdrawal from %s%n", i + 1,
+                app.getApplicant().getNric(), app.getProject().getName());
+        }
+    
+        System.out.print("Select request to handle: ");
+        int index = Integer.parseInt(scanner.nextLine().trim()) - 1;
+    
+        if (index < 0 || index >= requests.size()) {
+            System.out.println("Invalid choice.");
+            return;
+        }
+    
+        Application app = requests.get(index);
+        System.out.print("Approve (A) or Reject (R)? ");
+        String choice = scanner.nextLine().trim().toUpperCase();
+    
+        if (choice.equals("A")) {
+            // Approve: return unit and clear
+            FlatType type = app.getApplicant().getAppliedFlatType();
+            int current = app.getProject().getUnitCount().get(type);
+            app.getProject().setUnitCount(type, current + 1);
+    
+            app.getApplicant().clearApplication(); // implement this method
+            app.updateStatus(ApplicationStatus.WITHDRAWN);
+            System.out.println("Withdrawal approved.");
+        } else if (choice.equals("R")) {
+            app.updateStatus(ApplicationStatus.PENDING);
+            System.out.println("Withdrawal rejected. Status reverted to PENDING.");
+        } else {
+            System.out.println("Invalid action.");
+        }
+    }
+    
+
             
     
 

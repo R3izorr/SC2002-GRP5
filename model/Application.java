@@ -28,4 +28,5 @@ public class Application {
     public void updateStatus(ApplicationStatus newStatus) {
         this.status = newStatus;
     }
+    
 }

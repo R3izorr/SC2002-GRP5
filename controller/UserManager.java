@@ -5,6 +5,7 @@ import utils.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class UserManager {
 
     public UserManager() {
         users = new ArrayList<>();
-        loadUsers("../data/users.csv");
+        loadUsers(Paths.get("data", "users.csv").toString());
     }
 
     private void loadUsers(String filePath) {

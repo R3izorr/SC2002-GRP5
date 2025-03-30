@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import model.HDBManager;
+
 
 public class Project {
     private String name;
@@ -20,33 +22,29 @@ public class Project {
     
 
 
-    public Project(String name, String location, LocalDate openDate, LocalDate closeDate,
-                   HDBManager manager, int availableOfficerSlots) {
-        this.name = name;
-        this.location = location;
-        this.applicationOpenDate = openDate;
-        this.applicationCloseDate = closeDate;
-        this.manager = manager;
-        this.availableOfficerSlots = availableOfficerSlots;
-        this.visibility = true;
-        this.unitCount = new HashMap<>();
-        for (FlatType type : FlatType.values()) {
-            unitCount.put(type, 0);
-        }
-    }
+public Project(String name, String location, Map<FlatType, Integer> unitCount,
+               LocalDate applicationOpenDate, LocalDate applicationCloseDate) {
+    this.name = name;
+    this.location = location;
+    this.unitCount = unitCount;
+    this.applicationOpenDate = applicationOpenDate;
+    this.applicationCloseDate = applicationCloseDate;
+    this.visibility = false; // default visibility
+}
+
+    
+
 
     public String getName() { return name; }
     public String getLocation() { return location; }
+    public boolean isVisible() { return visibility; }
+    public void setVisible(boolean visible) { this.visibility = visible; }
     public LocalDate getApplicationOpenDate() { return applicationOpenDate; }
     public LocalDate getApplicationCloseDate() { return applicationCloseDate; }
-    public boolean isVisible() { return visibility; }
-    public void toggleVisibility() { visibility = !visibility; }
-    public HDBManager getManager() { return manager; }
-
-    public Map<FlatType, Integer> getUnitCount() { return unitCount; }
-    public void setUnitCount(FlatType type, int count) { unitCount.put(type, count); }
     public int getAvailableOfficerSlots() { return availableOfficerSlots; }
     public void setAvailableOfficerSlots(int slots) { this.availableOfficerSlots = slots; }
+    public Map<FlatType, Integer> getUnitCount() { return unitCount; }
+    public void setUnitCount(FlatType type, int count) { unitCount.put(type, count); }
 
     public String getDetails() {
         return String.format("Project: %s, Location: %s, 2-Room: %d, 3-Room: %d",
@@ -54,13 +52,16 @@ public class Project {
                 unitCount.get(FlatType.TWO_ROOM),
                 unitCount.get(FlatType.THREE_ROOM));
     }
-    public void setVisible(boolean visible) {
-        this.visibility = visible;
-    }
     public void addPendingOfficer(HDBOfficer officer) {
         pendingOfficers.add(officer);
     }
+    public void setManager(HDBManager manager) {
+        this.manager = manager;
+    }
     
+    public HDBManager getManager() {
+        return manager;
+    }
     public HDBOfficer getPendingOfficer() {
         return pendingOfficers.poll(); // gets and removes first pending officer
     }
