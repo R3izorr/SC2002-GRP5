@@ -57,4 +57,12 @@ public class ProjectRepository {
     public List<BTOProject> getProjects() {
         return projects;
     }
+
+    public BTOProject getProjectById(int id) {
+        for (BTOProject p : projects) {
+            if(p.getProjectId() == id)
+                return p;
+        }
+        return null;
+    }
 }

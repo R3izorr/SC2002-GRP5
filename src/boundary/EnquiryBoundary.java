@@ -1,13 +1,14 @@
 package boundary;
 
 import controller.EnquiryController;
-import java.util.List; 
+import java.util.List;
 import java.util.Scanner;
-import model.Enquiry; 
+import model.Enquiry;
 
 public class EnquiryBoundary {
-    private EnquiryController enquiryController; 
+    private EnquiryController enquiryController;
     private Scanner scanner;
+    
     public EnquiryBoundary(EnquiryController enquiryController) {
         this.enquiryController = enquiryController;
         this.scanner = new Scanner(System.in);
@@ -21,7 +22,7 @@ public class EnquiryBoundary {
         }
         System.out.println("=== Enquiries ===");
         for (Enquiry enquiry : enquiries) {
-            System.out.println("ID: " + enquiry.getEnquiryId() + " | Message: " + enquiry.getMessage());
+            System.out.println(enquiry.toString());
         }
     }
     
@@ -29,7 +30,7 @@ public class EnquiryBoundary {
         System.out.print("Enter project ID for enquiry: ");
         int projectId = scanner.nextInt();
         scanner.nextLine(); // consume newline
-        System.out.print("Enter your enquiry: ");
+        System.out.print("Enter your enquiry message: ");
         String message = scanner.nextLine();
         enquiryController.submitEnquiry(projectId, message);
         System.out.println("Enquiry submitted.");

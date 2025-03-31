@@ -46,7 +46,7 @@ public class ApplicantDashBoard {
             scanner.nextLine(); // consume newline
             switch (choice) {
                 case 1:
-                    projectController.getVisibleProjects().forEach(project -> System.out.println(project.toString()));
+                    projectController.getVisibleProjects().forEach(project -> System.out.println(project.toStringForApplicant()));
                     break;
                 case 2:
                     System.out.print("Enter the project number to apply: ");

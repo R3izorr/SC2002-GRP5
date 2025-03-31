@@ -4,6 +4,7 @@ import java.util.List;
 import model.Applicant;
 import model.Application;
 import model.BTOProject;
+import model.HDBOfficer;
 import repository.ApplicationRepository;
 import repository.ProjectRepository;
 
@@ -117,6 +118,46 @@ public class ProjectController {
         }
         app.setStatus(Application.Status.BOOKED);
         System.out.println("Flat booking completed. Your application status is now BOOKED.");
+        return true;
+    }
+
+     public boolean applyForProjectByUser(int projectId, String flatType, HDBOfficer officer) {
+        BTOProject project = projectRepository.getProjectById(projectId);
+        if(project == null) {
+            System.out.println("Invalid project ID.");
+            return false;
+        }
+        // Check if officer already has an application
+        if(officer.getApplication() != null) {
+            System.out.println("You have already applied for a project.");
+            return false;
+        }
+        // Eligibility rules for officer as applicant (you may adjust as needed)
+        String maritalStatus = officer.getMaritalStatus();
+        int age = officer.getAge();
+        if(maritalStatus.equalsIgnoreCase("Single")) {
+            if(age < 35) {
+                System.out.println("Single applicants must be 35 or older.");
+                return false;
+            }
+            if(!flatType.equalsIgnoreCase("2-Room")) {
+                System.out.println("Single applicants can only apply for 2-Room flats.");
+                return false;
+            }
+        } else if(maritalStatus.equalsIgnoreCase("Married")) {
+            if(age < 21) {
+                System.out.println("Married applicants must be 21 or older.");
+                return false;
+            }
+            if(!(flatType.equalsIgnoreCase("2-Room") || flatType.equalsIgnoreCase("3-Room"))) {
+                System.out.println("Married applicants can only apply for 2-Room or 3-Room flats.");
+                return false;
+            }
+        }
+        Application application = new Application(officer, project, flatType);
+        officer.setApplication(application);
+        applicationRepository.addApplication(application);
+        System.out.println("Application submitted with status PENDING.");
         return true;
     }
 }

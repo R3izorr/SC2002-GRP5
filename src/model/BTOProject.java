@@ -5,6 +5,8 @@ import java.util.List;
 
 
 public class BTOProject {
+    private static int counter = 1;
+    private int projectId;
     private String projectName; 
     private String neighborhood; 
     private int units2Room; 
@@ -20,6 +22,7 @@ public class BTOProject {
     private boolean isVisible;
     public BTOProject(String projectName, String neighborhood,float sellingPrice2Room ,int units2Room, float sellingPrice3Room, int units3Room,
                   Date applicationOpen, Date applicationClose, HDBManager manager, int officerSlots, boolean isVisible) {
+        this.projectId = counter++;
         this.projectName = projectName;
         this.neighborhood = neighborhood;
         this.units2Room = units2Room;
@@ -31,6 +34,9 @@ public class BTOProject {
         this.manager = manager;
         this.officerSlots = officerSlots;
         this.isVisible = isVisible;
+    }
+    public int getProjectId() {
+        return projectId;
     }
 
     public String getProjectName() {
@@ -124,25 +130,43 @@ public class BTOProject {
         return officers;
     }
 
-    public void setOfficers(HDBOfficer officer) {
+    public void addOfficers(HDBOfficer officer) {
         this.officers.add(officer);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Project Name: ").append(projectName).append("\n")
-          .append("Neighborhood: ").append(neighborhood).append("\n")
-          .append("2-Room Units: ").append(units2Room).append("\n")
-          .append("3-Room Units: ").append(units3Room).append("\n")
-          .append("Selling Price for 2-Room: ").append(sellingPrice2Room).append("\n")
-          .append("Selling Price for 3-Room: ").append(sellingPrice3Room).append("\n")
-          .append("Application Open Date: ").append(applicationOpen).append("\n")
-          .append("Application Close Date: ").append(applicationClose).append("\n")
-          .append("Manager: ").append(manager != null ? manager.getNric() : "None").append("\n")
-          .append("Officer Slots: ").append(officerSlots).append("\n")
-            .append("Officers: ").append(officers != null ? officers.size() : 0).append("\n")
-          .append("Is Visible: ").append(isVisible).append("\n");
-        return sb.toString();
+    public String toStringForApplicant() {
+        return "----------------------------------------\n" +
+               " Project ID: " + projectId + "\n" +
+               " Project Name: " + projectName + "\n" +
+               " 2-Room Price: $" + sellingPrice2Room + "\n" +
+               " 3-Room Price: $" + sellingPrice3Room + "\n" +
+               " Application Open: " + applicationOpen + "\n" +
+               " Application Close: " + applicationClose + "\n" +
+               "----------------------------------------";
+        }
+        
+        // For Manager/Officer: full details
+        public String toStringForManagerOfficer() {
+        return "========================================\n" +
+               " Project ID: " + projectId + "\n" +
+               " Project Name: " + projectName + "\n" +
+               " Neighborhood: " + neighborhood + "\n" +
+               " 2-Room Units: " + units2Room + "\n" +
+               " 3-Room Units: " + units3Room + "\n" +
+               " 2-Room Price: $" + sellingPrice2Room + "\n" +
+               " 3-Room Price: $" + sellingPrice3Room + "\n" +
+               " Application Open: " + applicationOpen + "\n" +	
+               " Application Close: " + applicationClose + "\n" +
+               " Manager NRIC: " + (manager != null ? manager.getNric() : "None") + "\n" +
+               " Officer Slots: " + officerSlots + "\n" +
+               " Officers List: " + (officers.isEmpty() ? "None" : officers.stream().map(HDBOfficer::getName).reduce((a, b) -> a + ", " + b).orElse("None")) + "\n" +
+               "----------------------------------------\n" +
+               " Visibility: " + (isVisible ? "ON" : "OFF") + "\n" +
+               "========================================";
+        }
+        
+        @Override
+        public String toString() {
+        return toStringForManagerOfficer();
     }
 }
