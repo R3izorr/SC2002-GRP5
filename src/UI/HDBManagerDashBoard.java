@@ -84,6 +84,9 @@ public class HDBManagerDashBoard {
                     String newPassword = scanner.nextLine();
                     userController.changePassword(manager, newPassword);
                     System.out.println("Password changed successfully.");
+                    System.out.println("Please re-login.");
+                    System.out.println("Logging out...");
+                    exit = true;
                     break;
                 case 10:
                     exit = true;

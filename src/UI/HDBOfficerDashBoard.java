@@ -70,7 +70,13 @@ public class HDBOfficerDashBoard {
                     viewAndReplyEnquiries();
                     break;
                 case 8:
-                    changePassword();
+                    System.out.print("Enter new password: ");
+                    String newPassword = scanner.nextLine();
+                    userController.changePassword(officer, newPassword);
+                    System.out.println("Password changed successfully.");
+                    System.out.println("Please re-login.");
+                    System.out.println("Logging out...");
+                    exit = true;
                     break;
                 case 9:
                     System.out.println("Logging out...");

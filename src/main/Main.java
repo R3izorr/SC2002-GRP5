@@ -65,12 +65,6 @@ public class Main {
                 managerDashBoard.run();
             }
             
-            System.out.print("\nReturn to login prompt? (Y to log in again, any other key to exit): ");
-            String ans = scanner.nextLine().trim();
-            if(!ans.equalsIgnoreCase("Y")) {
-                System.out.println("Exiting system.");
-                break;
-            }
         }
     }
 }

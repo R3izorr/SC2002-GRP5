@@ -41,7 +41,7 @@ public class LoginBoundary {
                 if (user == null) {
                     System.out.println("Login failed. Please check your credentials.");
                 } else {
-                    System.out.println("Login successful");
+                    System.out.println("Login successfully");
                     System.out.println("|| Welcome " + user.getRole() +  " " + user.getName() + " ||");
                     return user;
                 }

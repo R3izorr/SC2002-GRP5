@@ -93,6 +93,9 @@ public class ApplicantDashBoard {
                     String newPassword = scanner.nextLine();
                     userController.changePassword(applicant, newPassword);
                     System.out.println("Password changed successfully.");
+                    System.out.println("Please re-login.");
+                    System.out.println("Logging out...");
+                    exit = true;
                     break;
                 case 11:
                     System.out.println("Logging out...");
