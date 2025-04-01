@@ -15,6 +15,7 @@ import model.HDBOfficer;
 import repository.ApplicationRepository;
 import repository.ProjectRepository;
 import repository.UserRepository;
+import utils.FilterSettings;
 
 public class HDBManagerDashBoard {
     private HDBManager manager;
@@ -25,6 +26,7 @@ public class HDBManagerDashBoard {
     private EnquiryController enquiryController;
     private Scanner scanner;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private FilterSettings assignedProjectFilterSettings; // filter settings for assigned projects
 
     public HDBManagerDashBoard(HDBManager manager, UserController userController,
                                ProjectRepository projectRepository, ApplicationRepository applicationRepository,
@@ -35,6 +37,7 @@ public class HDBManagerDashBoard {
         this.applicationRepository = applicationRepository;
         this.userRepository = userRepository;
         this.enquiryController = enquiryController;
+        this.assignedProjectFilterSettings = new FilterSettings();
         this.scanner = new Scanner(System.in);
     }
 
@@ -46,12 +49,14 @@ public class HDBManagerDashBoard {
             System.out.println("2. Edit/Delete Project Listing");
             System.out.println("3. Toggle Project Visibility");
             System.out.println("4. View All Projects");
-            System.out.println("5. Manage Applicant Applications");
-            System.out.println("6. Manage HDB Officer Registrations");
-            System.out.println("7. View/Reply to Enquiries");
-            System.out.println("8. Generate Report for Booked Applicants");
-            System.out.println("9. Change Password");
-            System.out.println("10. Logout");
+            System.out.println("5. View Assigned Project (Filtered)");
+            System.out.println("6. Filter Setting");
+            System.out.println("7. Manage Applicant Applications");
+            System.out.println("8. Manage HDB Officer Registrations");
+            System.out.println("9. View/Reply to Enquiries");
+            System.out.println("10. Generate Report for Booked Applicants");
+            System.out.println("11. Change Password");
+            System.out.println("12. Logout");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -69,18 +74,24 @@ public class HDBManagerDashBoard {
                     viewAllProjects();
                     break;
                 case 5:
-                    manageApplicantApplications();
+                    viewAssignedProjects();
                     break;
                 case 6:
-                    manageOfficerRegistrations();
+                    updateAssignedProjectFilterSettings();
                     break;
                 case 7:
-                    viewAndReplyEnquiries();
+                    manageApplicantApplications();
                     break;
                 case 8:
-                    generateReport();
+                    manageOfficerRegistrations();
                     break;
                 case 9:
+                    viewAndReplyEnquiries();
+                    break;
+                case 10:
+                    generateReport();
+                    break;
+                case 11:
                     System.out.print("Enter new password: ");
                     String newPassword = scanner.nextLine();
                     userController.changePassword(manager, newPassword);
@@ -89,7 +100,7 @@ public class HDBManagerDashBoard {
                     System.out.println("Logging out...");
                     exit = true;
                     break;
-                case 10:
+                case 12:
                     exit = true;
                     System.out.println("Logging out...");
                     break;
@@ -451,35 +462,129 @@ public class HDBManagerDashBoard {
     }
     
     private void generateReport() {
-        System.out.println("=== Report: Booked Applicants ===");
-        // Gather all booked applications for projects managed by this manager.
-        List<Application> reportApps = new ArrayList<>();
-        for(Application app : applicationRepository.getApplications()){
-            if(manager.getManagedProjects().contains(app.getProject()) &&
-               app.getStatus() == Application.Status.BOOKED) {
-                reportApps.add(app);
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\n=== Generate Report for Booked Applicants ===");
+            List<BTOProject> managed = manager.getManagedProjects();
+            if (managed.isEmpty()){
+                System.out.println("You have no managed projects.");
+                return;
+            }
+            System.out.println("Select a project to generate report:");
+            for (int i = 0; i < managed.size(); i++){
+                System.out.println((i+1) + ". " + managed.get(i).toStringForManagerOfficer());
+            }
+            System.out.println("Enter project number (or 0 to exit): ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            if (choice == 0) {
+                exit = true;
+                continue;
+            }
+            if (choice < 1 || choice > managed.size()){
+                System.out.println("Invalid selection.");
+                continue;
+            }
+            BTOProject selectedProj = managed.get(choice-1);
+            // Gather all booked applications for the selected project.
+            List<Application> bookedApps = new ArrayList<>();
+            for (Application app : applicationRepository.getApplications()){
+                if (app.getProject().getProjectId() == selectedProj.getProjectId() &&
+                    app.getStatus() == Application.Status.BOOKED) {
+                    bookedApps.add(app);
+                }
+            }
+            if (bookedApps.isEmpty()){
+                System.out.println("No booked applications found for this project.");
+            } else {
+                // Ask the manager if they want to apply filters.
+                System.out.println("Would you like to apply a filter?");
+                System.out.println("1. No Filter");
+                System.out.println("2. Filter by Marital Status");
+                System.out.println("3. Filter by Flat Type");
+                System.out.println("4. Filter by Both Marital Status and Flat Type");
+                System.out.print("Choose an option: ");
+                int filterChoice = scanner.nextInt();
+                scanner.nextLine();
+                List<Application> filteredApps = new ArrayList<>(bookedApps);
+                if (filterChoice == 2) {
+                    System.out.print("Enter Marital Status to filter by (e.g., Married, Single): ");
+                    String maritalStatus = scanner.nextLine().trim();
+                    filteredApps.removeIf(app -> !app.getApplicant().getMaritalStatus().equalsIgnoreCase(maritalStatus));
+                } else if (filterChoice == 3) {
+                    System.out.print("Enter Flat Type to filter by (2-Room or 3-Room): ");
+                    String flatType = scanner.nextLine().trim();
+                    filteredApps.removeIf(app -> !app.getFlatType().equalsIgnoreCase(flatType));
+                } else if (filterChoice == 4) {
+                    System.out.print("Enter Marital Status to filter by (e.g., Married, Single): ");
+                    String maritalStatus = scanner.nextLine().trim();
+                    System.out.print("Enter Flat Type to filter by (2-Room or 3-Room): ");
+                    String flatType = scanner.nextLine().trim();
+                    filteredApps.removeIf(app -> 
+                        !app.getApplicant().getMaritalStatus().equalsIgnoreCase(maritalStatus) ||
+                        !app.getFlatType().equalsIgnoreCase(flatType));
+                }
+                if (filteredApps.isEmpty()){
+                    System.out.println("No booked applications found after applying the filter.");
+                } else {
+                    model.Report report = new model.Report(filteredApps);
+                    System.out.println(report.toString());
+                }
+            }
+            System.out.print("Generate report for another project? (Y/N): ");
+            String again = scanner.nextLine().trim();
+            if (!again.equalsIgnoreCase("Y")){
+                exit = true;
             }
         }
-        if(reportApps.isEmpty()){
-            System.out.println("No booked applications found for your projects.");
-            return;
-        }
-        
-        // Print a formatted report header
-        System.out.println(String.format("%-15s %-5s %-15s %-10s %-20s", 
-                "Applicant NRIC", "Age", "Marital Status", "Flat Type", "Project Name"));
-        System.out.println("----------------------------------------------------------------------------");
-        
-        // Print each booked application record
-        for(Application app : reportApps) {
-            System.out.println(String.format("%-15s %-5d %-15s %-10s %-20s", 
-                app.getApplicant().getNric(), 
-                app.getApplicant().getAge(), 
-                app.getApplicant().getMaritalStatus(), 
-                app.getFlatType(), 
-                app.getProject().getProjectName()));
-        }
-        
-        // Exit option (for manager to go back to dashboard) is handled by the outer loop.
     }
+    
+    private void viewAssignedProjects() {
+        List<BTOProject> projects = new ArrayList<>(manager.getManagedProjects());
+        // Apply neighborhood filter if set.
+        if (assignedProjectFilterSettings.getNeighborhood() != null &&
+            !assignedProjectFilterSettings.getNeighborhood().isEmpty()) {
+            projects.removeIf(proj -> !proj.getNeighborhood().equalsIgnoreCase(assignedProjectFilterSettings.getNeighborhood()));
+        }
+        // Apply flat type filter if set: filter projects with available units of that flat type.
+        if (assignedProjectFilterSettings.getFlatType() != null &&
+            !assignedProjectFilterSettings.getFlatType().isEmpty()) {
+            if (assignedProjectFilterSettings.getFlatType().equalsIgnoreCase("2-Room")) {
+                projects.removeIf(proj -> proj.getUnits2Room() <= 0);
+            } else if (assignedProjectFilterSettings.getFlatType().equalsIgnoreCase("3-Room")) {
+                projects.removeIf(proj -> proj.getUnits3Room() <= 0);
+            }
+        }
+        // Sort alphabetically if required.
+        if (assignedProjectFilterSettings.isSortAlphabetical()) {
+            projects.sort((p1, p2) -> p1.getProjectName().compareToIgnoreCase(p2.getProjectName()));
+        }
+        System.out.println("=== Your Assigned Projects (Filtered) ===");
+        if (projects.isEmpty()) {
+            System.out.println("No projects match your filter criteria.");
+        } else {
+            for (BTOProject proj : projects) {
+                System.out.println(proj.toStringForManagerOfficer());
+            }
+        }
+    }
+
+    private void updateAssignedProjectFilterSettings() {
+        System.out.print("Enter Neighborhood filter for assigned projects (leave empty for no filter): ");
+        String neighborhood = scanner.nextLine().trim();
+        if (neighborhood.isEmpty()) {
+            assignedProjectFilterSettings.setNeighborhood(null);
+        } else {
+            assignedProjectFilterSettings.setNeighborhood(neighborhood);
+        }
+        System.out.print("Enter Flat Type filter for assigned projects (2-Room/3-Room, leave empty for no filter): ");
+        String flatType = scanner.nextLine().trim();
+        if (flatType.isEmpty()) {
+            assignedProjectFilterSettings.setFlatType(null);
+        } else {
+            assignedProjectFilterSettings.setFlatType(flatType);
+        }
+        System.out.println("Assigned project filter settings updated.");
+    }
+    
 }

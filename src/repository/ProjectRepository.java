@@ -21,6 +21,10 @@ public class ProjectRepository {
         List<String[]> lines = FileUtils.readCSV(filePath);
         for (String[] tokens : lines) {
             // Expected tokens: ProjectName, Neighborhood,2-Room,SellingPriceFor2Room, units2Room,3-Room,SellingPricefor3Room, units3Room, applicationOpen, applicationClose, ManagerNRIC, officerSlots, isVisible
+            if (tokens.length < 12) {
+                continue; // Skip this line if it doesn't have enough tokens
+            }
+            // Parse the tokens and create a BTOProject object
             String projectName = tokens[0];
             String neighborhood = tokens[1];
             int units2Room = Integer.parseInt(tokens[3]);

@@ -8,6 +8,7 @@ import model.Application;
 import model.BTOProject;
 import model.Enquiry;
 import model.HDBOfficer;
+import model.Receipt;
 import repository.ApplicationRepository;
 import repository.ProjectRepository;
 
@@ -257,14 +258,9 @@ public class HDBOfficerDashBoard {
         for (Application app : applicationRepository.getApplications()) {
             if (app.getProject().getProjectId() == projId &&
                 app.getStatus() == Application.Status.BOOKED) {
-                System.out.println("----- Receipt -----");
-                System.out.println("Applicant NRIC: " + app.getApplicant().getNric());
-                System.out.println("Age: " + app.getApplicant().getAge());
-                System.out.println("Marital Status: " + app.getApplicant().getMaritalStatus());
-                System.out.println("Flat Type Booked: " + app.getFlatType());
-                System.out.println("Project ID: " + app.getProject().getProjectId());
-                System.out.println("Project Name: " + app.getProject().getProjectName());
-                System.out.println("-------------------");
+                // Generate receipt for this application.
+                Receipt receipt = new Receipt(app);
+                receipt.toString();
                 found = true;
             }
         }
