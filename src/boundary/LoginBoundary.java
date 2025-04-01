@@ -30,9 +30,13 @@ public class LoginBoundary {
                 System.out.print("Enter NRIC: ");
                 String nric = scanner.nextLine().trim();
                 while (!InputValidator.isValidNRIC(nric)) {
-                    System.out.println("Invalid NRIC format. Please try again.");
+                    System.out.println("Invalid NRIC format. Please try again. Type 'exit' 2 times at NRIC and password to exit");
                     System.out.print("Enter NRIC: ");
                     nric = scanner.nextLine().trim();
+                    if(nric.equals("exit"))
+                    {
+                        break;
+                    }
                 }
                 System.out.print("Enter Password: ");
                 String password = scanner.nextLine().trim();

@@ -63,6 +63,7 @@ public class App {
                 managerDashBoard.run();
             }
         }
+        scanner.close();
     }
     public static void main(String[] args) {
         runSystem();
