@@ -4,6 +4,7 @@ import controller.EnquiryController;
 import controller.UserController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import model.Application;
@@ -113,10 +114,32 @@ public class HDBManagerDashBoard {
             System.out.print("Enter selling price for 3-Room: ");
             float price3 = scanner.nextFloat();
             scanner.nextLine();
-            System.out.print("Enter Application Opening Date (M/d/yyyy): ");
+            System.out.print("Enter Application Opening Date (dd/MM/yyyy): ");
             String openDateStr = scanner.nextLine();
-            System.out.print("Enter Application Closing Date (M/d/yyyy): ");
+            System.out.print("Enter Application Closing Date (dd/MM/yyyy): ");
             String closeDateStr = scanner.nextLine();
+
+             // Parse the dates.
+            java.util.Date openDate = dateFormat.parse(openDateStr);
+            java.util.Date closeDate = dateFormat.parse(closeDateStr);
+
+            // Check for overlapping application periods.
+            // Manager can only handle one project in a given application period.
+            boolean overlapFound = false;
+            for (BTOProject proj : manager.getManagedProjects()) {
+                // Overlap condition: newOpen <= existingClose AND newClose >= existingOpen.
+                if (!openDate.after(proj.getApplicationClose()) && !closeDate.before(proj.getApplicationOpen())) {
+                    overlapFound = true;
+                    System.out.println("Cannot create project. You already have a project (" + proj.getProjectName() +
+                            ") with an overlapping application period (" + proj.getApplicationOpen() + " to " +
+                            proj.getApplicationClose() + ").");
+                    break;
+                }
+            }
+            if (overlapFound) {
+                return;
+            }
+
             System.out.print("Enter Available HDB Officer Slots (max 10): ");
             int slots = scanner.nextInt();
             scanner.nextLine();
@@ -154,16 +177,78 @@ public class HDBManagerDashBoard {
         int option = scanner.nextInt();
         scanner.nextLine();
         if(option == 1){
-            System.out.print("Enter new Neighborhood: ");
-            String neighborhood = scanner.nextLine();
-            System.out.print("Enter new number of 2-Room units: ");
-            int units2 = scanner.nextInt();
-            System.out.print("Enter new number of 3-Room units: ");
-            int units3 = scanner.nextInt();
+            System.out.println("\n=== Edit Project Options ===");
+            System.out.println("1. Project Name");
+            System.out.println("2. Neighborhood");
+            System.out.println("3. 2-Room Units");
+            System.out.println("4. 2-Room Price");
+            System.out.println("5. 3-Room Units");
+            System.out.println("6. 3-Room Price");
+            System.out.println("7. Application Opening Date");
+            System.out.println("8. Application Closing Date");
+            System.out.println("9. Officer Slots");
+            System.out.println("10. Back to Menu");
+            System.out.print("\nChoose an option: ");
+            int editOption = scanner.nextInt();
             scanner.nextLine();
-            selected.setVisible(selected.isVisible()); // keep current visibility
-            // For simplicity, allow editing only neighborhood and unit counts.
-            // (In a real system, more fields can be edited.)
+            switch(editOption) {
+                case 1:
+                    System.out.print("Enter new Project Name: ");
+                    String newName = scanner.nextLine();
+                    selected.setProjectName(newName);
+                    break;
+                case 2:
+                    System.out.print("Enter new Neighborhood: ");
+                    String newNeighborhood = scanner.nextLine();
+                    selected.setNeighborhood(newNeighborhood);
+                    break;
+                case 3:
+                    System.out.print("Enter new number of 2-Room units: ");
+                    int newUnits2 = scanner.nextInt();
+                    selected.setUnits2Room(newUnits2);
+                    break;
+                case 4:
+                    System.out.print("Enter new selling price for 2-Room: ");
+                    float newPrice2 = scanner.nextFloat();
+                    selected.setSellingPrice2Room(newPrice2);
+                    break;
+                case 5:
+                    System.out.print("Enter new number of 3-Room units: ");
+                    int newUnits3 = scanner.nextInt();
+                    selected.setUnits3Room(newUnits3);
+                    break;
+                case 6:
+                    System.out.print("Enter new selling price for 3-Room: ");
+                    float newPrice3 = scanner.nextFloat();
+                    selected.setSellingPrice3Room(newPrice3);
+                    break;
+                case 7:
+                    System.out.print("Enter new Application Opening Date (dd/MM/yyyy): ");
+                    String openDateStr = scanner.nextLine();
+                    try {
+                        selected.setApplicationOpen(dateFormat.parse(openDateStr));
+                    } catch (ParseException e) {
+                        System.out.println("Invalid date format. Please try again.");
+                    }
+                    break;
+                case 8:
+                    System.out.print("Enter new Application Closing Date (dd/MM/yyyy): ");
+                    String closeDateStr = scanner.nextLine();
+                    try {
+                        selected.setApplicationClose(dateFormat.parse(closeDateStr));
+                    } catch (ParseException e) {
+                        System.out.println("Invalid date format. Please try again.");
+                    }
+                    break;
+                case 9:
+                    System.out.print("Enter new Available HDB Officer Slots (max 10): ");
+                    int slots = scanner.nextInt();
+                    selected.setOfficerSlots(slots);
+                    break;
+                case 10: break;
+                default:
+                    System.out.println("Invalid option.");
+            }
             System.out.println("Project updated.");
         } else if(option == 2){
             projects.remove(selected);
@@ -203,76 +288,145 @@ public class HDBManagerDashBoard {
         }
     }
     
-    private void manageApplicantApplications() {
-        System.out.println("=== Pending Applicant Applications ===");
-        List<Application> apps = applicationRepository.getApplications();
-        boolean found = false;
-        for(Application app : apps) {
-            if(manager.getManagedProjects().contains(app.getProject()) && app.getStatus() == model.Application.Status.PENDING) {
-                System.out.println("Applicant NRIC: " + app.getApplicant().getNric() +
-                        " | Applicant Name: " + app.getApplicant().getName() +
+     private void manageApplicantApplications() {
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\n=== Manage Applicant Applications ===");
+            List<Application> pendingApps = new ArrayList<>();
+            for (Application app : applicationRepository.getApplications()){
+                if (manager.getManagedProjects().contains(app.getProject()) &&
+                    app.getStatus() == Application.Status.PENDING) {
+                    pendingApps.add(app);
+                }
+            }
+            if (pendingApps.isEmpty()){
+                System.out.println("No pending applications found.");
+                exit = true;
+                continue;
+            } else {
+                for (int i = 0; i < pendingApps.size(); i++){
+                    Application app = pendingApps.get(i);
+                    System.out.println((i+1) + ". Applicant NRIC: " + app.getApplicant().getNric() +
                         " | Project: " + app.getProject().getProjectName() +
                         " | Flat Type: " + app.getFlatType());
-                System.out.print("Approve (A) or Reject (R) this application? ");
-                String decision = scanner.nextLine();
-                if(decision.equalsIgnoreCase("A")) {
-                    // Check flat availability and update status.
-                    if(app.getFlatType().equalsIgnoreCase("2-Room") && app.getProject().getUnits2Room() > 0) {
-                        app.setStatus(model.Application.Status.SUCCESSFUL);
-                        app.getProject().setUnits2Room(app.getProject().getUnits2Room()-1);
-                        System.out.println("Application approved (SUCCESSFUL).");
-                    } else if(app.getFlatType().equalsIgnoreCase("3-Room") && app.getProject().getUnits3Room() > 0) {
-                        app.setStatus(model.Application.Status.SUCCESSFUL);
-                        app.getProject().setUnits3Room(app.getProject().getUnits3Room()-1);
-                        System.out.println("Application approved (SUCCESSFUL).");
-                    } else {
-                        System.out.println("Insufficient flat units. Cannot approve.");
-                    }
-                } else if(decision.equalsIgnoreCase("R")){
-                    app.setStatus(model.Application.Status.UNSUCCESSFUL);
-                    System.out.println("Application rejected.");
                 }
-                found = true;
+                System.out.println("Enter the application number to process (or 0 to exit): ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+                if (choice == 0) {
+                    exit = true;
+                    continue;
+                }
+                if (choice < 1 || choice > pendingApps.size()){
+                    System.out.println("Invalid selection.");
+                    continue;
+                }
+                Application selectedApp = pendingApps.get(choice-1);
+                System.out.println("Selected Application: Applicant NRIC: " + selectedApp.getApplicant().getNric() +
+                    " | Project: " + selectedApp.getProject().getProjectName() +
+                    " | Flat Type: " + selectedApp.getFlatType());
+                System.out.println("Enter A to Approve, R to Reject, or E to exit: ");
+                String decision = scanner.nextLine().trim();
+                if(decision.equalsIgnoreCase("E")){
+                    continue;
+                }
+                if (decision.equalsIgnoreCase("A")){
+                    if (selectedApp.getFlatType().equalsIgnoreCase("2-Room")){
+                        if (selectedApp.getProject().getUnits2Room() > 0){
+                            selectedApp.setStatus(Application.Status.SUCCESSFUL);
+                            selectedApp.getProject().setUnits2Room(selectedApp.getProject().getUnits2Room()-1);
+                            System.out.println("Application approved (SUCCESSFUL).");
+                        } else {
+                            System.out.println("Insufficient 2-Room units. Cannot approve.");
+                        }
+                    } else if (selectedApp.getFlatType().equalsIgnoreCase("3-Room")){
+                        if (selectedApp.getProject().getUnits3Room() > 0){
+                            selectedApp.setStatus(Application.Status.SUCCESSFUL);
+                            selectedApp.getProject().setUnits3Room(selectedApp.getProject().getUnits3Room()-1);
+                            System.out.println("Application approved (SUCCESSFUL).");
+                        } else {
+                            System.out.println("Insufficient 3-Room units. Cannot approve.");
+                        }
+                    } else {
+                        System.out.println("Invalid flat type in application.");
+                    }
+                } else if (decision.equalsIgnoreCase("R")){
+                    selectedApp.setStatus(Application.Status.UNSUCCESSFUL);
+                    System.out.println("Application rejected.");
+                } else {
+                    System.out.println("Invalid decision.");
+                }
             }
-        }
-        if(!found){
-            System.out.println("No pending applications found.");
         }
     }
     
     private void manageOfficerRegistrations() {
-        System.out.println("=== Pending HDB Officer Registrations ===");
-        List<HDBOfficer> officers = userRepository.getOfficers();
-        boolean found = false;
-        for(HDBOfficer off : officers) {
-            if(off.getRegistrationStatus().equals("PENDING") &&
-               off.getAssignedProject() != null &&
-               manager.getManagedProjects().contains(off.getAssignedProject())) {
-                System.out.println("Officer NRIC: " + off.getNric() +
-                        " | Officer Name: " + off.getName() +
-                        " | Project: " + off.getAssignedProject().getProjectName());
-                System.out.print("Approve (A) or Reject (R) registration? ");
-                String decision = scanner.nextLine();
-                if(decision.equalsIgnoreCase("A")) {
-                    off.setRegistrationStatus("APPROVED");
-                    System.out.println("Registration approved.");
-                    off.getAssignedProject().setOfficerSlots(off.getAssignedProject().getOfficerSlots()-1);
-                    off.setRegistered(true);
-                    off.getAssignedProject().addOfficers(off);
-                } else if(decision.equalsIgnoreCase("R")){
-                    off.setRegistrationStatus("REJECTED");
-                    off.setAssignedProject(null);
-                    off.setRegistered(false);
-                    System.out.println("Registration rejected.");
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\n=== Manage HDB Officer Registrations ===");
+            List<PendingRegistration> pendingRegs = new ArrayList<>();
+            for (HDBOfficer off : userRepository.getOfficers()){
+                for (BTOProject proj : off.getPendingRegistrations()){
+                    if (manager.getManagedProjects().contains(proj)){
+                        pendingRegs.add(new PendingRegistration(off, proj));
+                    }
                 }
-                found = true;
             }
-        }
-        if(!found) {
-            System.out.println("No pending officer registrations.");
+            if (pendingRegs.isEmpty()){
+                System.out.println("No pending officer registrations for your projects.");
+                exit = true;
+                continue;
+            } else {
+                for (int i = 0; i < pendingRegs.size(); i++){
+                    PendingRegistration reg = pendingRegs.get(i);
+                    System.out.println((i+1) + ". Officer NRIC: " + reg.officer.getNric() +
+                        " | Pending Registration for Project: " + reg.project.getProjectName());
+                }
+                System.out.println("Enter the registration number to process (or 0 to exit): ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+                if (choice == 0) {
+                    exit = true;
+                    continue;
+                }
+                if (choice < 1 || choice > pendingRegs.size()){
+                    System.out.println("Invalid selection.");
+                    continue;
+                }
+                PendingRegistration selected = pendingRegs.get(choice-1);
+                System.out.println("Selected Registration: Officer NRIC: " + selected.officer.getNric() +
+                    " | Project: " + selected.project.toStringForManagerOfficer());
+                System.out.println("Enter A to Approve, R to Reject, or E to exit: ");
+                String decision = scanner.nextLine().trim();
+                if(decision.equalsIgnoreCase("E")){
+                    continue;
+                }
+                if (decision.equalsIgnoreCase("A")){
+                    selected.officer.addAssignedProject(selected.project);
+                    selected.officer.getPendingRegistrations().remove(selected.project);
+                    System.out.println("Registration approved.");
+                    selected.project.addOfficers(selected.officer);
+                    selected.project.setOfficerSlots(selected.project.getOfficerSlots()-1);
+                } else if (decision.equalsIgnoreCase("R")){
+                    selected.officer.getPendingRegistrations().remove(selected.project);
+                    System.out.println("Registration rejected.");
+                } else {
+                    System.out.println("Invalid decision.");
+                }
+            }
         }
     }
     
+     // Helper inner class to hold pending registration information.
+    private class PendingRegistration {
+        public HDBOfficer officer;
+        public BTOProject project;
+        public PendingRegistration(HDBOfficer officer, BTOProject project){
+            this.officer = officer;
+            this.project = project;
+        }
+    }
+
     private void viewAndReplyEnquiries() {
         System.out.print("Enter project ID to view its enquiries: ");
         int projId = scanner.nextInt();
@@ -298,22 +452,34 @@ public class HDBManagerDashBoard {
     
     private void generateReport() {
         System.out.println("=== Report: Booked Applicants ===");
-        boolean found = false;
-        for(Application app : applicationRepository.getApplications()) {
+        // Gather all booked applications for projects managed by this manager.
+        List<Application> reportApps = new ArrayList<>();
+        for(Application app : applicationRepository.getApplications()){
             if(manager.getManagedProjects().contains(app.getProject()) &&
-               app.getStatus() == model.Application.Status.BOOKED) {
-                System.out.println("----- Receipt -----");
-                System.out.println("Applicant NRIC: " + app.getApplicant().getNric());
-                System.out.println("Age: " + app.getApplicant().getAge());
-                System.out.println("Marital Status: " + app.getApplicant().getMaritalStatus());
-                System.out.println("Flat Type: " + app.getFlatType());
-                System.out.println("Project: " + app.getProject().toStringForManagerOfficer());
-                System.out.println("-------------------");
-                found = true;
+               app.getStatus() == Application.Status.BOOKED) {
+                reportApps.add(app);
             }
         }
-        if(!found) {
-            System.out.println("No booked applications found.");
+        if(reportApps.isEmpty()){
+            System.out.println("No booked applications found for your projects.");
+            return;
         }
+        
+        // Print a formatted report header
+        System.out.println(String.format("%-15s %-5s %-15s %-10s %-20s", 
+                "Applicant NRIC", "Age", "Marital Status", "Flat Type", "Project Name"));
+        System.out.println("----------------------------------------------------------------------------");
+        
+        // Print each booked application record
+        for(Application app : reportApps) {
+            System.out.println(String.format("%-15s %-5d %-15s %-10s %-20s", 
+                app.getApplicant().getNric(), 
+                app.getApplicant().getAge(), 
+                app.getApplicant().getMaritalStatus(), 
+                app.getFlatType(), 
+                app.getProject().getProjectName()));
+        }
+        
+        // Exit option (for manager to go back to dashboard) is handled by the outer loop.
     }
 }

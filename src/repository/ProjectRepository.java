@@ -20,7 +20,7 @@ public class ProjectRepository {
     public void loadProjects(String filePath, List<HDBManager> managers) {
         List<String[]> lines = FileUtils.readCSV(filePath);
         for (String[] tokens : lines) {
-            // Expected tokens: ProjectName, Neighborhood,2-Room,SellingPriceFor2Room units2Room,3-Room,SellingPricefor3Room, units3Room, applicationOpen, applicationClose, ManagerNRIC, officerSlots, isVisible
+            // Expected tokens: ProjectName, Neighborhood,2-Room,SellingPriceFor2Room, units2Room,3-Room,SellingPricefor3Room, units3Room, applicationOpen, applicationClose, ManagerNRIC, officerSlots, isVisible
             String projectName = tokens[0];
             String neighborhood = tokens[1];
             int units2Room = Integer.parseInt(tokens[3]);

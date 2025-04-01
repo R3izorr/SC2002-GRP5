@@ -25,7 +25,7 @@ public class Main {
         userRepository.loadApplicants("data/ApplicantList.csv");
         
         ProjectRepository projectRepository = new ProjectRepository();
-        projectRepository.loadProjects("data/ProjectList.csv", userRepository.getManagers());
+        projectRepository.loadProjects("data\\ProjectList.csv", userRepository.getManagers());
         
         ApplicationRepository applicationRepository = new ApplicationRepository();
         

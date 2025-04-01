@@ -2,7 +2,7 @@ package model;
 
 public class Application { 
     public enum Status { 
-        PENDING, SUCCESSFUL, UNSUCCESSFUL, BOOKED, WITHDRAWN
+        PENDING, SUCCESSFUL, UNSUCCESSFUL, BOOKING, BOOKED, WITHDRAWN
     }
     private Applicant applicant;
     private BTOProject project;

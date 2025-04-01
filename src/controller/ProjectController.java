@@ -32,13 +32,6 @@ public class ProjectController {
             return false;
         BTOProject project = projects.get(projectIndex - 1);
         // If an application exists and its status is not UNSUCCESSFUL or WITHDRAWN, do not allow re-application.
-        if(currentApplicant.getApplication() != null) {
-            Application.Status status = currentApplicant.getApplication().getStatus();
-            if(status != Application.Status.UNSUCCESSFUL && status != Application.Status.WITHDRAWN) {
-                System.out.println("You have already applied for a project.");
-                return false;
-            }
-        }
         // Enforce eligibility rules.
         String maritalStatus = currentApplicant.getMaritalStatus();
         int age = currentApplicant.getAge();
@@ -98,26 +91,11 @@ public class ProjectController {
             return false;
         }
         if(app.getStatus() != Application.Status.SUCCESSFUL) {
-            System.out.println("Your application is not in a state to book a flat.");
+            System.out.println("Your application is not in a state that requires booking a flat.");
             return false;
         }
-        BTOProject project = app.getProject();
-        String flatType = app.getFlatType();
-        if(flatType.equalsIgnoreCase("2-Room")) {
-            if(project.getUnits2Room() <= 0) {
-                System.out.println("No 2-Room flats available.");
-                return false;
-            }
-            project.setUnits2Room(project.getUnits2Room() - 1);
-        } else if(flatType.equalsIgnoreCase("3-Room")) {
-            if(project.getUnits3Room() <= 0) {
-                System.out.println("No 3-Room flats available.");
-                return false;
-            }
-            project.setUnits3Room(project.getUnits3Room() - 1);
-        }
-        app.setStatus(Application.Status.BOOKED);
-        System.out.println("Flat booking completed. Your application status is now BOOKED.");
+        app.setStatus(Application.Status.BOOKING);
+        System.out.println("Require for Booking is completed. Your application status is now BOOKING.");
         return true;
     }
 

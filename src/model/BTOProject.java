@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class BTOProject {
     private HDBManager manager; 
     private int officerSlots; 
     private List<HDBOfficer> officers = new java.util.ArrayList<>();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     private boolean isVisible;
     public BTOProject(String projectName, String neighborhood,float sellingPrice2Room ,int units2Room, float sellingPrice3Room, int units3Room,
@@ -140,8 +142,8 @@ public class BTOProject {
                " Project Name: " + projectName + "\n" +
                " 2-Room Price: $" + sellingPrice2Room + "\n" +
                " 3-Room Price: $" + sellingPrice3Room + "\n" +
-               " Application Open: " + applicationOpen + "\n" +
-               " Application Close: " + applicationClose + "\n" +
+               " Application Open: " + dateFormat.format(applicationOpen) + "\n" +
+               " Application Close: " + dateFormat.format(applicationClose) + "\n" +
                "----------------------------------------";
         }
         
@@ -155,9 +157,9 @@ public class BTOProject {
                " 3-Room Units: " + units3Room + "\n" +
                " 2-Room Price: $" + sellingPrice2Room + "\n" +
                " 3-Room Price: $" + sellingPrice3Room + "\n" +
-               " Application Open: " + applicationOpen + "\n" +	
-               " Application Close: " + applicationClose + "\n" +
-               " Manager NRIC: " + (manager != null ? manager.getNric() : "None") + "\n" +
+               " Application Open: " + dateFormat.format(applicationOpen) + "\n" +	
+               " Application Close: " + dateFormat.format(applicationClose) + "\n" +
+               " Manager Name: " + (manager != null ? manager.getName() : "None") + "\n" +
                " Officer Slots: " + officerSlots + "\n" +
                " Officers List: " + (officers.isEmpty() ? "None" : officers.stream().map(HDBOfficer::getName).reduce((a, b) -> a + ", " + b).orElse("None")) + "\n" +
                "----------------------------------------\n" +

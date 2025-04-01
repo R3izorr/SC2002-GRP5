@@ -51,6 +51,10 @@ public class ApplicantDashBoard {
                 case 2:
                     System.out.print("Enter the project number to apply: ");
                     int projectChoice = scanner.nextInt();
+                    if (projectChoice < 1 || projectChoice > projectController.getVisibleProjects().size()) {
+                        System.out.println("Invalid project number. Please try again.");
+                        continue;
+                    }
                     scanner.nextLine();
                     System.out.print("Enter flat type (2-Room/3-Room): ");
                     String flatType = scanner.nextLine();
@@ -62,10 +66,13 @@ public class ApplicantDashBoard {
                 case 3:
                     Application app = projectController.getApplication();
                     if (app != null) {
-                    System.out.println("Your Application Details:");
-                    System.out.println(app.getProject().toString());
-                    System.out.println("Flat Type: " + app.getFlatType());
-                    System.out.println("Status: " + app.getStatus());
+                    System.out.println("\n=== Your Application Details ===");
+                    System.out.println("---------------------------------");
+                    System.out.printf("%-15s: %s%n", "Project ID", app.getProject().getProjectId());
+                    System.out.printf("%-15s: %s%n", "Project Name", app.getProject().getProjectName());
+                    System.out.printf("%-15s: %s%n", "Flat Type", app.getFlatType());
+                    System.out.printf("%-15s: %s%n", "Status", app.getStatus());
+                    System.out.println("---------------------------------");
                     } else {
                     System.out.println("No application found.");
                     }
