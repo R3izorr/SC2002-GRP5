@@ -1,8 +1,8 @@
 package controller;
 
-import model.Applicant; 
-import model.HDBManager; 
-import model.HDBOfficer; 
+import model.Applicant;
+import model.HDBManager;
+import model.HDBOfficer;
 import model.User; 
 import repository.UserRepository;
 
@@ -31,7 +31,14 @@ public class UserController {
     
     public boolean changePassword(User user, String newPassword) {
         user.setPassword(newPassword);
-        // Persist the change if needed.
+        // After password change, update the CSV file based on the user type.
+        if(user instanceof HDBManager) {
+            userRepository.saveManagers();
+        } else if(user instanceof HDBOfficer) {
+            userRepository.saveOfficers();
+        } else if(user instanceof Applicant) {
+            userRepository.saveApplicants();
+        }
         return true;
     }
 }

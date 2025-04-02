@@ -1,7 +1,9 @@
 package main;
 
-import boundary.LoginBoundary;
+import UI.ApplicantDashBoard;
+import UI.HDBOfficerDashBoard;
 import controller.UserController;
+import java.util.Scanner;
 import model.Applicant;
 import model.HDBManager;
 import model.HDBOfficer;
@@ -9,21 +11,18 @@ import model.User;
 import repository.ApplicationRepository;
 import repository.ProjectRepository;
 import repository.UserRepository;
-import UI.ApplicantDashBoard;
-import UI.HDBManagerDashBoard;
-import UI.HDBOfficerDashBoard;
-import java.util.Scanner;
 
 public class App {
     public static void runSystem() {
         // Initialize repositories and load CSV files
-        UserRepository userRepository = new UserRepository();
+        UserRepository userRepository = new UserRepository("data/ApplicantList.csv", "data/OfficerList.csv", "data/ManagerList.csv");
+
         userRepository.loadOfficers("data/OfficerList.csv");
         userRepository.loadManagers("data/ManagerList.csv");
         userRepository.loadApplicants("data/ApplicantList.csv");
         
-        ProjectRepository projectRepository = new ProjectRepository();
-        projectRepository.loadProjects("data\\ProjectList.csv", userRepository.getManagers());
+        ProjectRepository projectRepository = new ProjectRepository("data/ProjectList.csv");
+        projectRepository.loadProjects("data\\ProjectList.csv", userRepository.getManagers(), userRepository.getOfficers());
         
         ApplicationRepository applicationRepository = new ApplicationRepository();
         

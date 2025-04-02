@@ -134,9 +134,16 @@ public class BTOProject {
 
     public void addOfficers(HDBOfficer officer) {
         this.officers.add(officer);
+        }
+
+    public String getOfficerNRIC() {
+        return officers.isEmpty() ? "None" : "\"" + officers.stream().map(HDBOfficer::getNric).reduce((a, b) -> a + ";" + b).orElse("") + "\"";
     }
 
-    public String toStringForApplicant() {
+    public String getOfficerName() {
+        return officers.isEmpty() ? "None" : officers.stream().map(HDBOfficer::getName).reduce((a, b) -> a + ", " + b).orElse("None");
+    }
+        public String toStringForApplicant() {
         return "----------------------------------------\n" +
                " Project ID: " + projectId + "\n" +
                " Project Name: " + projectName + "\n" +
@@ -164,7 +171,7 @@ public class BTOProject {
                " Application Close: " + dateFormat.format(applicationClose) + "\n" +
                " Manager Name: " + (manager != null ? manager.getName() : "None") + "\n" +
                " Officer Slots: " + officerSlots + "\n" +
-               " Officers List: " + (officers.isEmpty() ? "None" : officers.stream().map(HDBOfficer::getName).reduce((a, b) -> a + ", " + b).orElse("None")) + "\n" +
+               " Officers List: " + this.getOfficerName() + "\n" +
                "----------------------------------------\n" +
                " Visibility: " + (isVisible ? "ON" : "OFF") + "\n" +
                "========================================";

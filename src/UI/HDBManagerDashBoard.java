@@ -159,6 +159,7 @@ public class HDBManagerDashBoard {
             projectRepository.getProjects().add(newProject);
             manager.addManagedProject(newProject);
             System.out.println("Project created successfully.");
+            projectRepository.saveProjects();
         } catch (ParseException e) {
             System.out.println("Date parse error. Project creation failed.");
         }
@@ -261,6 +262,7 @@ public class HDBManagerDashBoard {
                     System.out.println("Invalid option.");
             }
             System.out.println("Project updated.");
+            projectRepository.saveProjects();
         } else if(option == 2){
             projects.remove(selected);
             projectRepository.getProjects().remove(selected);
@@ -418,6 +420,7 @@ public class HDBManagerDashBoard {
                     System.out.println("Registration approved.");
                     selected.project.addOfficers(selected.officer);
                     selected.project.setOfficerSlots(selected.project.getOfficerSlots()-1);
+                    projectRepository.saveProjects();
                 } else if (decision.equalsIgnoreCase("R")){
                     selected.officer.getPendingRegistrations().remove(selected.project);
                     System.out.println("Registration rejected.");
