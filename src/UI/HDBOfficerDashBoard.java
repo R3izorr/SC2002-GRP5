@@ -1,6 +1,7 @@
 package UI;
 
 import controller.EnquiryController;
+import controller.ProjectController;
 import controller.UserController;
 import java.util.List;
 import java.util.Scanner;
@@ -18,15 +19,17 @@ public class HDBOfficerDashBoard {
     private ProjectRepository projectRepository;
     private ApplicationRepository applicationRepository;
     private Scanner scanner;
+    private ProjectController projectController;
     // For enquiry handling, we use an EnquiryController that can look up enquiries by project.
     private EnquiryController enquiryController;
     
     public HDBOfficerDashBoard(HDBOfficer officer, UserController userController,
-                               ProjectRepository projectRepository, ApplicationRepository applicationRepository) {
+                               ProjectRepository projectRepository, ApplicationRepository applicationRepository,ProjectController projectController) {
         this.officer = officer;
         this.userController = userController;
         this.projectRepository = projectRepository;
         this.applicationRepository = applicationRepository;
+        this.projectController = projectController;
         this.scanner = new Scanner(System.in);
         // For officer-level enquiry management, no current applicant is provided.
         this.enquiryController = new EnquiryController(projectRepository);
@@ -39,12 +42,15 @@ public class HDBOfficerDashBoard {
             System.out.println("1. View Assigned Project Details");
             System.out.println("2. Register for a New Project");
             System.out.println("3. Apply for a Project (as Applicant) [if not handling one]");
-            System.out.println("4. View Registration Status");
-            System.out.println("5. Process Flat Booking for an Applicant");
-            System.out.println("6. Generate Receipt for Booked Applicants");
-            System.out.println("7. View/Reply to Enquiries for Your Project");
-            System.out.println("8. Change Password");
-            System.out.println("9. Logout");
+            System.out.println("4. View Application Status");
+            System.out.println("5. Withdraw Application");
+            System.err.println("6. Request Booking Flat");
+            System.out.println("7. View Registration Status");
+            System.out.println("8. Process Flat Booking for an Applicant");
+            System.out.println("9. Generate Receipt for Booked Applicants");
+            System.out.println("10. View/Reply to Enquiries for Your Project");
+            System.out.println("11. Change Password");
+            System.out.println("12. Logout");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
@@ -59,18 +65,38 @@ public class HDBOfficerDashBoard {
                     applyForProjectAsApplicant();
                     break;
                 case 4:
-                    viewRegistrationStatus();
+                    Application app = projectController.getApplication();
+                    if (app != null) {
+                    System.out.println("\n=== Your Application Details ===");
+                    System.out.println("---------------------------------");
+                    System.out.printf("%-15s: %s%n", "Project ID", app.getProject().getProjectId());
+                    System.out.printf("%-15s: %s%n", "Project Name", app.getProject().getProjectName());
+                    System.out.printf("%-15s: %s%n", "Flat Type", app.getFlatType());
+                    System.out.printf("%-15s: %s%n", "Status", app.getStatus());
+                    System.out.println("---------------------------------");
+                    } else {
+                    System.out.println("No application found.");
+                    }
                     break;
                 case 5:
-                    processFlatBooking();
+                    projectController.withdrawApplication();
                     break;
                 case 6:
-                    generateReceipts();
+                    projectController.requestBooking();
                     break;
                 case 7:
-                    viewAndReplyEnquiries();
+                    viewRegistrationStatus();
                     break;
                 case 8:
+                    processFlatBooking();
+                    break;
+                case 9:
+                    generateReceipts();
+                    break;
+                case 10:
+                    viewAndReplyEnquiries();
+                    break;
+                case 11:
                     System.out.print("Enter new password: ");
                     String newPassword = scanner.nextLine();
                     userController.changePassword(officer, newPassword);
@@ -79,7 +105,7 @@ public class HDBOfficerDashBoard {
                     System.out.println("Logging out...");
                     exit = true;
                     break;
-                case 9:
+                case 12:
                     System.out.println("Logging out...");
                     exit = true;
                     break;
@@ -156,13 +182,12 @@ public class HDBOfficerDashBoard {
         scanner.nextLine();
         System.out.print("Enter flat type (2-Room/3-Room): ");
         String flatType = scanner.nextLine();
-        controller.ProjectController projectController =
-                new controller.ProjectController(projectRepository, applicationRepository, null);
         // Here, pass the officer as the applicant.
         boolean applied = projectController.applyForProjectByUser(projId, flatType, officer);
         if (applied) {
             System.out.println("Application submitted successfully.");
         }
+
     }
     
     private void viewRegistrationStatus() {
@@ -309,4 +334,5 @@ public class HDBOfficerDashBoard {
         System.out.println("Reply submitted.");
     }
     
+
 }

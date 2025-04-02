@@ -50,8 +50,10 @@ public class App {
                 applicantDashBoard.run();
             } else if(loggedInUser.getRole().equals("HDBOfficer")) {
                 HDBOfficer officer = (HDBOfficer) loggedInUser;
+                controller.ProjectController projectController =
+                        new controller.ProjectController(projectRepository, applicationRepository, officer);
                 HDBOfficerDashBoard officerDashBoard =
-                        new HDBOfficerDashBoard(officer, userController, projectRepository, applicationRepository);
+                        new HDBOfficerDashBoard(officer, userController, projectRepository, applicationRepository, projectController);
                 officerDashBoard.run();
             } else if(loggedInUser.getRole().equals("HDBManager")) {
                 HDBManager manager = (HDBManager) loggedInUser;
