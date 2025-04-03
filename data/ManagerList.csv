@@ -1,10 +1,5 @@
 Name,NRIC,Age,Marital Status,Password
-<<<<<<< Updated upstream
-Michael,T8765432F,36,Single,password
-Jessica,S5678901G,26,Married,password
-=======
 Michael Nguyen,T8765432F,36,Single,password
 Jessica Hill,S5678901G,26,Married,password
 Peter Paker,S0987654A,45,Single,password
 John Doe,T1234567A,30,Married,password
->>>>>>> Stashed changes

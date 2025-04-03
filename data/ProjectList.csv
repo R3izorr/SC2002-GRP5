@@ -1,11 +1,6 @@
-<<<<<<< Updated upstream
-Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Officer Slot,Officer
-Acacia Breeze,Yishun,2-Room,2,350000,3-Room,3,450000,2/15/2025,3/20/2025,Jessica,3,"Daniel,Emily"
-=======
 Project Name,Neighborhood,Type 1,Number of units for Type 1,Selling price for Type 1,Type 2,Number of units for Type 2,Selling price for Type 2,Application opening date,Application closing date,Manager,Remaining officer slots,Officers NRIC
 Acacia Breeze,Yishun,2-Room,3,350000,3-Room,3,450000,15/03/2025,1/5/2025,S5678901G,1,T1234567J
 Jade Garden,Jurong East,2-Room,4,450000,3-Room,5,550000,25/03/2025,28/04/2025,T1234567A,2,S6543210I
 Kallang View,Boon Keng,2-Room,3,350000,3-Room,4,450000,11/5/2025,1/6/2025,S5678901G,3,None
 Maple Woods,Woodlands,2-Room,1,550000,3-Room,2,650000,30/03/2025,29/04/2025,T8765432F,3,None
 Towner Breeze,Boon Keng,2-Room,6,350000,3-Room,3,450000,1/4/2025,10/5/2025,,4,None
->>>>>>> Stashed changes
