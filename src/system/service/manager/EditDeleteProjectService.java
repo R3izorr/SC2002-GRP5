@@ -1,0 +1,134 @@
+package system.service.manager;
+
+import java.util.List;
+import model.BTOProject;
+import model.HDBManager;
+import model.HDBOfficer;
+import repository.ProjectRepository;
+import ui.AbstractMenu;
+import ui.Prompt;
+
+public class EditDeleteProjectService extends AbstractMenu {
+    private HDBManager manager;
+    private List<HDBOfficer> officers;
+    private ProjectRepository projectRepository;
+    
+    public EditDeleteProjectService(HDBManager manager, ProjectRepository projectRepository, List<HDBOfficer> officers) {
+        this.officers = officers;
+        this.manager = manager;
+        this.projectRepository = projectRepository;
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("\n=== Edit/Delete Project Listing ===");
+        List<BTOProject> projects = manager.getManagedProjects();
+        if(projects.isEmpty()){
+            System.out.println("You have no projects to manage.");
+        } else {
+            for (int i = 0; i < projects.size(); i++){
+                System.out.println((i+1) + ". " + projects.get(i).toStringForManagerOfficer());
+            }
+        }
+        System.out.println("Enter project number to edit/delete or 'b' to go back:");
+    }
+    
+    @Override
+    public void handleInput() {
+        String input = Prompt.prompt("Your choice: ");
+        if(input.equalsIgnoreCase("b")){
+            exit();
+            return;
+        }
+        int choice;
+        try {
+            choice = Integer.parseInt(input);
+        } catch(NumberFormatException e){
+            System.out.println("Invalid input.");
+            return;
+        }
+        List<BTOProject> projects = manager.getManagedProjects();
+        if(choice < 1 || choice > projects.size()){
+            System.out.println("Invalid selection.");
+            return;
+        }
+        BTOProject selected = projects.get(choice - 1);
+        String action = Prompt.prompt("Enter 'e', 'd' to delete, or 'b' to go back: ");
+        if(action.equalsIgnoreCase("b")){
+            return;
+        }
+        if (action.equalsIgnoreCase("e")){
+            System.out.println("\n=== Edit Project Options ===");
+            System.out.println("1. Project Name");
+            System.out.println("2. Neighborhood");
+            System.out.println("3. 2-Room Units");
+            System.out.println("4. 2-Room Price");
+            System.out.println("5. 3-Room Units");
+            System.out.println("6. 3-Room Price");
+            System.out.println("7. Application Opening Date");
+            System.out.println("8. Application Closing Date");
+            System.out.println("9. Officer Slots");
+            System.out.println("10. Back to Menu");
+            int editOption = Prompt.promptInt("Choose an option:");
+            switch(editOption) {
+                case 1:
+                    String newProjectName = Prompt.prompt("Enter a new Project Name: ");
+                    selected.setProjectName(newProjectName);
+                    break;
+                case 2:
+                    String newNeighborhood = Prompt.prompt("Enter new Neighborhood: ");
+                    selected.setNeighborhood(newNeighborhood);
+                    break;
+                case 3:
+                    int newUnits2 = Prompt.promptInt("Enter new number of 2-Room units: ");
+                    selected.setUnits2Room(newUnits2);
+                    break;
+                case 4:
+                    float newPrice2 = Prompt.promptFloat("Enter new selling price for 2-Room: ");
+                    selected.setSellingPrice2Room(newPrice2);
+                    break;
+                case 5:
+                    int newUnits3 = Prompt.promptInt("Enter new number of 3-Room units: ");
+                    selected.setUnits3Room(newUnits3);
+                    break;
+                case 6:
+                    float newPrice3 = Prompt.promptFloat("Enter new selling price for 3-Room: ");
+                    selected.setSellingPrice3Room(newPrice3);
+                    break;
+                case 7:
+                    selected.setApplicationOpen(Prompt.promptDate("Enter new Application Opening Date (dd/MM/yyyy): "));
+                    break;
+                case 8:
+                    selected.setApplicationClose(Prompt.promptDate("Enter new Application Closing Date (dd/MM/yyyy): "));
+                    break;
+                case 9:
+                    int slots = Prompt.promptInt("Enter new Available HDB Officer Remaining Slots (max 10): ");
+                    selected.setOfficerSlots(slots);
+                    break;
+                case 10: break;
+                default:
+                    System.out.println("Invalid option.");
+            }
+            System.out.println("Project updated.");
+            projectRepository.saveProjects();
+        } else if (action.equalsIgnoreCase("d")){
+            manager.getManagedProjects().remove(selected);
+            for(HDBOfficer officer: officers) {
+                for(BTOProject proj : officer.getAssignedProjects()) {
+                    if (proj == selected) {
+                        officer.deAssignedProject(proj);
+                        break;
+                    }
+                }
+            }
+            projectRepository.getProjects().remove(selected);
+            System.out.println("Project deleted.");
+        } else {
+            System.out.println("Invalid action.");
+        }
+        String back = Prompt.prompt("Type 'b' to go back: ");
+        if(back.equalsIgnoreCase("b")){
+            exit();
+        }
+    }
+}
