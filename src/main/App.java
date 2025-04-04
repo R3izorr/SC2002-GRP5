@@ -2,10 +2,11 @@ package main;
 
 import controller.UserController;
 import java.util.Scanner;
-import model.Applicant;
-import model.HDBManager;
-import model.HDBOfficer;
-import model.User;
+
+import model.user.Applicant;
+import model.user.HDBManager;
+import model.user.HDBOfficer;
+import model.user.User;
 import repository.ApplicationRepository;
 import repository.ProjectRepository;
 import repository.UserRepository;

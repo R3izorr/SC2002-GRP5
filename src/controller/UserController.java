@@ -1,9 +1,9 @@
 package controller;
 
-import model.Applicant;
-import model.HDBManager;
-import model.HDBOfficer;
-import model.User; 
+import model.user.Applicant;
+import model.user.HDBManager;
+import model.user.HDBOfficer;
+import model.user.User;
 import repository.UserRepository;
 
 

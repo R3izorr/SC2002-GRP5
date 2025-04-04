@@ -1,15 +1,18 @@
 package system.service.common;
 
 import controller.ProjectController;
-import model.Applicant;
-import model.HDBOfficer;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import model.BTOProject;
+import model.user.Applicant;
+import model.user.HDBOfficer;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class ApplyForProjectService extends AbstractMenu {
     private ProjectController projectController;
     private Applicant applicant; // Can be an Applicant or HDBOfficer
-
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public ApplyForProjectService(ProjectController projectController, Applicant applicant) {
         this.projectController = projectController;
         this.applicant = applicant;
@@ -18,6 +21,11 @@ public class ApplyForProjectService extends AbstractMenu {
     @Override
     public void display() {
         System.out.println("\n=== Apply for a Project ===");
+        System.out.println("Available Projects:");
+        List<BTOProject> projects = projectController.getVisibleProjects();
+        for(BTOProject project : projects) {
+            System.out.println("Project ID: " + project.getProjectId()+ " | Project Name: " + project.getProjectName() + " (Application Open: " + dateFormat.format(project.getApplicationOpen()) + ", Close: " + dateFormat.format(project.getApplicationClose()) + ")");
+        }
     }
 
     @Override

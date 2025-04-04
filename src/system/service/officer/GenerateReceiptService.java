@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Application;
 import model.BTOProject;
-import model.HDBOfficer;
 import model.Receipt;
+import model.user.HDBOfficer;
 import repository.ApplicationRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
@@ -46,6 +46,7 @@ public class GenerateReceiptService extends AbstractMenu {
         for(int i = 0; i < bookedApps.size(); i++){
             Application app = bookedApps.get(i);
             System.out.println((i+1) + ". Applicant NRIC: " + app.getApplicant().getNric() +
+                               "| Applicant Name: " + app.getApplicant().getName() +
                                " | Project: " + app.getProject().getProjectName() +
                                " | Flat Type: " + app.getFlatType());
         }

@@ -3,6 +3,8 @@ package model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import model.user.HDBManager;
+import model.user.HDBOfficer;
 
 
 public class BTOProject {
@@ -37,6 +39,7 @@ public class BTOProject {
         this.officerSlots = officerSlots;
         this.isVisible = isVisible;
     }
+    
     public int getProjectId() {
         return projectId;
     }
@@ -140,7 +143,7 @@ public class BTOProject {
         this.officers.clear();
     }
 
-        public String getOfficerNRIC() {
+    public String getOfficerNRIC() {
         return officers.isEmpty() ? "None" : "\"" + officers.stream().map(HDBOfficer::getNric).reduce((a, b) -> a + ";" + b).orElse("") + "\"";
     }
 
@@ -149,7 +152,7 @@ public class BTOProject {
     }
     
     public String toStringForApplicant() {
-        return "----------------------------------------\n" +
+        return 
                " Project ID: " + projectId + "\n" +
                " Project Name: " + projectName + "\n" +
                " Neighborhood: " + neighborhood + "\n" +
@@ -162,9 +165,9 @@ public class BTOProject {
                "----------------------------------------";
         }
         
-        // For Manager/Officer: full details
-        public String toStringForManagerOfficer() {
-        return "========================================\n" +
+    // For Manager/Officer: full details
+    public String toStringForManagerOfficer() {
+        return 
                " Project ID: " + projectId + "\n" +
                " Project Name: " + projectName + "\n" +
                " Neighborhood: " + neighborhood + "\n" +
@@ -177,13 +180,12 @@ public class BTOProject {
                " Manager Name: " + (manager != null ? manager.getName() : "None") + "\n" +
                " Remaining Officer Slots: " + officerSlots + "\n" +
                " Officers List: " + this.getOfficerName() + "\n" +
-               "----------------------------------------\n" +
                " Visibility: " + (isVisible ? "ON" : "OFF") + "\n" +
                "========================================";
         }
         
-        @Override
-        public String toString() {
+    @Override
+    public String toString() {
         return toStringForManagerOfficer();
     }
 }

@@ -1,9 +1,9 @@
 package controller;
 
 import java.util.List;
-import model.Applicant;
 import model.BTOProject;
 import model.Enquiry;
+import model.user.Applicant;
 import repository.EnquiryRepository;
 import repository.ProjectRepository;
 

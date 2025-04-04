@@ -3,7 +3,7 @@ package system.service.manager;
 import java.util.ArrayList;
 import java.util.List;
 import model.Application;
-import model.HDBManager;
+import model.user.HDBManager;
 import repository.ApplicationRepository;
 import ui.AbstractMenu;
 import ui.Prompt;

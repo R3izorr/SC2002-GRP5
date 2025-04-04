@@ -1,7 +1,7 @@
 package system.service.officer;
 
 import model.BTOProject;
-import model.HDBOfficer;
+import model.user.HDBOfficer;
 import repository.ProjectRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
@@ -53,6 +53,21 @@ public class RegisterForProjectService extends AbstractMenu {
             System.out.println("You have already applied for this project as an applicant.");
             return;
         }
+        if(officer.hasOverlappingApprovedProject(selected)) {
+            System.out.println("You have an overlapping approved project. Cannot register for this project.");
+            return;
+        }
+        for(BTOProject proj : officer.getPendingRegistrations()) {
+            if(proj.getProjectId() == projId) {
+                System.out.println("You have already submitted a registration for this project. Awaiting manager approval.");
+                return;
+            }
+            if(officer.isOverlap(proj, selected)) {
+                System.out.println("You have an overlapping pending registration. Cannot register for this project.");
+                return;
+            }
+        }  
+        
         // Add registration to pending registrations.
         officer.getPendingRegistrations().add(selected);
         System.out.println("Registration submitted for project '" + selected.getProjectName() + "'. Awaiting manager approval.");

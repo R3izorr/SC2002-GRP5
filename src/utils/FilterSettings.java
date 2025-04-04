@@ -3,10 +3,10 @@ package utils;
 public class FilterSettings {
     private String neighborhood;      // Filter by project neighborhood
     private Integer projectId;        // Filter by a specific project ID
-    private Double minPrice2Room;     // Minimum price for 2‑Room units
-    private Double maxPrice2Room;     // Maximum price for 2‑Room units
-    private Double minPrice3Room;     // Minimum price for 3‑Room units
-    private Double maxPrice3Room;     // Maximum price for 3‑Room units
+    private Float minPrice2Room;     // Minimum price for 2‑Room units
+    private Float maxPrice2Room;     // Maximum price for 2‑Room units
+    private Float minPrice3Room;     // Minimum price for 3‑Room units
+    private Float maxPrice3Room;     // Maximum price for 3‑Room units
     private boolean sortAlphabetical; // Default true (sort by project name)
 
     public FilterSettings() {
@@ -35,35 +35,35 @@ public class FilterSettings {
         this.projectId = projectId;
     }
 
-    public Double getMinPrice2Room() {
+    public Float getMinPrice2Room() {
         return minPrice2Room;
     }
 
-    public void setMinPrice2Room(Double minPrice2Room) {
+    public void setMinPrice2Room(Float minPrice2Room) {
         this.minPrice2Room = minPrice2Room;
     }
 
-    public Double getMaxPrice2Room() {
+    public Float getMaxPrice2Room() {
         return maxPrice2Room;
     }
 
-    public void setMaxPrice2Room(Double maxPrice2Room) {
+    public void setMaxPrice2Room(Float maxPrice2Room) {
         this.maxPrice2Room = maxPrice2Room;
     }
 
-    public Double getMinPrice3Room() {
+    public Float getMinPrice3Room() {
         return minPrice3Room;
     }
 
-    public void setMinPrice3Room(Double minPrice3Room) {
+    public void setMinPrice3Room(Float minPrice3Room) {
         this.minPrice3Room = minPrice3Room;
     }
 
-    public Double getMaxPrice3Room() {
+    public Float getMaxPrice3Room() {
         return maxPrice3Room;
     }
 
-    public void setMaxPrice3Room(Double maxPrice3Room) {
+    public void setMaxPrice3Room(Float maxPrice3Room) {
         this.maxPrice3Room = maxPrice3Room;
     }
 

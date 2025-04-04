@@ -1,5 +1,6 @@
 package model;
 import java.util.Date;
+import model.user.Applicant;
 
 public class Enquiry {
     private static int counter = 0; 

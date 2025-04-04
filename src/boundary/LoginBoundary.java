@@ -1,8 +1,10 @@
 package boundary;
 
 import controller.UserController;
+import model.user.User;
+
 import java.util.Scanner;
-import model.User;
+
 import utils.InputValidator;
 
 public class LoginBoundary { 

@@ -1,11 +1,10 @@
 package controller;
 
-import java.util.Date;
 import java.util.List;
-import model.Applicant;
 import model.Application;
 import model.BTOProject;
-import model.HDBOfficer;
+import model.user.Applicant;
+import model.user.HDBOfficer;
 import repository.ApplicationRepository;
 import repository.ProjectRepository;
 
@@ -27,7 +26,7 @@ public class ProjectController {
     }
     
     // Apply for a project with a chosen flat type.
-    public boolean applyForProject(int projectIndex, String flatType) {
+    public boolean applyForProject(int projectId, String flatType) {
         if(currentApplicant.getApplication() != null && 
            currentApplicant.getApplication().getStatus() != Application.Status.UNSUCCESSFUL && 
            currentApplicant.getApplication().getStatus() != Application.Status.WITHDRAWN
@@ -35,42 +34,26 @@ public class ProjectController {
             System.out.println("You have already applied for a Project. Cannot apply for multiple projects!");
             return false;
         }
-        List<BTOProject> projects = getVisibleProjects();
-        if(projectIndex < 1 || projectIndex > projects.size())
+        
+        // Check if the project ID is valid and if the project is visible.
+        BTOProject project = projectRepository.getProjectById(projectId);
+        if(project == null) {
+            System.out.println("Invalid project ID.");
             return false;
-        BTOProject project = projects.get(projectIndex - 1);
+        }
+        if(project.isVisible() == false) {
+            System.out.println("Project is not visible.");
+            return false;
+        }
         // If an application exists and its status is not UNSUCCESSFUL or WITHDRAWN, do not allow re-application.
         // Enforce eligibility rules.
-        String maritalStatus = currentApplicant.getMaritalStatus();
-        int age = currentApplicant.getAge();
-        Date today = new Date();
-        if (today.before(project.getApplicationOpen()) || today.after(project.getApplicationClose())) {
-            System.out.println("The project is not open for application.");
-            return false;
+        if(currentApplicant.CheckEligiblity(currentApplicant, project, flatType)) {
+            Application application = new Application(currentApplicant, project, flatType);
+            currentApplicant.setApplication(application);
+            applicationRepository.addApplication(application);
+            return true;
         }
-        if(maritalStatus.equalsIgnoreCase("Single")) {
-            if(age < 35) {
-                System.out.println("You are not eligible to apply as a single applicant (must be 35 or above).");
-                return false;
-            }
-            if(!flatType.equalsIgnoreCase("2-Room")) {
-                System.out.println("As a single applicant, you can only apply for a 2-Room flat.");
-                return false;
-            }
-        } else if(maritalStatus.equalsIgnoreCase("Married")) {
-            if(age < 21) {
-                System.out.println("You are not eligible to apply as a married applicant (must be 21 or above).");
-                return false;
-            }
-            if(!(flatType.equalsIgnoreCase("2-Room") || flatType.equalsIgnoreCase("3-Room"))) {
-                System.out.println("Invalid flat type. Please choose either '2-Room' or '3-Room'.");
-                return false;
-            }
-        }
-        Application application = new Application(currentApplicant, project, flatType);
-        currentApplicant.setApplication(application);
-        applicationRepository.addApplication(application);
-        return true;
+        return false;
     }
     
     // Retrieve the applicant's current application.
@@ -109,11 +92,16 @@ public class ProjectController {
         System.out.println("Require for Booking is completed. Your application status is now BOOKING.");
         return true;
     }
-
+    
     public boolean applyForProject(int projectId, String flatType, HDBOfficer officer) {
+        // Check if the project ID is valid and if the project is visible.
         BTOProject project = projectRepository.getProjectById(projectId);
         if(project == null) {
             System.out.println("Invalid project ID.");
+            return false;
+        }
+        if(project.isVisible() == false) {
+            System.out.println("Project is not visible.");
             return false;
         }
         // Check if officer already has an application
@@ -137,36 +125,13 @@ public class ProjectController {
             }
         }
         // Eligibility rules for officer as applicant (you may adjust as needed)
-        String maritalStatus = currentApplicant.getMaritalStatus();
-        int age = currentApplicant.getAge();
-        Date today = new Date();
-        if (today.before(project.getApplicationOpen()) || today.after(project.getApplicationClose())) {
-            System.out.println("The project is not open for application.");
-            return false;
+        if(currentApplicant.CheckEligiblity(currentApplicant, project, flatType)) {
+            Application application = new Application(currentApplicant, project, flatType);
+            currentApplicant.setApplication(application);
+            applicationRepository.addApplication(application);
+            return true;
         }
-        if(maritalStatus.equalsIgnoreCase("Single")) {
-            if(age < 35) {
-                System.out.println("You are not eligible to apply as a single applicant (must be 35 or above).");
-                return false;
-            }
-            if(!flatType.equalsIgnoreCase("2-Room")) {
-                System.out.println("As a single applicant, you can only apply for a 2-Room flat.");
-                return false;
-            }
-        } else if(maritalStatus.equalsIgnoreCase("Married")) {
-            if(age < 21) {
-                System.out.println("You are not eligible to apply as a married applicant (must be 21 or above).");
-                return false;
-            }
-            if(!(flatType.equalsIgnoreCase("2-Room") || flatType.equalsIgnoreCase("3-Room"))) {
-                System.out.println("Invalid flat type. Please choose either '2-Room' or '3-Room'.");
-                return false;
-            }
-        }
-        Application application = new Application(currentApplicant, project, flatType);
-        currentApplicant.setApplication(application);
-        applicationRepository.addApplication(application);
-     return true;
+        return false;
     }
 
 }

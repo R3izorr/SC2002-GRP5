@@ -1,38 +1,19 @@
 package system.service.manager;
 
-import ui.AbstractMenu;
-import ui.Prompt;
 import java.util.List;
 import model.BTOProject;
+import ui.AbstractViewProjectsMenu;
+import utils.FilterSettings;
 
-public class ViewAllProjectsService extends AbstractMenu {
-    private List<BTOProject> projects;
+public class ViewAllProjectsService extends AbstractViewProjectsMenu {
     
-    public ViewAllProjectsService(List<BTOProject> projects) {
-        this.projects = projects;
+    public ViewAllProjectsService(List<BTOProject> projects, FilterSettings filterSettings) {
+        super(projects, filterSettings); // No filter settings needed for viewing all projects
     }
     
     @Override
-    public void display() {
-        System.out.println("\n=== View All Projects ===");
-        if(projects.isEmpty()){
-            System.out.println("No projects available.");
-        } else {
-            for(BTOProject proj : projects){
-                System.out.println(proj.toStringForManagerOfficer());
-            }
-        }
-        System.out.println("Type 'b' to go back.");
-    }
-    
-    @Override
-    public void handleInput() {
-        String input = Prompt.prompt("Your input: ");
-        if(input.equalsIgnoreCase("b")){
-            exit();
-        } else {
-            System.out.println("Invalid input. Type 'b' to go back.");
-        }
+    protected String getProjectString(BTOProject proj) {
+        return proj.toStringForManagerOfficer(); // Assuming this method provides the desired string representation for managers
     }
 }
 

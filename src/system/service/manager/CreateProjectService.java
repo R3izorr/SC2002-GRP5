@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import model.BTOProject;
-import model.HDBManager;
+import model.user.HDBManager;
 import repository.ProjectRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
@@ -21,7 +21,7 @@ public class CreateProjectService extends AbstractMenu {
     
     @Override
     public void display() {
-        System.out.println("\n=== Create New BTO Project Listing ===");
+        System.out.println("\n=== Create a New BTO Project ===");
     }
     
     @Override
@@ -33,8 +33,8 @@ public class CreateProjectService extends AbstractMenu {
             float price2 = Float.parseFloat(Prompt.prompt("Enter selling price for 2-Room: "));
             int units3 = Prompt.promptInt("Enter number of 3-Room units: ");
             float price3 = Float.parseFloat(Prompt.prompt("Enter selling price for 3-Room: "));
-            String openDateStr = Prompt.prompt("Enter Application Opening Date (M/d/yyyy): ");
-            String closeDateStr = Prompt.prompt("Enter Application Closing Date (M/d/yyyy): ");
+            String openDateStr = Prompt.prompt("Enter Application Opening Date (dd/MM/yyyy): ");
+            String closeDateStr = Prompt.prompt("Enter Application Closing Date (dd/MM/yyyy): ");
             
             Date openDate = dateFormat.parse(openDateStr);
             Date closeDate = dateFormat.parse(closeDateStr);
@@ -48,7 +48,7 @@ public class CreateProjectService extends AbstractMenu {
                 if (!openDate.after(existingClose) && !closeDate.before(existingOpen)) {
                     overlap = true;
                     System.out.println("Cannot create project. Overlaps with project: " 
-                        + proj.getProjectName() + " (" + existingOpen + " to " + existingClose + ").");
+                        + proj.getProjectName() + " (" + dateFormat.format(existingOpen) + " to " + dateFormat.format(existingClose) + ").");
                     break;
                 }
             }

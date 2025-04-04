@@ -1,7 +1,8 @@
-package model;
+package model.user;
 
 import java.util.ArrayList; 
 import java.util.List;
+import model.BTOProject;
 
 public class HDBManager extends User { 
     private List<BTOProject> managedProjects;
@@ -23,6 +24,22 @@ public class HDBManager extends User {
         managedProjects.remove(project);
     }
     
+    public void clearManagedProjects() {
+        managedProjects.clear();
+    }
+
+    public String displayManagedProject() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== Your Managed Projects === \n");
+        for (BTOProject project : managedProjects) {
+            sb.append("Project ID: ").append(project.getProjectId())
+              .append("|| Project Name: ").append(project.getProjectName())
+              .append("\n");
+        }
+        return sb.toString();
+    }
+
+
     @Override
     public String getRole() {
         return "HDBManager";

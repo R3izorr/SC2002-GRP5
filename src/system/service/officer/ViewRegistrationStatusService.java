@@ -1,6 +1,6 @@
 package system.service.officer;
 
-import model.HDBOfficer;
+import model.user.HDBOfficer;
 import ui.AbstractMenu;
 import ui.Prompt;
 
@@ -19,7 +19,7 @@ public class ViewRegistrationStatusService extends AbstractMenu {
             System.out.println("None");
         } else {
             officer.getAssignedProjects().forEach(proj -> 
-                System.out.println(proj.toStringForManagerOfficer())
+                System.out.println("Project ID: " + proj.getProjectId() + "| Project Name: " + proj.getProjectName())
             );
         }
         System.out.println("Pending Registrations:");
@@ -27,7 +27,7 @@ public class ViewRegistrationStatusService extends AbstractMenu {
             System.out.println("None");
         } else {
             officer.getPendingRegistrations().forEach(proj -> 
-                System.out.println(proj.toStringForManagerOfficer())
+                System.out.println("Project ID: " + proj.getProjectId() + "| Project Name: " + proj.getProjectName())	
             );
         }
         System.out.println("Type 'b' to go back.");

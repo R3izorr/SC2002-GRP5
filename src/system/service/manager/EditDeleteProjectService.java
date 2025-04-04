@@ -2,8 +2,8 @@ package system.service.manager;
 
 import java.util.List;
 import model.BTOProject;
-import model.HDBManager;
-import model.HDBOfficer;
+import model.user.HDBManager;
+import model.user.HDBOfficer;
 import repository.ProjectRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
@@ -26,11 +26,10 @@ public class EditDeleteProjectService extends AbstractMenu {
         if(projects.isEmpty()){
             System.out.println("You have no projects to manage.");
         } else {
-            for (int i = 0; i < projects.size(); i++){
-                System.out.println((i+1) + ". " + projects.get(i).toStringForManagerOfficer());
-            }
+            System.out.println(manager.displayManagedProject());
+
         }
-        System.out.println("Enter project number to edit/delete or 'b' to go back:");
+        System.out.println("Enter project ID to edit/delete or 'b' to go back:");
     }
     
     @Override
@@ -40,20 +39,20 @@ public class EditDeleteProjectService extends AbstractMenu {
             exit();
             return;
         }
-        int choice;
-        try {
-            choice = Integer.parseInt(input);
-        } catch(NumberFormatException e){
-            System.out.println("Invalid input.");
-            return;
-        }
         List<BTOProject> projects = manager.getManagedProjects();
-        if(choice < 1 || choice > projects.size()){
-            System.out.println("Invalid selection.");
+        BTOProject selected = null;
+        for (BTOProject project : projects) {
+            if (project.getProjectId() == Integer.parseInt(input)) {
+                selected = project;
+                break;
+            }
+        }
+        
+        if (selected == null) {
+            System.out.println("Invalid project ID.");
             return;
         }
-        BTOProject selected = projects.get(choice - 1);
-        String action = Prompt.prompt("Enter 'e', 'd' to delete, or 'b' to go back: ");
+        String action = Prompt.prompt("Enter 'e' to edit, 'd' to delete, or 'b' to go back: ");
         if(action.equalsIgnoreCase("b")){
             return;
         }

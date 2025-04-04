@@ -1,12 +1,12 @@
 package system.service.manager;
 
+import controller.EnquiryController;
+import java.util.List;
+import model.BTOProject;
+import model.Enquiry;
+import model.user.HDBManager;
 import ui.AbstractMenu;
 import ui.Prompt;
-import java.util.List;
-import model.Enquiry;
-import model.BTOProject;
-import model.HDBManager;
-import controller.EnquiryController;
 
 public class ViewAndReplyEnquiriesService extends AbstractMenu {
     private HDBManager manager;
@@ -20,11 +20,13 @@ public class ViewAndReplyEnquiriesService extends AbstractMenu {
     @Override
     public void display() {
         System.out.println("\n=== View/Reply to Enquiries ===");
-        System.out.println("Your Managed Projects:");
-        for (BTOProject proj : manager.getManagedProjects()){
-            System.out.println(proj.toStringForManagerOfficer());
+        List<BTOProject> projects = manager.getManagedProjects();
+        if(projects.isEmpty()){
+            System.out.println("You have no projects to manage.");
+        } else {
+            System.out.println(manager.displayManagedProject());
         }
-        System.out.println("Enter project ID to view its enquiries (or 'b' to go back): ");
+        System.out.println("Enter project ID to edit/delete or 'b' to go back:");
     }
     
     @Override
@@ -62,7 +64,7 @@ public class ViewAndReplyEnquiriesService extends AbstractMenu {
             return;
         }
         String reply = Prompt.prompt("Enter your reply: ");
-        enquiryController.editEnquiry(eid, reply);
+        enquiryController.replyEnquiry(eid, reply);
         System.out.println("Reply submitted.");
         String back = Prompt.prompt("Type 'b' to go back: ");
         if(back.equalsIgnoreCase("b")){

@@ -3,7 +3,7 @@ package system.service.officer;
 import java.util.List;
 import model.Application;
 import model.BTOProject;
-import model.HDBOfficer;
+import model.user.HDBOfficer;
 import repository.ApplicationRepository;
 import ui.AbstractMenu;
 import ui.Prompt;

@@ -2,9 +2,10 @@ package repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.Applicant;
-import model.HDBManager;
-import model.HDBOfficer; 
+
+import model.user.Applicant;
+import model.user.HDBManager;
+import model.user.HDBOfficer;
 import utils.FileUtils;
 
 public class UserRepository { 

@@ -1,14 +1,14 @@
 package system.service.manager;
 
-import ui.AbstractMenu;
-import ui.Prompt;
 import java.util.ArrayList;
 import java.util.List;
 import model.Application;
 import model.BTOProject;
 import model.Report;
-import model.HDBManager;
+import model.user.HDBManager;
 import repository.ApplicationRepository;
+import ui.AbstractMenu;
+import ui.Prompt;
 
 public class GenerateReportService extends AbstractMenu {
     private HDBManager manager;
@@ -26,11 +26,10 @@ public class GenerateReportService extends AbstractMenu {
         if(managed.isEmpty()){
             System.out.println("You have no managed projects.");
         } else {
-            for (int i = 0; i < managed.size(); i++){
-                System.out.println((i+1) + ". " + managed.get(i).toStringForManagerOfficer());
-            }
+            System.out.println(manager.displayManagedProject());
+
         }
-        System.out.println("Enter project number to generate report (or 'b' to go back): ");
+        System.out.println("Enter project ID to generate report (or 'b' to go back): ");
     }
     
     @Override
@@ -40,19 +39,25 @@ public class GenerateReportService extends AbstractMenu {
             exit();
             return;
         }
-        int choice;
+        int projectId;
         try {
-            choice = Integer.parseInt(input);
+            projectId = Integer.parseInt(input);
         } catch(NumberFormatException e) {
             System.out.println("Invalid input.");
             return;
         }
         List<BTOProject> managed = manager.getManagedProjects();
-        if(choice < 1 || choice > managed.size()){
-            System.out.println("Invalid selection.");
+        BTOProject selectedProj = null;
+        for (BTOProject project : managed) {
+            if (project.getProjectId() == projectId) {
+                selectedProj = project;
+                break;
+            }
+        }
+        if (selectedProj == null) {
+            System.out.println("Invalid project ID.");
             return;
         }
-        BTOProject selectedProj = managed.get(choice - 1);
         List<Application> bookedApps = new ArrayList<>();
         for(Application app : applicationRepository.getApplications()){
             if(app.getProject().getProjectId() == selectedProj.getProjectId() &&

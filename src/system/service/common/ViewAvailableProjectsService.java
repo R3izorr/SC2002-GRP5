@@ -2,22 +2,18 @@ package system.service.common;
 
 import java.util.List;
 import model.BTOProject;
-import repository.ProjectRepository;
+import ui.AbstractViewProjectsMenu;
 import utils.FilterSettings;
 
-public class ViewAvailableProjectsService extends AbstractProjectViewService {
-    private ProjectRepository projectRepository;
+public class ViewAvailableProjectsService extends AbstractViewProjectsMenu {
     
-    public ViewAvailableProjectsService(ProjectRepository projectRepository, FilterSettings filterSettings) {
-        super(filterSettings);
-        this.projectRepository = projectRepository;
+    public ViewAvailableProjectsService(List<BTOProject> projects, FilterSettings filterSettings) {
+        super(projects, filterSettings);
     }
     
     @Override
-    protected List<BTOProject> getBaseProjects() {
-        // For applicants, only return projects that are visible.
-        List<BTOProject> all = projectRepository.getProjects();
-        all.removeIf(proj -> !proj.isVisible());
-        return all;
+    protected String getProjectString(BTOProject proj) {
+        return proj.toStringForApplicant();
     }
+
 }

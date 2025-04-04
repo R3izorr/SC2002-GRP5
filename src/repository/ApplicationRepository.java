@@ -1,7 +1,8 @@
 package repository;
 
-import model.Application; 
-import model.Applicant;
+import model.Application;
+import model.user.Applicant;
+
 import java.util.ArrayList;
 import java.util.List;
 

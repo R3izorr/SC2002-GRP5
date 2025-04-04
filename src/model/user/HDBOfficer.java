@@ -1,7 +1,9 @@
-package model;
+package model.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import model.Application;
+import model.BTOProject;
 
 public class HDBOfficer extends Applicant {
     // List of projects for which registration is approved.
@@ -47,7 +49,7 @@ public class HDBOfficer extends Applicant {
     }
     
     // Overlap exists if proj1's application period overlaps with proj2's.
-    private boolean isOverlap(BTOProject proj1, BTOProject proj2) {
+    public boolean isOverlap(BTOProject proj1, BTOProject proj2) {
         return !proj1.getApplicationClose().before(proj2.getApplicationOpen()) &&
                !proj2.getApplicationClose().before(proj1.getApplicationOpen());
     }

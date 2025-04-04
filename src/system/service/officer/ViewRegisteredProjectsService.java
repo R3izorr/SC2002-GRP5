@@ -2,21 +2,17 @@ package system.service.officer;
 
 import java.util.List;
 import model.BTOProject;
-import model.HDBOfficer;
-import system.service.common.AbstractProjectViewService;
+import ui.AbstractViewProjectsMenu;
 import utils.FilterSettings;
 
-public class ViewRegisteredProjectsService extends AbstractProjectViewService {
-    private HDBOfficer officer;
-    
-    public ViewRegisteredProjectsService(HDBOfficer officer, FilterSettings filterSettings) {
-        super(filterSettings);
-        this.officer = officer;
+public class ViewRegisteredProjectsService extends AbstractViewProjectsMenu { 
+
+    public ViewRegisteredProjectsService(List<BTOProject> projects, FilterSettings filterSettings) {
+       super(projects, filterSettings) ;
     }
     
     @Override
-    protected List<BTOProject> getBaseProjects() {
-        // Return the list of projects the officer is approved for.
-        return officer.getAssignedProjects();
+    protected String getProjectString(BTOProject proj) {
+        return proj.toStringForManagerOfficer();
     }
 }

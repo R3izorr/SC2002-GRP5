@@ -6,14 +6,15 @@ import java.util.ArrayList;
 import java.util.Date; 
 import java.util.List;
 import model.BTOProject;
-import model.HDBManager;
-import model.HDBOfficer;
+import model.user.HDBManager;
+import model.user.HDBOfficer;
 import utils.FileUtils;
 
 public class ProjectRepository {
     private List<BTOProject> projects; 
     private SimpleDateFormat dateFormat;
     private String projectFilePath;
+    
     public ProjectRepository(String projectFilePath) {
         projects = new ArrayList<>();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // adjust if needed
@@ -100,8 +101,6 @@ public class ProjectRepository {
         }
         FileUtils.writeCSV(projectFilePath, data);
     }
-
-
     
     public List<BTOProject> getProjects() {
         return projects;
