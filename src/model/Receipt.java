@@ -55,14 +55,14 @@ public class Receipt {
         return "========================================\n" +
                "              RECEIPT                   \n" +
                "========================================\n" +
-               "| Applicant NRIC   : " + applicantNric + "             |\n" +
-               "| Applicant Name   : " + applicantName + "             |\n" +
-               "| Age              : " + age + "                       |\n" +
-               "| Marital Status   : " + maritalStatus + "             |\n" +
-               "| Flat Type Booked : " + flatType + "                  |\n" +
-               "| Price            : " + flatTypePrice + "             |\n" +
-               "| Project ID       : " + projectId + "                 |\n" +
-               "| Project Name     : " + projectName + "               |\n" +
+               "| Applicant NRIC   : " + applicantNric + "\n" +
+               "| Applicant Name   : " + applicantName + "\n" +
+               "| Age              : " + age +           "\n" +  
+               "| Marital Status   : " + maritalStatus + "\n" +
+               "| Flat Type Booked : " + flatType +       "\n" +
+               "| Price            : " + flatTypePrice +  "\n" +	
+               "| Project ID       : " + projectId +    "\n" +
+               "| Project Name     : " + projectName +  "\n" +
                "========================================\n";
     }
 }
