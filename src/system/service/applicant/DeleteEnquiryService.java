@@ -14,17 +14,28 @@ public class DeleteEnquiryService extends AbstractMenu {
     @Override
     public void display() {
         System.out.println("\n=== Delete Enquiry ===");
+        if (enquiryController.getEnquiries().isEmpty()) {
+            System.out.println("No enquiries found.");
+        }
+        else {
+            System.out.println("Your enquiries:");
+            enquiryController.getEnquiries().forEach(e -> System.out.println(e.toString()));
+        }
     }
     
     @Override
     public void handleInput() {
-        int enquiryId = Prompt.promptInt("Enter enquiry ID to delete: ");
-        enquiryController.deleteEnquiry(enquiryId);
-        System.out.println("Enquiry deleted successfully.");
-        System.out.println("Type 'b' to go back.");
-        String input = Prompt.prompt("");
-        if(input.equalsIgnoreCase("b")){
+        String input = Prompt.prompt("Enter enquiry ID to delete or 'b' to back: ");
+        if (input.equalsIgnoreCase("b")) {
             exit();
+            return;
+        }
+        try {
+            int enquiryId = Integer.parseInt(input);
+            enquiryController.deleteEnquiry(enquiryId);
+            System.out.println("Enquiry deleted successfully.");
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid enquiry ID or 'b' to go back.");
         }
     }
 }

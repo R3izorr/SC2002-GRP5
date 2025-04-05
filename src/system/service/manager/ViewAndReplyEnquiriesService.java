@@ -26,7 +26,7 @@ public class ViewAndReplyEnquiriesService extends AbstractMenu {
         } else {
             System.out.println(manager.displayManagedProject());
         }
-        System.out.println("Enter project ID to edit/delete or 'b' to go back:");
+        System.out.println("Enter project ID to view Enquiry or 'b' to go back:");
     }
     
     @Override
