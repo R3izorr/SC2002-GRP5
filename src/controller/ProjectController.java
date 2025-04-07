@@ -25,6 +25,11 @@ public class ProjectController {
                 .toList();
     }
     
+    
+    public BTOProject getProjectById(int projectId) {
+        return projectRepository.getProjectById(projectId);
+    }
+
     // Apply for a project with a chosen flat type.
     public boolean applyForProject(int projectId, String flatType) {
         if(currentApplicant.getApplication() != null && 
@@ -56,43 +61,7 @@ public class ProjectController {
         return false;
     }
     
-    // Retrieve the applicant's current application.
-    public Application getApplication() {
-        return currentApplicant.getApplication();
-    }
-    
-    // Allow withdrawal if not yet BOOKED.
-    public boolean withdrawApplication() {
-        Application app = currentApplicant.getApplication();
-        if(app == null) {
-            System.out.println("No application to withdraw.");
-            return false;
-        }
-        if(app.getStatus() == Application.Status.BOOKED) {
-            System.out.println("Cannot withdraw after flat booking.");
-            return false;
-        }
-        app.setStatus(Application.Status.WITHDRAWN);
-        System.out.println("Application withdrawn.");
-        return true;
-    }
-    
-    // Request flat booking if the application status is SUCCESSFUL.
-    public boolean requestBooking() {
-        Application app = currentApplicant.getApplication();
-        if(app == null) {
-            System.out.println("No application found.");
-            return false;
-        }
-        if(app.getStatus() != Application.Status.SUCCESSFUL) {
-            System.out.println("Your application is not in a state that requires booking a flat.");
-            return false;
-        }
-        app.setStatus(Application.Status.BOOKING);
-        System.out.println("Require for Booking is completed. Your application status is now BOOKING.");
-        return true;
-    }
-    
+    // Overloaded method to allow HDBOfficer to apply for a project.
     public boolean applyForProject(int projectId, String flatType, HDBOfficer officer) {
         // Check if the project ID is valid and if the project is visible.
         BTOProject project = projectRepository.getProjectById(projectId);
@@ -132,6 +101,43 @@ public class ProjectController {
             return true;
         }
         return false;
+    }
+
+    // Retrieve the applicant's current application.
+    public Application getApplication() {
+        return currentApplicant.getApplication();
+    }
+    
+    // Allow withdrawal if not yet BOOKED.
+    public boolean withdrawApplication() {
+        Application app = currentApplicant.getApplication();
+        if(app == null) {
+            System.out.println("No application to withdraw.");
+            return false;
+        }
+        if(app.getStatus() == Application.Status.BOOKED) {
+            System.out.println("Cannot withdraw after flat booking.");
+            return false;
+        }
+        app.setStatus(Application.Status.WITHDRAWN);
+        System.out.println("Application withdrawn.");
+        return true;
+    }
+    
+    // Request flat booking if the application status is SUCCESSFUL.
+    public boolean requestBooking() {
+        Application app = currentApplicant.getApplication();
+        if(app == null) {
+            System.out.println("No application found.");
+            return false;
+        }
+        if(app.getStatus() != Application.Status.SUCCESSFUL) {
+            System.out.println("Your application is not in a state that requires booking a flat.");
+            return false;
+        }
+        app.setStatus(Application.Status.BOOKING);
+        System.out.println("Require for Booking is completed. Your application status is now BOOKING.");
+        return true;
     }
 
 }

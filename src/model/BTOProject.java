@@ -166,7 +166,7 @@ public class BTOProject {
         }
         
     // For Manager/Officer: full details
-    public String toStringForManagerOfficer() {
+    public String toStringForManager() {
         return 
                " Project ID: " + projectId + "\n" +
                " Project Name: " + projectName + "\n" +
@@ -184,8 +184,25 @@ public class BTOProject {
                "========================================";
         }
         
+    public String toStringforOfficer() {
+        return 
+            " Project ID: " + projectId + "\n" +
+            " Project Name: " + projectName + "\n" +
+            " Neighborhood: " + neighborhood + "\n" +
+            " 2-Room Units: " + units2Room + "\n" +
+            " 3-Room Units: " + units3Room + "\n" +
+            " 2-Room Price: $" + sellingPrice2Room + "\n" +
+            " 3-Room Price: $" + sellingPrice3Room + "\n" +
+            " Application Open: " + dateFormat.format(applicationOpen) + "\n" +	
+            " Application Close: " + dateFormat.format(applicationClose) + "\n" +
+            " Remaining Officer Slots: " + officerSlots + "\n" +
+            " Officers List: " + this.getOfficerName() + "\n" +
+            "========================================";
+
+    }
+
     @Override
     public String toString() {
-        return toStringForManagerOfficer();
+        return toStringForManager();
     }
 }

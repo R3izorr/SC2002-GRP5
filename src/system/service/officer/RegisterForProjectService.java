@@ -1,26 +1,26 @@
 package system.service.officer;
 
+import controller.ProjectController;
 import model.BTOProject;
 import model.user.HDBOfficer;
-import repository.ProjectRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class RegisterForProjectService extends AbstractMenu {
     private HDBOfficer officer;
-    private ProjectRepository projectRepository;
+    private ProjectController projectController;
     
-    public RegisterForProjectService(HDBOfficer officer, ProjectRepository projectRepository) {
+    public RegisterForProjectService(HDBOfficer officer, ProjectController projectController) {
         this.officer = officer;
-        this.projectRepository = projectRepository;
+        this.projectController = projectController;
     }
     
     @Override
     public void display() {
         System.out.println("\n=== Register for a New Project ===");
         // Display all projects (Manager/Officer view)
-        for(BTOProject proj : projectRepository.getProjects()) {
-            System.out.println(proj.toStringForManagerOfficer());
+        for(BTOProject proj : projectController.getVisibleProjects()) {
+            System.out.println(proj.toStringforOfficer());
         }
     }
     
@@ -38,7 +38,7 @@ public class RegisterForProjectService extends AbstractMenu {
             System.out.println("Invalid project ID.");
             return;
         }
-        BTOProject selected = projectRepository.getProjectById(projId);
+        BTOProject selected = projectController.getProjectById(projId);
         if(selected == null) {
             System.out.println("Project not found.");
             return;
@@ -70,7 +70,7 @@ public class RegisterForProjectService extends AbstractMenu {
         
         // Add registration to pending registrations.
         officer.getPendingRegistrations().add(selected);
-        System.out.println("Registration submitted for project '" + selected.getProjectName() + "'. Awaiting manager approval.");
+        System.out.println("Registration submitted for project " + selected.getProjectName() + "(ID: " + selected.getProjectId() + ")" + ". Awaiting manager approval.");
         String back = Prompt.prompt("Type 'b' to go back: ");
         if(back.equalsIgnoreCase("b")){
             exit();

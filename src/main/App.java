@@ -2,7 +2,6 @@ package main;
 
 import controller.UserController;
 import java.util.Scanner;
-
 import model.user.Applicant;
 import model.user.HDBManager;
 import model.user.HDBOfficer;
@@ -52,8 +51,11 @@ public class App {
                 HDBOfficer officer = (HDBOfficer) loggedInUser;
                 controller.ProjectController projectController =
                         new controller.ProjectController(projectRepository, applicationRepository, officer);
+                
+                controller.EnquiryController enquiryController = new controller.EnquiryController(projectRepository);
+
                 HDBOfficerDashBoard officerDashBoard =
-                        new HDBOfficerDashBoard(officer, userController, projectRepository, applicationRepository, projectController);
+                        new HDBOfficerDashBoard(officer, userController, projectRepository, applicationRepository, projectController, enquiryController);
                 officerDashBoard.run();
             } else if(loggedInUser.getRole().equals("HDBManager")) {
                 HDBManager manager = (HDBManager) loggedInUser;

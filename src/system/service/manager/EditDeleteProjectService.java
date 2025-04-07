@@ -29,12 +29,11 @@ public class EditDeleteProjectService extends AbstractMenu {
             System.out.println(manager.displayManagedProject());
 
         }
-        System.out.println("Enter project ID to edit/delete or 'b' to go back:");
     }
     
     @Override
     public void handleInput() {
-        String input = Prompt.prompt("Your choice: ");
+        String input = Prompt.prompt("Enter project ID to edit/delete or 'b' to go back: ");
         if(input.equalsIgnoreCase("b")){
             exit();
             return;
@@ -122,6 +121,7 @@ public class EditDeleteProjectService extends AbstractMenu {
             }
             projectRepository.getProjects().remove(selected);
             System.out.println("Project deleted.");
+            projectRepository.saveProjects();
         } else {
             System.out.println("Invalid action.");
         }

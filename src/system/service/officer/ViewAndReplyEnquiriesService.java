@@ -5,19 +5,16 @@ import java.util.List;
 import model.BTOProject;
 import model.Enquiry;
 import model.user.HDBOfficer;
-import repository.ProjectRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class ViewAndReplyEnquiriesService extends AbstractMenu {
     private HDBOfficer officer;
     private EnquiryController enquiryController;
-    private ProjectRepository projectRepository;
     
-    public ViewAndReplyEnquiriesService(HDBOfficer officer, EnquiryController enquiryController, ProjectRepository projectRepository) {
+    public ViewAndReplyEnquiriesService(HDBOfficer officer, EnquiryController enquiryController) {
         this.officer = officer;
         this.enquiryController = enquiryController;
-        this.projectRepository = projectRepository;
     }
     
     @Override

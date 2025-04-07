@@ -3,17 +3,14 @@ package system.service.manager;
 import java.util.List;
 import model.BTOProject;
 import model.user.HDBManager;
-import repository.ProjectRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class ToggleProjectVisibilityService extends AbstractMenu {
     private HDBManager manager;
-    private ProjectRepository projectRepository;
     
-    public ToggleProjectVisibilityService(HDBManager manager, ProjectRepository projectRepository) {
+    public ToggleProjectVisibilityService(HDBManager manager) {
         this.manager = manager;
-        this.projectRepository = projectRepository;
     }
     
     @Override

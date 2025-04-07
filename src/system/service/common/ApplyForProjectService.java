@@ -30,7 +30,12 @@ public class ApplyForProjectService extends AbstractMenu {
 
     @Override
     public void handleInput() {
-        int projId = Prompt.promptInt("Enter project ID to apply for: ");
+        String projIdInput = Prompt.prompt("Enter project ID to apply for or type 'b' to go back: ");
+        if (projIdInput.equalsIgnoreCase("b")) {
+            exit();
+            return;
+        }
+        int projId = Integer.parseInt(projIdInput);
         String flatType = Prompt.prompt("Enter flat type (2-Room/3-Room): ");
         boolean applied;
         // If the applicant is an HDBOfficer, use the officer-specific method.

@@ -13,7 +13,7 @@ public class ViewAllProjectsService extends AbstractViewProjectsMenu {
     
     @Override
     protected String getProjectString(BTOProject proj) {
-        return proj.toStringForManagerOfficer(); // Assuming this method provides the desired string representation for managers
+        return proj.toStringForManager(); // Assuming this method provides the desired string representation for managers
     }
 }
 

@@ -12,6 +12,6 @@ public class ViewAssignedProjectsService extends AbstractViewProjectsMenu {
     
     @Override
     protected String getProjectString(BTOProject proj) {
-        return proj.toStringForManagerOfficer();
+        return proj.toStringForManager();
     }
 }
