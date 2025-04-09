@@ -2,7 +2,6 @@ package repository;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import model.user.Applicant;
 import model.user.HDBManager;
 import model.user.HDBOfficer;
@@ -15,6 +14,7 @@ public class UserRepository {
     private String applicantFilePath;
     private String officerFilePath;
     private String managerFilePath;
+    
     public UserRepository(String applicantFilePath, String officerFilePath, String managerFilePath) {
         this.applicantFilePath = applicantFilePath;
         this.officerFilePath = officerFilePath;
@@ -25,8 +25,14 @@ public class UserRepository {
 
     }
     
-    public void loadApplicants(String filePath) {
-        List<String[]> lines = FileUtils.readCSV(filePath);
+    public void loadUsers() {
+        loadApplicants();
+        loadOfficers();
+        loadManagers();
+    }
+
+    public void loadApplicants() {
+        List<String[]> lines = FileUtils.readCSV(applicantFilePath);
         for (String[] tokens : lines) {
             String name = tokens[0];
             String nric = tokens[1];
@@ -38,8 +44,8 @@ public class UserRepository {
         }
     }
     
-    public void loadOfficers(String filePath) {
-        List<String[]> lines = FileUtils.readCSV(filePath);
+    public void loadOfficers() {
+        List<String[]> lines = FileUtils.readCSV(officerFilePath);
         for (String[] tokens : lines) {
             String name = tokens[0];
             String nric = tokens[1];
@@ -51,8 +57,8 @@ public class UserRepository {
         }
     }
     
-    public void loadManagers(String filePath) {
-        List<String[]> lines = FileUtils.readCSV(filePath);
+    public void loadManagers() {
+        List<String[]> lines = FileUtils.readCSV(managerFilePath);
         for (String[] tokens : lines) {
             String name = tokens[0];
             String nric = tokens[1];

@@ -17,15 +17,18 @@ public class App {
         // Initialize repositories and load CSV files
         UserRepository userRepository = new UserRepository("data/ApplicantList.csv", "data/OfficerList.csv", "data/ManagerList.csv");
 
-        userRepository.loadOfficers("data/OfficerList.csv");
-        userRepository.loadManagers("data/ManagerList.csv");
-        userRepository.loadApplicants("data/ApplicantList.csv");
+        // Load users from CSV files
+        userRepository.loadUsers();
         
+        // Load projects from CSV files
         ProjectRepository projectRepository = new ProjectRepository("data/ProjectList.csv");
-        projectRepository.loadProjects("data\\ProjectList.csv", userRepository.getManagers(), userRepository.getOfficers());
+        projectRepository.loadProjects(userRepository.getManagers(), userRepository.getOfficers());
         
-        ApplicationRepository applicationRepository = new ApplicationRepository();
+        // Load applications from CSV files
+        ApplicationRepository applicationRepository = new ApplicationRepository("data\\ApplicationList.csv");
+        applicationRepository.loadApplications(userRepository.getApplicants(), userRepository.getOfficers(), projectRepository.getProjects());
         
+        // Initialize controllers and boundaries
         UserController userController = new UserController(userRepository);
         boundary.LoginBoundary loginBoundary = new boundary.LoginBoundary(userController);
         Scanner scanner = new Scanner(System.in);

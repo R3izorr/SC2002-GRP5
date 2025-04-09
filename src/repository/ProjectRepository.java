@@ -21,8 +21,8 @@ public class ProjectRepository {
         this.projectFilePath = projectFilePath;
     }
     
-    public void loadProjects(String filePath, List<HDBManager> managers, List<HDBOfficer> officers) {
-        List<String[]> lines = FileUtils.readCSV(filePath);
+    public void loadProjects(List<HDBManager> managers, List<HDBOfficer> officers) {
+        List<String[]> lines = FileUtils.readCSV(this.projectFilePath);
         for (String[] tokens : lines) {
             if (tokens.length < 13) {
                 continue; // Skip this line if it doesn't have enough tokens

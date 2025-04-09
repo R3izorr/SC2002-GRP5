@@ -26,8 +26,8 @@ public class GenerateReportService extends AbstractMenu {
         if(managed.isEmpty()){
             System.out.println("You have no managed projects.");
         } else {
+            // Display managed projects using manager's display method.
             System.out.println(manager.displayManagedProject());
-
         }
         System.out.println("Enter project ID to generate report (or 'b' to go back): ");
     }
@@ -68,8 +68,36 @@ public class GenerateReportService extends AbstractMenu {
         if(bookedApps.isEmpty()){
             System.out.println("No booked applications found for this project.");
         } else {
-            Report report = new Report(bookedApps);
-            System.out.println(report.toString());
+            // Ask if manager wants to apply a filter.
+            String applyFilter = Prompt.prompt("Would you like to apply a filter? (Y/N): ");
+            if(applyFilter.equalsIgnoreCase("Y")) {
+                System.out.println("Select filter option:");
+                System.out.println("1. Filter by Marital Status");
+                System.out.println("2. Filter by Flat Type");
+                System.out.println("3. Filter by both Marital Status and Flat Type");
+                int filterOption = Integer.parseInt(Prompt.prompt("Enter option: "));
+                if(filterOption == 1) {
+                    String status = Prompt.prompt("Enter Marital Status to filter by (e.g., Married, Single): ");
+                    bookedApps.removeIf(app -> !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status));
+                } else if(filterOption == 2) {
+                    String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
+                    bookedApps.removeIf(app -> !app.getFlatType().equalsIgnoreCase(flatType));
+                } else if(filterOption == 3) {
+                    String status = Prompt.prompt("Enter Marital Status to filter by: ");
+                    String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
+                    bookedApps.removeIf(app -> 
+                        !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status) ||
+                        !app.getFlatType().equalsIgnoreCase(flatType));
+                } else {
+                    System.out.println("Invalid filter option; no filter applied.");
+                }
+            }
+            if(bookedApps.isEmpty()){
+                System.out.println("No booked applications found after applying the filter.");
+            } else {
+                Report report = new Report(bookedApps);
+                System.out.println(report.toString());
+            }
         }
         String back = Prompt.prompt("Type 'b' to go back: ");
         if(back.equalsIgnoreCase("b")){

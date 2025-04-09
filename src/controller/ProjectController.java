@@ -53,9 +53,10 @@ public class ProjectController {
         // If an application exists and its status is not UNSUCCESSFUL or WITHDRAWN, do not allow re-application.
         // Enforce eligibility rules.
         if(currentApplicant.CheckEligiblity(currentApplicant, project, flatType)) {
-            Application application = new Application(currentApplicant, project, flatType);
+            Application application = new Application(currentApplicant, project, flatType, Application.Status.PENDING);
             currentApplicant.setApplication(application);
             applicationRepository.addApplication(application);
+            applicationRepository.saveApplications();
             return true;
         }
         return false;
@@ -95,9 +96,10 @@ public class ProjectController {
         }
         // Eligibility rules for officer as applicant (you may adjust as needed)
         if(currentApplicant.CheckEligiblity(currentApplicant, project, flatType)) {
-            Application application = new Application(currentApplicant, project, flatType);
+            Application application = new Application(currentApplicant, project, flatType, Application.Status.PENDING);
             currentApplicant.setApplication(application);
             applicationRepository.addApplication(application);
+            applicationRepository.saveApplications();
             return true;
         }
         return false;
@@ -116,10 +118,11 @@ public class ProjectController {
             return false;
         }
         if(app.getStatus() == Application.Status.BOOKED) {
-            System.out.println("Cannot withdraw after flat booking.");
+            System.out.println("Cannot withdraw after having booked a flat.");
             return false;
         }
         app.setStatus(Application.Status.WITHDRAWN);
+        applicationRepository.saveApplications();
         System.out.println("Application withdrawn.");
         return true;
     }
@@ -136,6 +139,7 @@ public class ProjectController {
             return false;
         }
         app.setStatus(Application.Status.BOOKING);
+        applicationRepository.saveApplications();
         System.out.println("Require for Booking is completed. Your application status is now BOOKING.");
         return true;
     }

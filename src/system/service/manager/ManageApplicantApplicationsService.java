@@ -78,6 +78,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
                 if(selectedApp.getProject().getUnits2Room() > 0){
                     selectedApp.setStatus(Application.Status.SUCCESSFUL);
                     System.out.println("Application approved (SUCCESSFUL).");
+                    applicationRepository.saveApplications();
                 } else {
                     System.out.println("Insufficient 2-Room units. Cannot approve.");
                 }
@@ -85,6 +86,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
                 if(selectedApp.getProject().getUnits3Room() > 0){
                     selectedApp.setStatus(Application.Status.SUCCESSFUL);
                     System.out.println("Application approved (SUCCESSFUL).");
+                    applicationRepository.saveApplications();
                 } else {
                     System.out.println("Insufficient 3-Room units. Cannot approve.");
                 }

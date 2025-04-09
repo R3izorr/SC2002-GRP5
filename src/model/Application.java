@@ -8,13 +8,13 @@ public class Application {
     }
     private Applicant applicant;
     private BTOProject project;
-    private Status status;
+    private Status status; // Default status is PENDING
     private String flatType; // e.g., "2-Room" or "3-Room"
 
-    public Application(Applicant applicant, BTOProject project, String flatType) {
+    public Application(Applicant applicant, BTOProject project, String flatType, Status status) {
         this.applicant = applicant;
         this.project = project;
-        this.status = Status.PENDING;
+        this.status = status;
         this.flatType = flatType;
     }
 

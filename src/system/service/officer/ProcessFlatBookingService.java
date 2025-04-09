@@ -84,6 +84,7 @@ public class ProcessFlatBookingService extends AbstractMenu {
             System.out.println("Flat booking processed for applicant " 
                 + targetApp.getApplicant().getNric() + ". Application status updated to BOOKED.");
             }
+            applicationRepository.saveApplications();
             String back = Prompt.prompt("Type 'b' to go back: ");
             if (back.equalsIgnoreCase("b")) {
             exit();
