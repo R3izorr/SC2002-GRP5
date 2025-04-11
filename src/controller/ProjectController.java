@@ -52,7 +52,7 @@ public class ProjectController {
         }
         // If an application exists and its status is not UNSUCCESSFUL or WITHDRAWN, do not allow re-application.
         // Enforce eligibility rules.
-        if(currentApplicant.CheckEligiblity(currentApplicant, project, flatType)) {
+        if(currentApplicant.CheckEligiblity(project, flatType)) {
             Application application = new Application(currentApplicant, project, flatType, Application.Status.PENDING);
             currentApplicant.setApplication(application);
             applicationRepository.addApplication(application);
@@ -95,7 +95,7 @@ public class ProjectController {
             }
         }
         // Eligibility rules for officer as applicant (you may adjust as needed)
-        if(currentApplicant.CheckEligiblity(currentApplicant, project, flatType)) {
+        if(currentApplicant.CheckEligiblity(project, flatType)) {
             Application application = new Application(currentApplicant, project, flatType, Application.Status.PENDING);
             currentApplicant.setApplication(application);
             applicationRepository.addApplication(application);

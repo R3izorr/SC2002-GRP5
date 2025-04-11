@@ -21,10 +21,19 @@ public class ChangePasswordService extends AbstractMenu {
     
     @Override
     public void handleInput() {
-        String newPassword = Prompt.prompt("Enter new password: ");
-        userController.changePassword(user, newPassword);
-        System.out.println("Password changed successfully. Please re-login!.");
-        System.out.println("Logging out...");
-        exit();
+        String option = Prompt.prompt("Enter 's' to set a new password or 'b' to cancel: ");
+        if (option.equals("b")) {
+            exit();
+        } else if (option.equals("s")) {
+            String newPassword = Prompt.prompt("Enter new password: ");
+            userController.changePassword(user, newPassword);
+            System.out.println("Password changed successfully. Please re-login!.");
+            System.out.println("Logging out...");
+            exit();
+        } else {
+            System.out.println("Invalid input. Please try again.");
+            return;
+        }
     }
+
 }

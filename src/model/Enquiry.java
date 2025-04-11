@@ -55,7 +55,7 @@ public class Enquiry {
     @Override
     public String toString() {
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
-        return "Enquiry ID: " + enquiryId + " | Applicant: " + applicant.getNric() +
+        return "Enquiry ID: " + enquiryId + "For Project: " + project.getProjectName() + "(ID:" + project.getProjectId() + ")" +  "| Applicant: " + applicant.getNric() +
             " | Message: " + message + " | Date: " + dateFormat.format(date) + 
             (reply.isEmpty() ? "" : " | Reply: " + reply);
     }

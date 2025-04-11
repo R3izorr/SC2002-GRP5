@@ -53,7 +53,7 @@ public class Receipt {
     @Override
     public String toString() {
         return "========================================\n" +
-               "              RECEIPT                   \n" +
+               "                  RECEIPT               \n" +
                "========================================\n" +
                "| Applicant NRIC   : " + applicantNric + "\n" +
                "| Applicant Name   : " + applicantName + "\n" +

@@ -131,6 +131,7 @@ public class BTOProject {
     public void setSellingPrice3Room(float sellingPrice3Room) {
         this.sellingPrice3Room = sellingPrice3Room;
     }
+    
     public List<HDBOfficer> getOfficers() {
         return officers;
     }
@@ -151,19 +152,29 @@ public class BTOProject {
         return officers.isEmpty() ? "None" : officers.stream().map(HDBOfficer::getName).reduce((a, b) -> a + ", " + b).orElse("None");
     }
     
-    public String toStringForApplicant() {
-        return 
-               " Project ID: " + projectId + "\n" +
-               " Project Name: " + projectName + "\n" +
-               " Neighborhood: " + neighborhood + "\n" +
-               " 2-Room Units: " + units2Room + "\n" +
-               " 3-Room Units: " + units3Room + "\n" +
-               " 2-Room Price: $" + sellingPrice2Room + "\n" +
-               " 3-Room Price: $" + sellingPrice3Room + "\n" +
-               " Application Open: " + dateFormat.format(applicationOpen) + "\n" +
-               " Application Close: " + dateFormat.format(applicationClose) + "\n" +
-               "----------------------------------------";
+    public String toStringForApplicant(boolean isSingle) {
+        if(isSingle){
+            return "Project ID: " + projectId + "\n" +
+                   "Project Name: " + projectName + "\n" +
+                   "Neighborhood: " + neighborhood + "\n" +
+                   "2-Room Units: " + units2Room + "\n" +
+                   "2-Room Price: $" + sellingPrice2Room + "\n" +
+                   "Application Open: " + dateFormat.format(applicationOpen) + "\n" +
+                   "Application Close: " + dateFormat.format(applicationClose) + "\n" +
+                   "----------------------------------------";
+        } else {
+            return "Project ID: " + projectId + "\n" +
+                   "Project Name: " + projectName + "\n" +
+                   "Neighborhood: " + neighborhood + "\n" +
+                   "2-Room Units: " + units2Room + "\n" +
+                   "3-Room Units: " + units3Room + "\n" +
+                   "2-Room Price: $" + sellingPrice2Room + "\n" +
+                   "3-Room Price: $" + sellingPrice3Room + "\n" +
+                   "Application Open: " + dateFormat.format(applicationOpen) + "\n" +
+                   "Application Close: " + dateFormat.format(applicationClose) + "\n" +
+                   "----------------------------------------";
         }
+    }
         
     // For Manager/Officer: full details
     public String toStringForManager() {
@@ -189,10 +200,6 @@ public class BTOProject {
             " Project ID: " + projectId + "\n" +
             " Project Name: " + projectName + "\n" +
             " Neighborhood: " + neighborhood + "\n" +
-            " 2-Room Units: " + units2Room + "\n" +
-            " 3-Room Units: " + units3Room + "\n" +
-            " 2-Room Price: $" + sellingPrice2Room + "\n" +
-            " 3-Room Price: $" + sellingPrice3Room + "\n" +
             " Application Open: " + dateFormat.format(applicationOpen) + "\n" +	
             " Application Close: " + dateFormat.format(applicationClose) + "\n" +
             " Remaining Officer Slots: " + officerSlots + "\n" +

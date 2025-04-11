@@ -23,8 +23,14 @@ public class ApplyForProjectService extends AbstractMenu {
         System.out.println("\n=== Apply for a Project ===");
         System.out.println("Available Projects:");
         List<BTOProject> projects = projectController.getVisibleProjects();
+        // When an applicant is Single, call toStringForApplicant(true)
+        boolean isSingle = applicant.getMaritalStatus().equalsIgnoreCase("Single");
         for(BTOProject project : projects) {
-            System.out.println("Project ID: " + project.getProjectId()+ " | Project Name: " + project.getProjectName() + " (Application Open: " + dateFormat.format(project.getApplicationOpen()) + ", Close: " + dateFormat.format(project.getApplicationClose()) + ")");
+            if(isSingle){
+                System.out.println("Project ID: " + project.getProjectId() + " | " + project.toStringForApplicant(true));
+            } else {
+                System.out.println("Project ID: " + project.getProjectId() + " | " + project.toStringForApplicant(false));
+            }
         }
     }
 
@@ -36,9 +42,15 @@ public class ApplyForProjectService extends AbstractMenu {
             return;
         }
         int projId = Integer.parseInt(projIdInput);
-        String flatType = Prompt.prompt("Enter flat type (2-Room/3-Room): ");
+        // For a single applicant, flat type is auto-set to "2-Room"
+        String flatType;
+        if (applicant.getMaritalStatus().equalsIgnoreCase("Single")) {
+            flatType = "2-Room";
+            System.out.println("As a single applicant, you can only apply for 2-Room flats.");
+        } else {
+            flatType = Prompt.prompt("Enter flat type (2-Room/3-Room): ");
+        }
         boolean applied;
-        // If the applicant is an HDBOfficer, use the officer-specific method.
         if (applicant instanceof HDBOfficer) {
             applied = projectController.applyForProject(projId, flatType, (HDBOfficer) applicant);
         } else {

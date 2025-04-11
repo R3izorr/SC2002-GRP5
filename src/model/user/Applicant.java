@@ -12,9 +12,9 @@ public class Applicant extends User {
         this.application = null;
     }
 
-    public boolean CheckEligiblity(Applicant currentApplicant, BTOProject project, String flatType) {
-        String applicantMaritalStatus = currentApplicant.getMaritalStatus();
-        int age = currentApplicant.getAge();
+    public boolean CheckEligiblity(BTOProject project, String flatType) {
+        String applicantMaritalStatus = this.maritalStatus;
+        int age = this.age;
         Date today = new Date();
         if (today.before(project.getApplicationOpen()) || today.after(project.getApplicationClose())) {
             System.out.println("The project is not open for application.");
@@ -41,7 +41,6 @@ public class Applicant extends User {
         }
         return true;
     }
-
 
     public Application getApplication() {
         return application;

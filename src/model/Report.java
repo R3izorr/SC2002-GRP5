@@ -20,12 +20,12 @@ public class Report {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("============================================================\n");
-        sb.append("                      BOOKING REPORT                        \n");
-        sb.append("============================================================\n");
+        sb.append("====================================================================================================\n");
+        sb.append("                                             BOOKING REPORT                                        \n");
+        sb.append("====================================================================================================\n");
         sb.append(String.format("%-15s | %-15s | %-5s | %-15s | %-10s | %-10s | %-20s\n", 
                 "Applicant NRIC", "Name", "Age", "Marital Status", "Flat Type", "Proj ID", "Project Name"));
-        sb.append("--------------------------------------------------------------------------------------------\n");
+        sb.append("----------------------------------------------------------------------------------------------------\n");
         for (Receipt r : receipts) {
             sb.append(String.format("%-15s | %-15s | %-5d | %-15s | %-10s | %-10d | %-20s\n",
                     r.getApplicantNric(),
@@ -36,7 +36,7 @@ public class Report {
                     r.getProjectId(),
                     r.getProjectName()));
         }
-        sb.append("============================================================\n");
+        sb.append("====================================================================================================\n");
         return sb.toString();
     }
 }

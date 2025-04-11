@@ -5,6 +5,7 @@ import java.util.List;
 import model.BTOProject;
 import model.user.HDBManager;
 import model.user.HDBOfficer;
+import repository.ProjectRepository;
 import repository.UserRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
@@ -12,9 +13,11 @@ import ui.Prompt;
 public class ManageOfficerRegistrationsService extends AbstractMenu {
     private HDBManager manager;
     private UserRepository userRepository;
+    private ProjectRepository projectRepository;
     
-    public ManageOfficerRegistrationsService(HDBManager manager, UserRepository userRepository) {
+    public ManageOfficerRegistrationsService(HDBManager manager, UserRepository userRepository, ProjectRepository projectRepository) {
         this.manager = manager;
+        this.projectRepository = projectRepository;
         this.userRepository = userRepository;
     }
     
@@ -78,6 +81,9 @@ public class ManageOfficerRegistrationsService extends AbstractMenu {
         if(decision.equalsIgnoreCase("A")){
             selected.officer.addAssignedProject(selected.project);
             selected.officer.getPendingRegistrations().remove(selected.project);
+            selected.project.addOfficers(selected.officer);
+            selected.project.setOfficerSlots(selected.project.getOfficerSlots() - 1);
+            projectRepository.saveProjects();
             System.out.println("Registration approved.");
         } else if(decision.equalsIgnoreCase("R")){
             selected.officer.getPendingRegistrations().remove(selected.project);
