@@ -62,7 +62,7 @@ public class CreateProjectService extends AbstractMenu {
             
             BTOProject newProject = new BTOProject(name, neighborhood, price2, units2, price3, units3,
                     openDate, closeDate, manager, slots, true);
-            projectRepository.getProjects().add(newProject);
+            projectRepository.addProject(newProject);
             manager.addManagedProject(newProject);
             System.out.println("Project created successfully.");
             projectRepository.saveProjects();

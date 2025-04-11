@@ -54,6 +54,7 @@ public class ProjectController {
         // Enforce eligibility rules.
         if(currentApplicant.CheckEligiblity(project, flatType)) {
             Application application = new Application(currentApplicant, project, flatType, Application.Status.PENDING);
+            applicationRepository.removeApplication(currentApplicant.getApplication());
             currentApplicant.setApplication(application);
             applicationRepository.addApplication(application);
             applicationRepository.saveApplications();
@@ -97,6 +98,7 @@ public class ProjectController {
         // Eligibility rules for officer as applicant (you may adjust as needed)
         if(currentApplicant.CheckEligiblity(project, flatType)) {
             Application application = new Application(currentApplicant, project, flatType, Application.Status.PENDING);
+            applicationRepository.removeApplication(currentApplicant.getApplication());
             currentApplicant.setApplication(application);
             applicationRepository.addApplication(application);
             applicationRepository.saveApplications();

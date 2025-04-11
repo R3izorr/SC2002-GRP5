@@ -55,6 +55,7 @@ public class Application {
                String.format("%-15s: %s%n", "Project ID", project.getProjectId()) +
                String.format("%-15s: %s%n", "Project Name", project.getProjectName()) +
                String.format("%-15s: %s%n", "Flat Type", flatType) +
+                String.format("%-15s: %s%n", "Flat Type Price", getFlatTypePrice()) +
                String.format("%-15s: %s%n", "Status", status) +
                "---------------------------------\n";
     }

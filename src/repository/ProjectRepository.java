@@ -102,6 +102,14 @@ public class ProjectRepository {
         FileUtils.writeCSV(projectFilePath, data);
     }
     
+    public void addProject(BTOProject project) {
+        projects.add(project);
+    }
+
+    public void removeProject(BTOProject project) {
+        projects.remove(project);
+    }
+
     public List<BTOProject> getProjects() {
         return projects;
     }

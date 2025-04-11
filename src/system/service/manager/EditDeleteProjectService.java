@@ -119,7 +119,7 @@ public class EditDeleteProjectService extends AbstractMenu {
                     }
                 }
             }
-            projectRepository.getProjects().remove(selected);
+            projectRepository.removeProject(selected);
             System.out.println("Project deleted.");
             projectRepository.saveProjects();
         } else {

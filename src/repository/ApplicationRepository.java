@@ -96,4 +96,10 @@ public class ApplicationRepository {
         }
         FileUtils.writeCSV(this.applicationFilePath, data);
     }
+
+    public void removeApplication(Application application) {
+        applications.remove(application);
+        saveApplications();
+    }
+
 }
