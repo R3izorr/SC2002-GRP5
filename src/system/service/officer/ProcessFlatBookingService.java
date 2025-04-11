@@ -44,7 +44,6 @@ public class ProcessFlatBookingService extends AbstractMenu {
             }
         } else {
             System.out.println("=== Request Booking Flat for Your Assigned Projects ===");
-            while (true) {
             for (int i = 0; i < bookingApps.size(); i++) {
                 Application app = bookingApps.get(i);
                 System.out.println((i + 1) + ". Applicant NRIC: " + app.getApplicant().getNric() +
@@ -55,11 +54,9 @@ public class ProcessFlatBookingService extends AbstractMenu {
             int choice = Prompt.promptInt("Enter the number of the application to process booking (or 0 to stop): ");
             if (choice == 0) {
                 System.out.println("Stopping booking process.");
-                break;
             }
             if (choice < 1 || choice > bookingApps.size()) {
                 System.out.println("Invalid selection.");
-                continue;
             }
             Application targetApp = bookingApps.get(choice - 1);
             String flatType = targetApp.getFlatType();
@@ -67,28 +64,26 @@ public class ProcessFlatBookingService extends AbstractMenu {
             if (flatType.equalsIgnoreCase("2-Room")) {
                 if (proj.getUnits2Room() <= 0) {
                 System.out.println("No 2-Room units available.");
-                continue;
                 }
                 proj.setUnits2Room(proj.getUnits2Room() - 1);
             } else if (flatType.equalsIgnoreCase("3-Room")) {
                 if (proj.getUnits3Room() <= 0) {
                 System.out.println("No 3-Room units available.");
-                continue;
                 }
                 proj.setUnits3Room(proj.getUnits3Room() - 1);
             } else {
                 System.out.println("Invalid flat type in application.");
-                continue;
             }
             targetApp.setStatus(Application.Status.BOOKED);
             System.out.println("Flat booking processed for applicant " 
                 + targetApp.getApplicant().getNric() + ". Application status updated to BOOKED.");
+                applicationRepository.saveApplications();
             }
             applicationRepository.saveApplications();
             String back = Prompt.prompt("Type 'b' to go back: ");
             if (back.equalsIgnoreCase("b")) {
             exit();
-            }
         }
     }
 }
+
