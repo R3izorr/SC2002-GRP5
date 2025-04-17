@@ -4,7 +4,7 @@ This Java application supports multiple user roles and provides dashboards or me
 
 ## Main Links
 - [src](https://github.com/R3izorr/SC2002-GRP5/tree/main/src)
-- [UML diagrams](https://github.com/R3izorr/SC2002-GRP5/tree/main/docs/UML%20Diagrams)
+- [report](https://github.com/R3izorr/SC2002-GRP5/tree/main/report)
 - [Documentation](#documentation)
 - [Report]
 
