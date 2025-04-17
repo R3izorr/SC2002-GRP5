@@ -6,7 +6,7 @@ This Java application supports multiple user roles and provides dashboards or me
 - [src](https://github.com/R3izorr/SC2002-GRP5/tree/main/src)
 - [report](https://github.com/R3izorr/SC2002-GRP5/tree/main/report)
 - [Documentation](#documentation)
-- [Report]
+
 
 ## Documentation
 - [JavaDoc]
