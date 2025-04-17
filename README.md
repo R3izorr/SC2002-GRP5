@@ -59,4 +59,4 @@ Report
 ---
 ## UML Diagrams
 
-This is where you can find the folder for the uml diagrams: 
+This is where you can find the folder for the uml diagrams: **[UML Diagrams](https://github.com/R3izorr/SC2002-GRP5/tree/main/docs/UML%20Diagrams)**
