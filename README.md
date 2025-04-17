@@ -2,15 +2,15 @@
 
 This Java application supports multiple user roles and provides dashboards or menus that follow a user centric pattern. Feautures include managing housing applications, including submissions, eligibility checks and more.
 
-## Table of Contents
+## Main Links
 - [src](https://github.com/R3izorr/SC2002-GRP5/tree/main/src)
 - [UML diagrams](https://github.com/R3izorr/SC2002-GRP5/tree/main/docs/UML%20Diagrams)
 - [Documentation](#documentation)
 - [Report]
 
 ## Documentation
-- JavaDoc
-- How to set up and Build the environment to run this project - A Developer’s guide
+- [JavaDoc]
+- [How to set up and Build the environment to run this project - A Developer’s guide]
 
 ---
 ## UML Diagrams
