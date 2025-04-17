@@ -3,6 +3,7 @@ package system.service.manager;
 import java.util.ArrayList;
 import java.util.List;
 import model.Application;
+import model.ApplicationStatus;
 import model.user.HDBManager;
 import repository.ApplicationRepository;
 import ui.AbstractMenu;
@@ -23,7 +24,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
         List<Application> pendingApps = new ArrayList<>();
         for (Application app : applicationRepository.getApplications()){
             if(manager.getManagedProjects().contains(app.getProject()) &&
-               app.getStatus() == Application.Status.PENDING) {
+               app.getStatus() == ApplicationStatus.PENDING) {
                 pendingApps.add(app);
             }
         }
@@ -32,7 +33,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
         } else {
             for (int i = 0; i < pendingApps.size(); i++){
                 Application app = pendingApps.get(i);
-                System.out.println((i+1) + ". Applicant NRIC: " + app.getApplicant().getNric() +
+                System.out.println((i+1) + ". Applicant Name: " + app.getApplicant().getName() +
                         " | Project: " + app.getProject().getProjectName() +
                         " | Flat Type: " + app.getFlatType());
             }
@@ -57,7 +58,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
         List<Application> pendingApps = new ArrayList<>();
         for (Application app : applicationRepository.getApplications()){
             if(manager.getManagedProjects().contains(app.getProject()) &&
-               app.getStatus() == Application.Status.PENDING) {
+               app.getStatus() == ApplicationStatus.PENDING) {
                 pendingApps.add(app);
             }
         }
@@ -66,7 +67,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
             return;
         }
         Application selectedApp = pendingApps.get(choice - 1);
-        System.out.println("Selected Application: Applicant NRIC: " + selectedApp.getApplicant().getNric() +
+        System.out.println("Selected Application: Applicant Name: " + selectedApp.getApplicant().getName() +
                 " | Project: " + selectedApp.getProject().getProjectName() +
                 " | Flat Type: " + selectedApp.getFlatType());
         String decision = Prompt.prompt("Enter A to Approve, R to Reject (or 'b' to cancel): ");
@@ -76,7 +77,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
         if(decision.equalsIgnoreCase("A")){
             if(selectedApp.getFlatType().equalsIgnoreCase("2-Room")){
                 if(selectedApp.getProject().getUnits2Room() > 0){
-                    selectedApp.setStatus(Application.Status.SUCCESSFUL);
+                    selectedApp.setStatus(ApplicationStatus.SUCCESSFUL);
                     System.out.println("Application approved (SUCCESSFUL).");
                     applicationRepository.saveApplications();
                 } else {
@@ -84,7 +85,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
                 }
             } else if(selectedApp.getFlatType().equalsIgnoreCase("3-Room")){
                 if(selectedApp.getProject().getUnits3Room() > 0){
-                    selectedApp.setStatus(Application.Status.SUCCESSFUL);
+                    selectedApp.setStatus(ApplicationStatus.SUCCESSFUL);
                     System.out.println("Application approved (SUCCESSFUL).");
                     applicationRepository.saveApplications();
                 } else {
@@ -94,7 +95,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
                 System.out.println("Invalid flat type in application.");
             }
         } else if(decision.equalsIgnoreCase("R")){
-            selectedApp.setStatus(Application.Status.UNSUCCESSFUL);
+            selectedApp.setStatus(ApplicationStatus.UNSUCCESSFUL);
             System.out.println("Application rejected.");
         } else {
             System.out.println("Invalid decision.");

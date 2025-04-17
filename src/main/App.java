@@ -22,6 +22,7 @@ public class App {
         
         // Load projects from CSV files
         ProjectRepository projectRepository = new ProjectRepository("data/ProjectList.csv");
+        
         projectRepository.loadProjects(userRepository.getManagers(), userRepository.getOfficers());
         
         // Load applications from CSV files

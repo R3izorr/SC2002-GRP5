@@ -3,6 +3,7 @@ package system.service.officer;
 import java.util.ArrayList;
 import java.util.List;
 import model.Application;
+import model.ApplicationStatus;
 import model.BTOProject;
 import model.Receipt;
 import model.user.HDBOfficer;
@@ -33,7 +34,7 @@ public class GenerateReceiptService extends AbstractMenu {
         for(BTOProject proj : officer.getAssignedProjects()){
             for(Application app : applicationRepository.getApplications()){
                 if(app.getProject().getProjectId() == proj.getProjectId() &&
-                   app.getStatus() == Application.Status.BOOKED) {
+                   app.getStatus() == ApplicationStatus.BOOKED) {
                     bookedApps.add(app);
                 }
             }
@@ -45,8 +46,7 @@ public class GenerateReceiptService extends AbstractMenu {
         System.out.println("=== List of Booked Applications ===");
         for(int i = 0; i < bookedApps.size(); i++){
             Application app = bookedApps.get(i);
-            System.out.println((i+1) + ". Applicant NRIC: " + app.getApplicant().getNric() +
-                               "| Applicant Name: " + app.getApplicant().getName() +
+            System.out.println((i+1) + ". Applicant Name: " + app.getApplicant().getName() +
                                " | Project: " + app.getProject().getProjectName() +
                                " | Flat Type: " + app.getFlatType());
         }

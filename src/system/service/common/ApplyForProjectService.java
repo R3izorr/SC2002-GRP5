@@ -1,7 +1,6 @@
 package system.service.common;
 
 import controller.ProjectController;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import model.BTOProject;
 import model.user.Applicant;
@@ -12,7 +11,6 @@ import ui.Prompt;
 public class ApplyForProjectService extends AbstractMenu {
     private ProjectController projectController;
     private Applicant applicant; // Can be an Applicant or HDBOfficer
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public ApplyForProjectService(ProjectController projectController, Applicant applicant) {
         this.projectController = projectController;
         this.applicant = applicant;

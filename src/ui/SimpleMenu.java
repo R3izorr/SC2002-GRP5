@@ -16,7 +16,7 @@ public class SimpleMenu extends AbstractMenu {
         for (UserOption option : options.values()) {
             System.out.println(option.getKey() + ". " + option.getDescription());
         }
-        System.out.println("Type 'b' to go back.");
+        System.out.println("Type 'b' to exit.");
     }
     
     @Override

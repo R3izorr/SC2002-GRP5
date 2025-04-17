@@ -114,7 +114,7 @@ public class EditDeleteProjectService extends AbstractMenu {
             for(HDBOfficer officer: officers) {
                 for(BTOProject proj : officer.getAssignedProjects()) {
                     if (proj == selected) {
-                        officer.deAssignedProject(proj);
+                        officer.unAssignedProject(proj);
                         break;
                     }
                 }

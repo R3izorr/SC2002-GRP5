@@ -24,7 +24,7 @@ public class ProjectRepository {
     public void loadProjects(List<HDBManager> managers, List<HDBOfficer> officers) {
         List<String[]> lines = FileUtils.readCSV(this.projectFilePath);
         for (String[] tokens : lines) {
-            if (tokens.length < 13) {
+            if (tokens.length < 14) {
                 continue; // Skip this line if it doesn't have enough tokens
             }
             // Parse the tokens and create a BTOProject object
@@ -42,7 +42,8 @@ public class ProjectRepository {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            String managerNRIC = tokens[10];
+            boolean isVisible = Boolean.parseBoolean(tokens[10]);
+            String managerNRIC = tokens[11];
             HDBManager manager = null;
             for(HDBManager m : managers) {
                 if(m.getNric().equals(managerNRIC)) {
@@ -50,15 +51,14 @@ public class ProjectRepository {
                     break;
                 }
             }
-            int officerSlots = Integer.parseInt(tokens[11]);
-            boolean isVisible = true;
+            int officerSlots = Integer.parseInt(tokens[12]);
             BTOProject project = new BTOProject(projectName, neighborhood, sellingPrice2Room, units2Room, sellingPrice3Room, units3Room,
                     applicationOpen, applicationClose, manager, officerSlots, isVisible);
             projects.add(project);
             if(manager != null) {
                 manager.addManagedProject(project);
             }
-            String lineNric = tokens[12];
+            String lineNric = tokens[13];
             if (lineNric.equals("None")) {
                 continue;
             }
@@ -81,9 +81,9 @@ public class ProjectRepository {
         // Add a header
         data.add(new String[]{"Project Name","Neighborhood","Type 1",
         "Number of units for Type 1","Selling price for Type 1","Type 2,Number of units for Type 2","Selling price for Type 2",
-        "Application opening date","Application closing date","Manager","Remaining Officer Slots","Officers NRIC"});
+        "Application opening date","Application closing date","isVisble","Manager","Remaining Officer Slots","Officers NRIC"});
         for (BTOProject proj : projects) {
-            String[] row = new String[13];
+            String[] row = new String[14];
             row[0] = proj.getProjectName();
             row[1] = proj.getNeighborhood();
             row[2] = "2-Room";
@@ -94,9 +94,10 @@ public class ProjectRepository {
             row[7] = String.valueOf(proj.getSellingPrice3Room());
             row[8] = dateFormat.format(proj.getApplicationOpen());
             row[9] = dateFormat.format(proj.getApplicationClose());
-            row[10] = (proj.getManager() != null ? proj.getManager().getNric() : "");
-            row[11] = String.valueOf(proj.getOfficerSlots());
-            row[12] = proj.getOfficerNRIC();
+            row[10] = proj.isVisible() ? "true" : "false";
+            row[11] = (proj.getManager() != null ? proj.getManager().getNric() : "");
+            row[12] = String.valueOf(proj.getOfficerSlots());
+            row[13] = proj.getOfficerNRIC();
             data.add(row);
         }
         FileUtils.writeCSV(projectFilePath, data);

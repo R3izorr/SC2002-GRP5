@@ -57,6 +57,10 @@ public class RegisterForProjectService extends AbstractMenu {
             System.out.println("You have an overlapping approved project. Cannot register for this project.");
             return;
         }
+        if(selected.getOfficerSlots() <= 0) {
+            System.out.println("No available slots for this project.");
+            return;
+        }
         for(BTOProject proj : officer.getPendingRegistrations()) {
             if(proj.getProjectId() == projId) {
                 System.out.println("You have already submitted a registration for this project. Awaiting manager approval.");

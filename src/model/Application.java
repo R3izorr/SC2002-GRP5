@@ -3,15 +3,12 @@ package model;
 import model.user.Applicant;
 
 public class Application { 
-    public enum Status { 
-        PENDING, SUCCESSFUL, UNSUCCESSFUL, BOOKING, BOOKED, WITHDRAWN
-    }
     private Applicant applicant;
     private BTOProject project;
-    private Status status; // Default status is PENDING
+    private ApplicationStatus status; // Default status is PENDING
     private String flatType; // e.g., "2-Room" or "3-Room"
 
-    public Application(Applicant applicant, BTOProject project, String flatType, Status status) {
+    public Application(Applicant applicant, BTOProject project, String flatType, ApplicationStatus status) {
         this.applicant = applicant;
         this.project = project;
         this.status = status;
@@ -26,11 +23,11 @@ public class Application {
         return project;
     }
 
-    public Status getStatus() {
+    public ApplicationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(ApplicationStatus status) {
         this.status = status;
     }
 
@@ -48,7 +45,6 @@ public class Application {
         }
         else return project.getSellingPrice3Room();
     }
-
 
     public String getApplicationDetail() {
         return 

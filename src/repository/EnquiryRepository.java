@@ -12,6 +12,10 @@ public class EnquiryRepository {
         enquiries.add(enquiry);
     }
     
+    public static void removeEnquiry(Enquiry enquiry) {
+        enquiries.remove(enquiry);
+    }
+
     public static List<Enquiry> getEnquiries() {
         return enquiries;
     }

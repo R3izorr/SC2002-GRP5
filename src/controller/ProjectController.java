@@ -2,6 +2,7 @@ package controller;
 
 import java.util.List;
 import model.Application;
+import model.ApplicationStatus;
 import model.BTOProject;
 import model.user.Applicant;
 import model.user.HDBOfficer;
@@ -33,8 +34,8 @@ public class ProjectController {
     // Apply for a project with a chosen flat type.
     public boolean applyForProject(int projectId, String flatType) {
         if(currentApplicant.getApplication() != null && 
-           currentApplicant.getApplication().getStatus() != Application.Status.UNSUCCESSFUL && 
-           currentApplicant.getApplication().getStatus() != Application.Status.WITHDRAWN
+           currentApplicant.getApplication().getStatus() != ApplicationStatus.UNSUCCESSFUL && 
+           currentApplicant.getApplication().getStatus() != ApplicationStatus.WITHDRAWN
           ) {
             System.out.println("You have already applied for a Project. Cannot apply for multiple projects!");
             return false;
@@ -53,7 +54,7 @@ public class ProjectController {
         // If an application exists and its status is not UNSUCCESSFUL or WITHDRAWN, do not allow re-application.
         // Enforce eligibility rules.
         if(currentApplicant.CheckEligiblity(project, flatType)) {
-            Application application = new Application(currentApplicant, project, flatType, Application.Status.PENDING);
+            Application application = new Application(currentApplicant, project, flatType, ApplicationStatus.PENDING);
             applicationRepository.removeApplication(currentApplicant.getApplication());
             currentApplicant.setApplication(application);
             applicationRepository.addApplication(application);
@@ -77,8 +78,8 @@ public class ProjectController {
         }
         // Check if officer already has an application
         if(officer.getApplication() != null && 
-            officer.getApplication().getStatus() == Application.Status.UNSUCCESSFUL &&
-            officer.getApplication().getStatus() == Application.Status.WITHDRAWN
+            officer.getApplication().getStatus() == ApplicationStatus.UNSUCCESSFUL &&
+            officer.getApplication().getStatus() == ApplicationStatus.WITHDRAWN
          ) {
             System.out.println("You have already applied for a project.");
             return false;
@@ -97,7 +98,7 @@ public class ProjectController {
         }
         // Eligibility rules for officer as applicant (you may adjust as needed)
         if(currentApplicant.CheckEligiblity(project, flatType)) {
-            Application application = new Application(currentApplicant, project, flatType, Application.Status.PENDING);
+            Application application = new Application(currentApplicant, project, flatType, ApplicationStatus.PENDING);
             applicationRepository.removeApplication(currentApplicant.getApplication());
             currentApplicant.setApplication(application);
             applicationRepository.addApplication(application);
@@ -119,13 +120,12 @@ public class ProjectController {
             System.out.println("No application to withdraw.");
             return false;
         }
-        if(app.getStatus() == Application.Status.BOOKED) {
+        if(app.getStatus() == ApplicationStatus.BOOKED) {
             System.out.println("Cannot withdraw after having booked a flat.");
             return false;
         }
-        app.setStatus(Application.Status.WITHDRAWN);
+        app.setStatus(ApplicationStatus.WITHDRAW_REQUESTED);
         applicationRepository.saveApplications();
-        System.out.println("Application withdrawn.");
         return true;
     }
     
@@ -136,11 +136,11 @@ public class ProjectController {
             System.out.println("No application found.");
             return false;
         }
-        if(app.getStatus() != Application.Status.SUCCESSFUL) {
+        if(app.getStatus() != ApplicationStatus.SUCCESSFUL) {
             System.out.println("Your application is not in a state that requires booking a flat.");
             return false;
         }
-        app.setStatus(Application.Status.BOOKING);
+        app.setStatus(ApplicationStatus.BOOKING);
         applicationRepository.saveApplications();
         System.out.println("Require for Booking is completed. Your application status is now BOOKING.");
         return true;

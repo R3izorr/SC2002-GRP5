@@ -76,6 +76,10 @@ public class EnquiryController {
                 return e.getEnquiryId() == enquiryId;
         });
         if(removed){
+            EnquiryRepository.removeEnquiry(allEnquiries.stream()
+                    .filter(e -> e.getEnquiryId() == enquiryId)
+                    .findFirst()
+                    .orElse(null));
             System.out.println("Enquiry deleted.");
         } else {
             System.out.println("Enquiry not found or permission denied.");

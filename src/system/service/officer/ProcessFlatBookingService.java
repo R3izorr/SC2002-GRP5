@@ -2,6 +2,7 @@ package system.service.officer;
 
 import java.util.List;
 import model.Application;
+import model.ApplicationStatus;
 import model.BTOProject;
 import model.user.HDBOfficer;
 import repository.ApplicationRepository;
@@ -31,7 +32,7 @@ public class ProcessFlatBookingService extends AbstractMenu {
         for (BTOProject proj : officer.getAssignedProjects()) {
             for (Application app : applicationRepository.getApplications()) {
                 if (app.getProject().getProjectId() == proj.getProjectId() &&
-                    app.getStatus() == Application.Status.BOOKING) {
+                    app.getStatus() == ApplicationStatus.BOOKING) {
                     bookingApps.add(app);
                 }
             }
@@ -46,8 +47,7 @@ public class ProcessFlatBookingService extends AbstractMenu {
             System.out.println("=== Request Booking Flat for Your Assigned Projects ===");
             for (int i = 0; i < bookingApps.size(); i++) {
                 Application app = bookingApps.get(i);
-                System.out.println((i + 1) + ". Applicant NRIC: " + app.getApplicant().getNric() +
-                    " | Applicant Name: " + app.getApplicant().getName() +
+                System.out.println((i + 1) + ". Applicant Name: " + app.getApplicant().getName() +
                     " | Project: " + app.getProject().getProjectName() +
                     " | Flat Type Requested: " + app.getFlatType());
             }
@@ -74,9 +74,9 @@ public class ProcessFlatBookingService extends AbstractMenu {
             } else {
                 System.out.println("Invalid flat type in application.");
             }
-            targetApp.setStatus(Application.Status.BOOKED);
+            targetApp.setStatus(ApplicationStatus.BOOKED);
             System.out.println("Flat booking processed for applicant " 
-                + targetApp.getApplicant().getNric() + ". Application status updated to BOOKED.");
+                + targetApp.getApplicant().getName() + ". Application status updated to BOOKED.");
                 applicationRepository.saveApplications();
             }
             applicationRepository.saveApplications();

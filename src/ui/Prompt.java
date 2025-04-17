@@ -26,10 +26,14 @@ public class Prompt {
         while (true) {
             System.out.print(message);
             try {
-                String input = scanner.nextLine().trim();
+            String input = scanner.nextLine().trim();
+            if (input.matches("\\d{2}/\\d{2}/\\d{4}")) {
                 return new java.text.SimpleDateFormat("dd/MM/yyyy").parse(input);
+            } else {
+                System.out.println("Invalid input. Please enter a date in the format dd/MM/yyyy.");
+            }
             } catch (java.text.ParseException e) {
-                System.out.println("Invalid date format. Please use dd/MM/yyyy.");
+            System.out.println("Invalid date format. Please use dd/MM/yyyy.");
             }
         }
     }

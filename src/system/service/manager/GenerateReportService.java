@@ -61,7 +61,7 @@ public class GenerateReportService extends AbstractMenu {
         List<Application> bookedApps = new ArrayList<>();
         for(Application app : applicationRepository.getApplications()){
             if(app.getProject().getProjectId() == selectedProj.getProjectId() &&
-               app.getStatus() == model.Application.Status.BOOKED) {
+               app.getStatus() == model.ApplicationStatus.BOOKED) {
                 bookedApps.add(app);
             }
         }

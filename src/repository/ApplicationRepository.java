@@ -3,6 +3,7 @@ package repository;
 import java.util.ArrayList;
 import java.util.List;
 import model.Application;
+import model.ApplicationStatus;
 import model.BTOProject;
 import model.user.Applicant;
 import model.user.HDBOfficer;
@@ -47,7 +48,7 @@ public class ApplicationRepository {
             String projectId = tokens[2]; 
             String projectName = tokens[3];
             String flatType = tokens[4];
-            Application.Status status = Application.Status.valueOf(tokens[5].toUpperCase());
+            ApplicationStatus status = ApplicationStatus.valueOf(tokens[5].toUpperCase());
 
             // Find the applicant by NRIC
             Applicant applicant = null;

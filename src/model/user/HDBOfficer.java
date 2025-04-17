@@ -10,6 +10,7 @@ public class HDBOfficer extends Applicant {
     private List<BTOProject> assignedProjects;
     // List of projects for which registration is pending.
     private List<BTOProject> pendingRegistrations;
+    
     private Application application;
     
     public HDBOfficer(String name, String nric, String password, int age, String maritalStatus) {
@@ -35,7 +36,7 @@ public class HDBOfficer extends Applicant {
         pendingRegistrations.add(project);
     }
 
-    public void deAssignedProject(BTOProject project) {
+    public void unAssignedProject(BTOProject project) {
             this.assignedProjects.remove(project);
     }
 

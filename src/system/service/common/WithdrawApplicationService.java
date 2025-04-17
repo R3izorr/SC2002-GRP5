@@ -1,8 +1,8 @@
 package system.service.common;
 
+import controller.ProjectController;
 import ui.AbstractMenu;
 import ui.Prompt;
-import controller.ProjectController;
 
 public class WithdrawApplicationService extends AbstractMenu {
     private ProjectController projectController;
@@ -20,7 +20,7 @@ public class WithdrawApplicationService extends AbstractMenu {
     public void handleInput() {
         boolean success = projectController.withdrawApplication();
         if(success) {
-            System.out.println("Application withdrawn successfully.");
+            System.out.println("Submitting withdrawn request successfully.");
         }
         System.out.println("Type 'b' to go back.");
         String input = Prompt.prompt("");

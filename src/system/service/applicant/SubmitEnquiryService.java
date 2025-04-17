@@ -14,6 +14,7 @@ public class SubmitEnquiryService extends AbstractMenu {
     @Override
     public void display() {
         System.out.println("\n=== Submit Enquiry ===");
+        
     }
     
     @Override

@@ -37,8 +37,10 @@ public class ManageOfficerRegistrationsService extends AbstractMenu {
         } else {
             for (int i = 0; i < pendingRegs.size(); i++){
                 PendingRegistration reg = pendingRegs.get(i);
-                System.out.println((i+1) + ". Officer NRIC: " + reg.officer.getNric() +
-                        " | Pending Registration for Project: " + reg.project.getProjectName() + "(ID: " + reg.project.getProjectId() + ")");
+                System.out.println((i+1) + ". Officer Name: " + reg.officer.getName() +
+                        " | Pending Registration for Project: " + reg.project.getProjectName() + "(ID: " + reg.project.getProjectId() + ")" +
+                        " | Remaining Slots: " + reg.project.getOfficerSlots()
+                        );
             }
         }
         System.out.println("Enter registration number to process (or 'b' to go back): ");
@@ -71,7 +73,7 @@ public class ManageOfficerRegistrationsService extends AbstractMenu {
             return;
         }
         PendingRegistration selected = pendingRegs.get(choice - 1);
-        System.out.println("Selected Registration: Officer NRIC: " + selected.officer.getNric() +
+        System.out.println("Selected Registration: Officer Name: " + selected.officer.getName() +
                         " | Pending Registration for Project: " + selected.project.getProjectName() + 
                         "(ID: " + selected.project.getProjectId() + ")");
         String decision = Prompt.prompt("Enter A to Approve, R to Reject (or 'b' to cancel): ");
