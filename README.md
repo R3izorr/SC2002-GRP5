@@ -1,7 +1,6 @@
-# SC2002-GRP5 NTU AY 24/25 SEM 2 SC2002 Group Project:
-## Build-To-Order (BTO) Management System
+# NTU AY 24/25 SEM 2 SC2002-GRP 5 Group Project: Build-To-Order (BTO) Management System
 
-Build-To-Order (BTO) Management System is a Java application that supports multiple user roles and provides dashboards or menus that follow a user centric pattern. Feautures include managing housing applications, including submissions, eligibility checks and more.
+This Java application supports multiple user roles and provides dashboards or menus that follow a user centric pattern. Feautures include managing housing applications, including submissions, eligibility checks and more.
 
 ## Table of Contents
 - [src](https://github.com/R3izorr/SC2002-GRP5/tree/main/src)
