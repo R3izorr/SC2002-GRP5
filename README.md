@@ -1,64 +1,19 @@
-# SC2002-GRP5
-## NTU AY 24/25 SEM 2 SC2002 Group Project:
+# SC2002-GRP5 NTU AY 24/25 SEM 2 SC2002 Group Project:
 ## Build-To-Order (BTO) Management System
 
-Build-To-Order (BTO) Management System is a Java application made with a central focus on  OOD concepts. Feautures include managing housing applications, including submissions, eligibility checks, project visibility, enquiry handling, and more. This application supports multiple user roles and provides dashboards or menus that follow a user centric pattern.
+Build-To-Order (BTO) Management System is a Java application that supports multiple user roles and provides dashboards or menus that follow a user centric pattern. Feautures include managing housing applications, including submissions, eligibility checks and more.
 
----
-## Links
+## Table of Contents
+- [src](https://github.com/R3izorr/SC2002-GRP5/tree/main/src)
+- [UML diagrams](https://github.com/R3izorr/SC2002-GRP5/tree/main/docs/UML%20Diagrams)
+- [Documentation](#documentation)
+- [Report]
 
-1. **[GitHub Repository](https://github.com/R3izorr/SC2002-GRP5)**
-2. Documentation
-3. Report
+## Documentation
+- JavaDoc
+- How to set up and Build the environment to run this project - A Developer’s guide
 
----
-
-## Core Features for each user:
-### Applicant:
-1. View Available Projects
-2. Apply for a Project
-3. View your Application Status
-4. Withdraw your Application
-5. Request Flat Booking
-6. Submit Enquiry
-7. Edit Enquiry
-8. Delete Enquiry
-9. View My Enquiries
-10. Change Password
-
-### Manager:
-1. Create New BTO Project Listing
-2. Edit/Delete Project Listing
-3. Toggle Project Visibility
-4. View All Projects
-5. Manage Applicant Applications
-6. Manage HDB Officer Registrations
-7. View/Reply to Enquiries
-8. Generate Report for Booked Applicants
-9. View Assigned Projects
-10. Change Password
-
-### Officer:
-1. View your Registered Project Details
-2. Register for a New Project
-3. View your Registration Status
-4. Process Flat Booking for an Applicant
-5. Generate Receipt for Booked Applicants
-6. View Available Projects
-7. Apply for a Project (as Applicant)
-8. View your Application Status
-9. Withdraw your Application
-10. Request for Booking a Flat
-11. View/Reply to Enquiries for Your Project
-12. Change Password
-
----
-## How to set up and Build the environment to run this project - A Developer’s guide
----
-## Testing
 ---
 ## UML Diagrams
-
-This is where you can find the folder for the uml diagrams: **[UML Diagrams](https://github.com/R3izorr/SC2002-GRP5/tree/main/docs/UML%20Diagrams)**
-1. Class Diagram: **[Class Diagram](https://github.com/R3izorr/SC2002-GRP5/blob/main/docs/UML%20Diagrams/Class%20Diagram.svg)**
-2. Sequence Diagram: **[Sequence Diagram](https://github.com/R3izorr/SC2002-GRP5/blob/main/docs/UML%20Diagrams/sequence%20diagram.png)**
+- Class Diagram: **[Class Diagram](https://github.com/R3izorr/SC2002-GRP5/blob/main/docs/UML%20Diagrams/Class%20Diagram.svg)**
+- To better view the Sequence Diagram: **[Sequence Diagram](https://www.mermaidchart.com/play#pako:eNq1WVtv2zYU_iuEgQIOkHRY--aHAL7khjWxIdcdBuSFsWibrSJ6ouwgG_bfd0geUiRFycmGdgNqV-f6nbv892AtcjYYDST788DKNZtxuq3o82NJ4A891KI8PD-xynz_8IEsaFXzNd_TspZItK5FReabDV-zilBJbmcT-9WnuKcl3TYU-NVQ7BupZD5TJChgRuXuSdAqb9PdazoU00P3RWx5qUj1h4k4lDmtXtt0q6kiWklWTUVZV6IoUtYtNNWiEt_Zuu4jzK4XS0WasS2XNauuRYVcS1YdwbeER_Ns3PiECBj-itZclLKTdZVZ4zO2F5ID4AkXF5lnfB_hWBOO9_uCr7XmPuLbOcY0CLpPMfmqSeAv1J2Ca4JwQR7K-rqg9USIH7zcBj4HyXZLy7xo5RwZ4r-fJQBALWDGmknZpcVnuck0xw0rGQSBZWzN-L4nhuPxsokhIljWHpRNENV_WFYXFxeYqEssRPVP5jH6dXF5qSlG5KqEfCLriuWsrDktJBk-ZHfTczBEyhdR5ei5Jge21XRECvV5WFZ83SJbTRVNNiJbVqMuObTPsgsUIPDJF8hGx9fY1ISfiKcmxMYEIMOHI_RSHtYqAJtDYegCIKwgV9RkxuW-oK8NJta1-WxE7kquUOB_sSEaicbPZ4FmK0RYO_c6HAkD_JojG0g4TFtyXYgXMqwF2ekUI5TszZOzVLiUcUtWKMbHge0DvrzHgTP08lI1jBEp2Ut3y7D-nVu1TQNCl5UQkLWY6mh-45I_FQyFuKAuVMAXJuCtZzrgih9VeAFf6IAbO4-haE97CnJ6pLygQO-kRqjbkEsNl7RkBKCuEI0YXWOHqQVLfjdLwYBGTl7v8iFS3uUxFhte5r2EMTBzL819ZOIu53z8BjmaQwsJ0-uq4Fv-xAtevwa238617WMp-bZkeRyn23mjkUY0STlNA0qKaB63uHdUzo-sKoAGGiUIqsTRKbM4JWRuoDMxMiwFEYb9LGXYgpU5iA3GXMrCfYIuAjjAlRaQGCV8PjKygbKVuvB03YIYG0ScKgWMvKJiNH9VSGj_NHlAlczwx8Ef4kBoBb0gJaDecZfMttqZgsVTV3AghpFB7bA4qW5Hj4E-LSFWp0WWnlRf_S08FE1QG6Pf6rExoewXknIY49hG54TGChuB15UDb-EjjVQYe2gR2GFbOWQ1gdSUhYB24_pTrxUPws2OiK0_1ks37MIUxV0Hnj89c6hhW3tRkdA8TxRJVHgeDzQgv7Lika7-AEmrsuatAR_LbAxB2mjedsAW-Fyhz1L5XNeQLM0qULx-JKiAPNtrAWP40SFa5omJbY-LMZLbDU8Hxg6XwBA3r5EVbL6f2fUExk4eXhT3akSr5c6M6NPr3RA9OPd7a7NGI2RKIggeZ3GTduEa67ljNHuSvDBpGYrGKGymrlcHjk0DYkzLo2EMUA5h5XA57tfbuQtIxY6cQTe1wn0qedaCFE4aH7Geo6YBrGu5UcJaU13-zutdR6q_bdGhRRFOTjPNjen7bi2eUUn0kZO8AKuDKwVuPMdsMmcINSXLPVtzYAxSOI01LpzBAqXE9ED40xejAMp-JE-2L2xdKLKrdXVHJYyDqQezdcbTrxWPGQRBdWkC_6d6SjoguDD9kjEdkFQCNFtI2MeYTMiPocKpm-7MLkoe123DdGKgBGry3K5-3d3fZ6jYc6dZMYsfqceBOwa8yeCWXJXRqSHbFI2putPAVZryfbgZnnfA9v9RqMLx-V1najANo_cI6m2LN0nwaPVe0LmxdfpqVaSvukZAanCu_swTU5mQPDA7LvpmD1O-v__EpNbLFBbxhQlbLyzbBQXO1z3zEFH5Md2x9Q9z0qmLrnWwn2vOr8AYnDhKD2sOQQizPBTecfIgajwU_RU1QuNx4N2ScH3xQuUJSezgY3My9EjqvTJosgCtfed23w3EG3hkeIiqvcD_3o0WCK1pfZAfF1cPs7uHm7OzSLraoCQY7Ivz9h6P3CxUCvG1KDe8eo5ahBbntbwT4nAe9coLsfVrs2sNNt6OCLrbV-7htqD3PUhQ06vVt7gd_PfFF7uChwM24ybauM-6NrbcQe_xGXJWQ2K6N5YLG2j1KpZ4deEZp3VPd0JAkoE-nELtVxbepHbj03d8iGCSi0uyXE2nV8vl9epLuIjruOsi9prKoeR1tChE9W-XEm3qSpM79hGpqwNrrfurvX4X5GMjddCVj415HSt-mEXu8B76fg1aOqMCSd4Y7SROvpvF21WawOFL9De8BDXXn88UvQSduJegHT8EDLvffU7sSz-8MpExGEqn3ofpi8DPGoml2EoZLe5kKCfz-W-qgkOW_kgoG9pxsC8ZFUJPCHhzTofv0zUWYdvRmEd8nX3HWj1IpACe1kpMEHz7uws4z_aNDFVu6uPVrL1uIIdy2QW-87cZOx6Qqf-wXphkOHlYG73pwxplhLZ6W4d_Vusjz3psot_r6Rt6KarvbklB7zFie3qP2iM-XWRCPOuwNQPK1wMDWov4pOiGB_eRXJBfz7xh__mtgj43gj7HguybHC9WJ0vpatbiOVFLGpdENYUV4qIbFQpGpLdQwKZUndifDAn-ZtiT_TcZJn_6Z8Z3ZT7Iekvia5XpvDcS3pf2V7P-rNfq0km_tThVxmnfCMTBjgT9JbGI4RPnF0pyovNGZjLkWUwfRFtFd_DPv1ak6og)**
