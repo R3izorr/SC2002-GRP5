@@ -2,7 +2,7 @@
 ## NTU AY 24/25 SEM 2 SC2002 Group Project:
 ## Build-To-Order (BTO) Management System
 
-Build-To-Order (BTO) Management System is a Java application made with a central focus on  OOD concepts such as managing housing applications, including submissions, eligibility checks, project visibility, enquiry handling, and more. This application supports multiple user roles and provides dashboards or menus that follow a user centric pattern.
+Build-To-Order (BTO) Management System is a Java application made with a central focus on  OOD concepts. Feautures include managing housing applications, including submissions, eligibility checks, project visibility, enquiry handling, and more. This application supports multiple user roles and provides dashboards or menus that follow a user centric pattern.
 
 ---
 ## Links
