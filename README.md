@@ -7,9 +7,9 @@ Build-To-Order (BTO) Management System is a Java application made with a central
 ---
 ## Links
 
-**[GitHub Repository](https://github.com/R3izorr/SC2002-GRP5)**
-Documentation
-Report
+1. **[GitHub Repository](https://github.com/R3izorr/SC2002-GRP5)**
+2. Documentation
+3. Report
 
 ---
 
