@@ -1,6 +1,6 @@
 package system.service.officer;
 
-import model.user.HDBOfficer;
+import entity.user.HDBOfficer;
 import ui.AbstractMenu;
 import ui.Prompt;
 

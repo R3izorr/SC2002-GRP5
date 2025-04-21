@@ -1,8 +1,8 @@
-package model.user;
+package entity.user;
 
 import java.util.ArrayList; 
 import java.util.List;
-import model.BTOProject;
+import entity.model.BTOProject;
 
 public class HDBManager extends User { 
     private List<BTOProject> managedProjects;

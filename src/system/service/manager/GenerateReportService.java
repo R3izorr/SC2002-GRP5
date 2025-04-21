@@ -1,22 +1,21 @@
 package system.service.manager;
 
+import entity.model.Application;
+import entity.model.BTOProject;
+import entity.model.Report;
+import entity.user.HDBManager;
 import java.util.ArrayList;
 import java.util.List;
-import model.Application;
-import model.BTOProject;
-import model.Report;
-import model.user.HDBManager;
-import repository.ApplicationRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class GenerateReportService extends AbstractMenu {
     private HDBManager manager;
-    private ApplicationRepository applicationRepository;
+    private List<Application> applications;
     
-    public GenerateReportService(HDBManager manager, ApplicationRepository applicationRepository) {
+    public GenerateReportService(HDBManager manager, List<Application> applications) {
         this.manager = manager;
-        this.applicationRepository = applicationRepository;
+        this.applications = applications;
     }
     
     @Override
@@ -59,9 +58,9 @@ public class GenerateReportService extends AbstractMenu {
             return;
         }
         List<Application> bookedApps = new ArrayList<>();
-        for(Application app : applicationRepository.getApplications()){
+        for(Application app : applications) {
             if(app.getProject().getProjectId() == selectedProj.getProjectId() &&
-               app.getStatus() == model.ApplicationStatus.BOOKED) {
+               app.getStatus() == entity.model.ApplicationStatus.BOOKED) {
                 bookedApps.add(app);
             }
         }
@@ -76,20 +75,23 @@ public class GenerateReportService extends AbstractMenu {
                 System.out.println("2. Filter by Flat Type");
                 System.out.println("3. Filter by both Marital Status and Flat Type");
                 int filterOption = Integer.parseInt(Prompt.prompt("Enter option: "));
-                if(filterOption == 1) {
-                    String status = Prompt.prompt("Enter Marital Status to filter by (e.g., Married, Single): ");
-                    bookedApps.removeIf(app -> !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status));
-                } else if(filterOption == 2) {
-                    String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
-                    bookedApps.removeIf(app -> !app.getFlatType().equalsIgnoreCase(flatType));
-                } else if(filterOption == 3) {
-                    String status = Prompt.prompt("Enter Marital Status to filter by: ");
-                    String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
-                    bookedApps.removeIf(app -> 
-                        !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status) ||
-                        !app.getFlatType().equalsIgnoreCase(flatType));
-                } else {
-                    System.out.println("Invalid filter option; no filter applied.");
+                switch (filterOption) {
+                    case 1 -> {
+                        String status = Prompt.prompt("Enter Marital Status to filter by (Single or Married): ");
+                        bookedApps.removeIf(app -> !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status));
+                    }
+                    case 2 -> {
+                        String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
+                        bookedApps.removeIf(app -> !app.getFlatType().equalsIgnoreCase(flatType));
+                    }
+                    case 3 -> {
+                        String status = Prompt.prompt("Enter Marital Status to filter by (Single or Married): ");
+                        String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
+                        bookedApps.removeIf(app -> 
+                            !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status) ||
+                            !app.getFlatType().equalsIgnoreCase(flatType));
+                    }
+                    default -> System.out.println("Invalid filter option; no filter applied.");
                 }
             }
             if(bookedApps.isEmpty()){

@@ -1,22 +1,23 @@
 package system.service.manager;
 
+import controller.ApplicationController;
+import entity.model.Application;
+import entity.model.ApplicationStatus;
+import entity.model.BTOProject;
+import entity.user.HDBManager;
 import java.util.ArrayList;
 import java.util.List;
-import model.Application;
-import model.ApplicationStatus;
-import model.user.HDBManager;
-import repository.ApplicationRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 
 public class ManageApplicantWithdrawalsService extends AbstractMenu {
     private HDBManager manager;
-    private ApplicationRepository applicationRepository;
+    private ApplicationController applicationController;
 
-    public ManageApplicantWithdrawalsService(HDBManager manager, ApplicationRepository applicationRepository) {
+    public ManageApplicantWithdrawalsService(HDBManager manager, ApplicationController applicationController) {
         this.manager = manager;
-        this.applicationRepository = applicationRepository;
+        this.applicationController = applicationController;
     }
 
 
@@ -24,10 +25,11 @@ public class ManageApplicantWithdrawalsService extends AbstractMenu {
     public void display() {
         System.out.println("\n=== Manage Withdrawal Requests ===");
         List<Application> requests = new ArrayList<>();
-        for (Application app : applicationRepository.getApplications()) {
-            if (app.getProject().getManager().equals(manager) &&
-                app.getStatus() == ApplicationStatus.WITHDRAW_REQUESTED) {
-                requests.add(app);
+        for (BTOProject project : manager.getManagedProjects()) {
+            for (Application app : applicationController.getApplicationByProjectId(project.getProjectId())) {
+                if (app.getStatus() == ApplicationStatus.WITHDRAW_REQUESTED) {
+                    requests.add(app);
+                }
             }
         }
         if (requests.isEmpty()) {
@@ -60,10 +62,11 @@ public class ManageApplicantWithdrawalsService extends AbstractMenu {
         }
         // Rebuild the list of requests
         List<Application> requests = new ArrayList<>();
-        for (Application app : applicationRepository.getApplications()) {
-            if (app.getProject().getManager().equals(manager) &&
-                app.getStatus() == ApplicationStatus.WITHDRAW_REQUESTED) {
-                requests.add(app);
+        for (BTOProject project : manager.getManagedProjects()) {
+            for (Application app : applicationController.getApplicationByProjectId(project.getProjectId())) {
+                if (app.getStatus() == ApplicationStatus.WITHDRAW_REQUESTED) {
+                    requests.add(app);
+                }
             }
         }
         if (choice < 1 || choice > requests.size()) {
@@ -76,12 +79,12 @@ public class ManageApplicantWithdrawalsService extends AbstractMenu {
         switch (decision) {
             case 1:
                 target.setStatus(ApplicationStatus.WITHDRAWN);
-                applicationRepository.saveApplications();
+                applicationController.updateApplication();
                 System.out.println("Withdrawal approved. Application status set to WITHDRAWN.");
                 break;
             case 2:
                 target.setStatus(ApplicationStatus.PENDING);
-                applicationRepository.saveApplications();
+                applicationController.updateApplication();
                 System.out.println("Withdrawal rejected. Application status reset to PENDING.");
                 break;
             default:

@@ -1,6 +1,6 @@
-package model;
+package entity.model;
 
-import model.user.Applicant;
+import entity.user.Applicant;
 
 public class Application { 
     private Applicant applicant;

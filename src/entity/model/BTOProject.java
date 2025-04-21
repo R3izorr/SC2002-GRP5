@@ -1,10 +1,10 @@
-package model;
+package entity.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import model.user.HDBManager;
-import model.user.HDBOfficer;
+import entity.user.HDBManager;
+import entity.user.HDBOfficer;
 
 
 public class BTOProject {

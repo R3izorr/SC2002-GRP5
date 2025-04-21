@@ -1,10 +1,10 @@
 package system.service.officer;
 
 import controller.EnquiryController;
+import entity.model.BTOProject;
+import entity.model.Enquiry;
+import entity.user.HDBOfficer;
 import java.util.List;
-import model.BTOProject;
-import model.Enquiry;
-import model.user.HDBOfficer;
 import ui.AbstractMenu;
 import ui.Prompt;
 

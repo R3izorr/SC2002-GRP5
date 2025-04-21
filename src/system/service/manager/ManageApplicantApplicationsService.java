@@ -1,31 +1,33 @@
 package system.service.manager;
 
+import controller.ApplicationController;
+import entity.model.Application;
+import entity.model.ApplicationStatus;
+import entity.model.BTOProject;
+import entity.user.HDBManager;
 import java.util.ArrayList;
 import java.util.List;
-import model.Application;
-import model.ApplicationStatus;
-import model.user.HDBManager;
-import repository.ApplicationRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class ManageApplicantApplicationsService extends AbstractMenu {
     private HDBManager manager;
-    private ApplicationRepository applicationRepository;
+    private ApplicationController applicationController;
     
-    public ManageApplicantApplicationsService(HDBManager manager, ApplicationRepository applicationRepository) {
+    public ManageApplicantApplicationsService(HDBManager manager, ApplicationController applicationController) {
         this.manager = manager;
-        this.applicationRepository = applicationRepository;
+        this.applicationController = applicationController;
     }
     
     @Override
     public void display() {
         System.out.println("\n=== Manage Applicant Applications ===");
         List<Application> pendingApps = new ArrayList<>();
-        for (Application app : applicationRepository.getApplications()){
-            if(manager.getManagedProjects().contains(app.getProject()) &&
-               app.getStatus() == ApplicationStatus.PENDING) {
-                pendingApps.add(app);
+        for(BTOProject project : manager.getManagedProjects()){
+            for(Application app : applicationController.getApplicationByProjectId(project.getProjectId())){
+                if(app.getStatus() == ApplicationStatus.PENDING){
+                    pendingApps.add(app);
+                }
             }
         }
         if(pendingApps.isEmpty()){
@@ -56,10 +58,11 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
             return;
         }
         List<Application> pendingApps = new ArrayList<>();
-        for (Application app : applicationRepository.getApplications()){
-            if(manager.getManagedProjects().contains(app.getProject()) &&
-               app.getStatus() == ApplicationStatus.PENDING) {
-                pendingApps.add(app);
+        for(BTOProject project : manager.getManagedProjects()){
+            for(Application app : applicationController.getApplicationByProjectId(project.getProjectId())){
+                if(app.getStatus() == ApplicationStatus.PENDING){
+                    pendingApps.add(app);
+                }
             }
         }
         if(choice < 1 || choice > pendingApps.size()){
@@ -79,7 +82,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
                 if(selectedApp.getProject().getUnits2Room() > 0){
                     selectedApp.setStatus(ApplicationStatus.SUCCESSFUL);
                     System.out.println("Application approved (SUCCESSFUL).");
-                    applicationRepository.saveApplications();
+                    applicationController.updateApplication();
                 } else {
                     System.out.println("Insufficient 2-Room units. Cannot approve.");
                 }
@@ -87,7 +90,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
                 if(selectedApp.getProject().getUnits3Room() > 0){
                     selectedApp.setStatus(ApplicationStatus.SUCCESSFUL);
                     System.out.println("Application approved (SUCCESSFUL).");
-                    applicationRepository.saveApplications();
+                    applicationController.updateApplication();
                 } else {
                     System.out.println("Insufficient 3-Room units. Cannot approve.");
                 }

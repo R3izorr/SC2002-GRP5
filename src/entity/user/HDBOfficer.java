@@ -1,9 +1,9 @@
-package model.user;
+package entity.user;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.Application;
-import model.BTOProject;
+import entity.model.Application;
+import entity.model.BTOProject;
 
 public class HDBOfficer extends Applicant {
     // List of projects for which registration is approved.

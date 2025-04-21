@@ -1,14 +1,14 @@
 package system.service.common;
 
+import controller.ApplicationController;
 import ui.AbstractMenu;
 import ui.Prompt;
-import controller.ProjectController;
 
 public class RequestFlatBookingService extends AbstractMenu {
-    private ProjectController projectController;
-    
-    public RequestFlatBookingService(ProjectController projectController) {
-        this.projectController = projectController;
+    private ApplicationController applicationController;
+
+    public RequestFlatBookingService(ApplicationController applicationController) {
+        this.applicationController = applicationController;
     }
     
     @Override
@@ -18,7 +18,7 @@ public class RequestFlatBookingService extends AbstractMenu {
     
     @Override
     public void handleInput() {
-        boolean success = projectController.requestBooking();
+        boolean success = applicationController.requestBooking();
         if(success){
             System.out.println("Flat booking requested successfully.");
         }

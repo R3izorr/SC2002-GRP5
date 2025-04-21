@@ -1,31 +1,31 @@
 package system.service.manager;
 
+import controller.ProjectController;
+import entity.model.BTOProject;
+import entity.user.HDBManager;
+import entity.user.HDBOfficer;
 import java.util.ArrayList;
 import java.util.List;
-import model.BTOProject;
-import model.user.HDBManager;
-import model.user.HDBOfficer;
-import repository.ProjectRepository;
-import repository.UserRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class ManageOfficerRegistrationsService extends AbstractMenu {
     private HDBManager manager;
-    private UserRepository userRepository;
-    private ProjectRepository projectRepository;
+    private List<HDBOfficer> officers;
+    private ProjectController projectController;
+  
     
-    public ManageOfficerRegistrationsService(HDBManager manager, UserRepository userRepository, ProjectRepository projectRepository) {
+    public ManageOfficerRegistrationsService(HDBManager manager, List<HDBOfficer> officers, ProjectController projectController) {
         this.manager = manager;
-        this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
+        this.officers = officers;
+        this.projectController = projectController;
     }
     
     @Override
     public void display() {
         System.out.println("\n=== Manage HDB Officer Registrations ===");
         List<PendingRegistration> pendingRegs = new ArrayList<>();
-        for (HDBOfficer off : userRepository.getOfficers()){
+        for (HDBOfficer off : officers){
             for (BTOProject proj : off.getPendingRegistrations()){
                 if(manager.getManagedProjects().contains(proj)){
                     pendingRegs.add(new PendingRegistration(off, proj));
@@ -61,7 +61,7 @@ public class ManageOfficerRegistrationsService extends AbstractMenu {
             return;
         }
         List<PendingRegistration> pendingRegs = new ArrayList<>();
-        for (HDBOfficer off : userRepository.getOfficers()){
+        for (HDBOfficer off : officers){
             for (BTOProject proj : off.getPendingRegistrations()){
                 if(manager.getManagedProjects().contains(proj)){
                     pendingRegs.add(new PendingRegistration(off, proj));
@@ -85,7 +85,7 @@ public class ManageOfficerRegistrationsService extends AbstractMenu {
             selected.officer.getPendingRegistrations().remove(selected.project);
             selected.project.addOfficers(selected.officer);
             selected.project.setOfficerSlots(selected.project.getOfficerSlots() - 1);
-            projectRepository.saveProjects();
+            projectController.updateProject();
             System.out.println("Registration approved.");
         } else if(decision.equalsIgnoreCase("R")){
             selected.officer.getPendingRegistrations().remove(selected.project);

@@ -2,7 +2,8 @@ package ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.BTOProject;
+
+import entity.model.BTOProject;
 import utils.FilterSettings;
 
 public abstract class AbstractViewProjectsMenu extends AbstractMenu {

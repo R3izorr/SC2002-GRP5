@@ -1,34 +1,43 @@
 package controller;
 
+import entity.model.Application;
+import entity.model.ApplicationStatus;
+import entity.model.BTOProject;
+import entity.user.Applicant;
+import entity.user.HDBOfficer;
 import java.util.List;
-import model.Application;
-import model.ApplicationStatus;
-import model.BTOProject;
-import model.user.Applicant;
-import model.user.HDBOfficer;
-import repository.ApplicationRepository;
-import repository.ProjectRepository;
+import repository.ICRUDRepository;
 
 public class ProjectController {
-    private ProjectRepository projectRepository; 
-    private ApplicationRepository applicationRepository; 
+    private ICRUDRepository<BTOProject> projectRepository;
+    private ICRUDRepository<Application> applicationRepository;
     private Applicant currentApplicant;
-    public ProjectController(ProjectRepository projectRepository, ApplicationRepository applicationRepository, Applicant applicant) {
+
+    // Constructor for ProjectController
+    public ProjectController(ICRUDRepository<BTOProject> projectRepository, ICRUDRepository<Application> applicationRepository, Applicant currentApplicant) {
         this.projectRepository = projectRepository;
         this.applicationRepository = applicationRepository;
-        this.currentApplicant = applicant;
+        this.currentApplicant = currentApplicant;
     }
     
-    // Returns only projects that are visible.
+    public ProjectController(ICRUDRepository<BTOProject> projectRepository, ICRUDRepository<Application> applicationRepository) {
+        this.projectRepository = projectRepository;
+        this.applicationRepository = applicationRepository;
+        this.currentApplicant = null;
+    }
+    
     public List<BTOProject> getVisibleProjects() {
-        return projectRepository.getProjects().stream()
+        return projectRepository.getAll().stream()
                 .filter(BTOProject::isVisible)
                 .toList();
     }
     
-    
     public BTOProject getProjectById(int projectId) {
-        return projectRepository.getProjectById(projectId);
+        return projectRepository.getById(projectId);
+    }
+
+    public List<BTOProject> getAllProjects() {
+        return projectRepository.getAll();
     }
 
     // Apply for a project with a chosen flat type.
@@ -42,7 +51,7 @@ public class ProjectController {
         }
         
         // Check if the project ID is valid and if the project is visible.
-        BTOProject project = projectRepository.getProjectById(projectId);
+        BTOProject project = projectRepository.getById(projectId);
         if(project == null) {
             System.out.println("Invalid project ID.");
             return false;
@@ -55,10 +64,10 @@ public class ProjectController {
         // Enforce eligibility rules.
         if(currentApplicant.CheckEligiblity(project, flatType)) {
             Application application = new Application(currentApplicant, project, flatType, ApplicationStatus.PENDING);
-            applicationRepository.removeApplication(currentApplicant.getApplication());
+            applicationRepository.remove(currentApplicant.getApplication());
             currentApplicant.setApplication(application);
-            applicationRepository.addApplication(application);
-            applicationRepository.saveApplications();
+            applicationRepository.add(application);
+            applicationRepository.update();
             return true;
         }
         return false;
@@ -67,7 +76,7 @@ public class ProjectController {
     // Overloaded method to allow HDBOfficer to apply for a project.
     public boolean applyForProject(int projectId, String flatType, HDBOfficer officer) {
         // Check if the project ID is valid and if the project is visible.
-        BTOProject project = projectRepository.getProjectById(projectId);
+        BTOProject project = projectRepository.getById(projectId);
         if(project == null) {
             System.out.println("Invalid project ID.");
             return false;
@@ -99,51 +108,30 @@ public class ProjectController {
         // Eligibility rules for officer as applicant (you may adjust as needed)
         if(currentApplicant.CheckEligiblity(project, flatType)) {
             Application application = new Application(currentApplicant, project, flatType, ApplicationStatus.PENDING);
-            applicationRepository.removeApplication(currentApplicant.getApplication());
+            applicationRepository.remove(currentApplicant.getApplication());
             currentApplicant.setApplication(application);
-            applicationRepository.addApplication(application);
-            applicationRepository.saveApplications();
+            applicationRepository.add(application);
+            applicationRepository.update();
             return true;
         }
         return false;
     }
 
-    // Retrieve the applicant's current application.
-    public Application getApplication() {
-        return currentApplicant.getApplication();
+    public void createProject(BTOProject project) {
+        projectRepository.add(project);
+        projectRepository.update();
     }
-    
-    // Allow withdrawal if not yet BOOKED.
-    public boolean withdrawApplication() {
-        Application app = currentApplicant.getApplication();
-        if(app == null) {
-            System.out.println("No application to withdraw.");
-            return false;
-        }
-        if(app.getStatus() == ApplicationStatus.BOOKED) {
-            System.out.println("Cannot withdraw after having booked a flat.");
-            return false;
-        }
-        app.setStatus(ApplicationStatus.WITHDRAW_REQUESTED);
-        applicationRepository.saveApplications();
-        return true;
+
+    public void addProject(BTOProject project) {
+        projectRepository.add(project);
     }
-    
-    // Request flat booking if the application status is SUCCESSFUL.
-    public boolean requestBooking() {
-        Application app = currentApplicant.getApplication();
-        if(app == null) {
-            System.out.println("No application found.");
-            return false;
-        }
-        if(app.getStatus() != ApplicationStatus.SUCCESSFUL) {
-            System.out.println("Your application is not in a state that requires booking a flat.");
-            return false;
-        }
-        app.setStatus(ApplicationStatus.BOOKING);
-        applicationRepository.saveApplications();
-        System.out.println("Require for Booking is completed. Your application status is now BOOKING.");
-        return true;
+
+    public void removeProject(BTOProject project) {
+        projectRepository.remove(project);
+    }
+
+    public void updateProject() {
+        projectRepository.update();
     }
 
 }

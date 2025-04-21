@@ -1,15 +1,15 @@
 package system.service.common;
 
-import controller.ProjectController;
-import model.Application;
+import entity.model.Application;
+import entity.user.Applicant;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class ViewApplicationStatusService extends AbstractMenu {
-    private ProjectController projectController;
+    private Applicant applicant;
     
-    public ViewApplicationStatusService(ProjectController projectController) {
-        this.projectController = projectController;
+    public ViewApplicationStatusService (Applicant applicant) {
+        this.applicant = applicant;
     }
     
     @Override
@@ -19,7 +19,7 @@ public class ViewApplicationStatusService extends AbstractMenu {
     
     @Override
     public void handleInput() {
-        Application app = projectController.getApplication();
+        Application app = applicant.getApplication();
         if(app != null){
             System.out.println(app.getApplicationDetail());
         } else {

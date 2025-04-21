@@ -1,8 +1,8 @@
-package model.user;
+package entity.user;
 
 import java.util.Date;
-import model.Application;
-import model.BTOProject;
+import entity.model.Application;
+import entity.model.BTOProject;
 
 public class Applicant extends User {
     private Application application;

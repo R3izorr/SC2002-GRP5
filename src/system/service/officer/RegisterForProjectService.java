@@ -1,8 +1,8 @@
 package system.service.officer;
 
 import controller.ProjectController;
-import model.BTOProject;
-import model.user.HDBOfficer;
+import entity.model.BTOProject;
+import entity.user.HDBOfficer;
 import ui.AbstractMenu;
 import ui.Prompt;
 

@@ -1,23 +1,22 @@
 package system.service.officer;
 
+import entity.model.Application;
+import entity.model.ApplicationStatus;
+import entity.model.BTOProject;
+import entity.model.Receipt;
+import entity.user.HDBOfficer;
 import java.util.ArrayList;
 import java.util.List;
-import model.Application;
-import model.ApplicationStatus;
-import model.BTOProject;
-import model.Receipt;
-import model.user.HDBOfficer;
-import repository.ApplicationRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class GenerateReceiptService extends AbstractMenu {
     private HDBOfficer officer;
-    private ApplicationRepository applicationRepository;
+    private List<Application> applications;
     
-    public GenerateReceiptService(HDBOfficer officer, ApplicationRepository applicationRepository) {
+    public GenerateReceiptService(HDBOfficer officer, List<Application> applications) {
         this.officer = officer;
-        this.applicationRepository = applicationRepository;
+        this.applications = applications;
     }
     
     @Override
@@ -32,7 +31,7 @@ public class GenerateReceiptService extends AbstractMenu {
     public void handleInput() {
         List<Application> bookedApps = new ArrayList<>();
         for(BTOProject proj : officer.getAssignedProjects()){
-            for(Application app : applicationRepository.getApplications()){
+            for(Application app : applications){
                 if(app.getProject().getProjectId() == proj.getProjectId() &&
                    app.getStatus() == ApplicationStatus.BOOKED) {
                     bookedApps.add(app);

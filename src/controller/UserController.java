@@ -1,28 +1,34 @@
 package controller;
 
-import model.user.Applicant;
-import model.user.HDBManager;
-import model.user.HDBOfficer;
-import model.user.User;
-import repository.UserRepository;
+import entity.user.Applicant;
+import entity.user.HDBManager;
+import entity.user.HDBOfficer;
+import entity.user.User;
+import java.util.List;
+import repository.IRepository;
 
 
 public class UserController {
-    private UserRepository userRepository;
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private IRepository<Applicant> applicantRepository;
+    private IRepository<HDBOfficer> officerRepository;
+    private IRepository<HDBManager> managerRepository;
+    
+    public UserController(IRepository<Applicant> applicantRepository, IRepository<HDBOfficer> officerRepository, IRepository<HDBManager> managerRepository) {
+        this.applicantRepository = applicantRepository;
+        this.officerRepository = officerRepository;
+        this.managerRepository = managerRepository;
     }
     
     public User login(String nric, String password) {
-        for (Applicant a : userRepository.getApplicants()) {
+        for (Applicant a : applicantRepository.getAll()) {
             if(a.getNric().equals(nric) && a.getPassword().equals(password))
                 return a;
         }
-        for (HDBOfficer o : userRepository.getOfficers()) {
+        for (HDBOfficer o : officerRepository.getAll()) {
             if(o.getNric().equals(nric) && o.getPassword().equals(password))
                 return o;
         }
-        for (HDBManager m : userRepository.getManagers()) {
+        for (HDBManager m : managerRepository.getAll()) {
             if(m.getNric().equals(nric) && m.getPassword().equals(password))
                 return m;
         }
@@ -33,12 +39,25 @@ public class UserController {
         user.setPassword(newPassword);
         // After password change, update the CSV file based on the user type.
         if(user instanceof HDBManager) {
-            userRepository.saveManagers();
+            managerRepository.update();
         } else if(user instanceof HDBOfficer) {
-            userRepository.saveOfficers();
+            officerRepository.update();
         } else if(user instanceof Applicant) {
-            userRepository.saveApplicants();
+            applicantRepository.update();
         }
         return true;
     }
+
+    public List<Applicant> getAllApplicants() {
+        return applicantRepository.getAll();
+    }
+    
+    public List<HDBOfficer> getAllOfficers() {
+        return officerRepository.getAll();
+    }
+    public List<HDBManager> getAllManagers() {
+        return managerRepository.getAll();
+    }
+
+    
 }

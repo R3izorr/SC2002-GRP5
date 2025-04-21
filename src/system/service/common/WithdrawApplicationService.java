@@ -1,14 +1,14 @@
 package system.service.common;
 
-import controller.ProjectController;
+import controller.ApplicationController;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class WithdrawApplicationService extends AbstractMenu {
-    private ProjectController projectController;
-    
-    public WithdrawApplicationService(ProjectController projectController) {
-        this.projectController = projectController;
+    private ApplicationController applicationController;
+
+    public WithdrawApplicationService(ApplicationController applicationController) {
+        this.applicationController = applicationController;
     }
     
     @Override
@@ -18,7 +18,7 @@ public class WithdrawApplicationService extends AbstractMenu {
     
     @Override
     public void handleInput() {
-        boolean success = projectController.withdrawApplication();
+        boolean success = applicationController.withdrawApplication();
         if(success) {
             System.out.println("Submitting withdrawn request successfully.");
         }

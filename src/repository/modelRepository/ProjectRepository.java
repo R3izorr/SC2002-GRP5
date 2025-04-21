@@ -1,27 +1,32 @@
-package repository;
+package repository.modelRepository;
 
+import entity.model.BTOProject;
+import entity.user.HDBManager;
+import entity.user.HDBOfficer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date; 
 import java.util.List;
-import model.BTOProject;
-import model.user.HDBManager;
-import model.user.HDBOfficer;
+import repository.ICRUDRepository;
 import utils.FileUtils;
 
-public class ProjectRepository {
-    private List<BTOProject> projects; 
-    private SimpleDateFormat dateFormat;
+public class ProjectRepository implements ICRUDRepository<BTOProject> {
+    private List<BTOProject> projects;
+    private List<HDBManager> managers;
+    private List<HDBOfficer> officers; 
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String projectFilePath;
     
-    public ProjectRepository(String projectFilePath) {
-        projects = new ArrayList<>();
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // adjust if needed
+    public ProjectRepository(String projectFilePath, List<HDBManager> managers, List<HDBOfficer> officers) {
+        this.projects = new ArrayList<>();
         this.projectFilePath = projectFilePath;
+        this.managers = managers;
+        this.officers = officers;
     }
     
-    public void loadProjects(List<HDBManager> managers, List<HDBOfficer> officers) {
+    @Override
+    public void load() {
         List<String[]> lines = FileUtils.readCSV(this.projectFilePath);
         for (String[] tokens : lines) {
             if (tokens.length < 14) {
@@ -45,7 +50,7 @@ public class ProjectRepository {
             boolean isVisible = Boolean.parseBoolean(tokens[10]);
             String managerNRIC = tokens[11];
             HDBManager manager = null;
-            for(HDBManager m : managers) {
+            for(HDBManager m : this.managers) {
                 if(m.getNric().equals(managerNRIC)) {
                     manager = m;
                     break;
@@ -54,7 +59,7 @@ public class ProjectRepository {
             int officerSlots = Integer.parseInt(tokens[12]);
             BTOProject project = new BTOProject(projectName, neighborhood, sellingPrice2Room, units2Room, sellingPrice3Room, units3Room,
                     applicationOpen, applicationClose, manager, officerSlots, isVisible);
-            projects.add(project);
+            this.projects.add(project);
             if(manager != null) {
                 manager.addManagedProject(project);
             }
@@ -64,7 +69,7 @@ public class ProjectRepository {
             }
             List<String> ListOfficerNric = List.of(lineNric.split(";"));
             for (String Nric: ListOfficerNric) {
-                for(HDBOfficer Officer: officers) {
+                for(HDBOfficer Officer: this.officers) {
                     if(Officer.getNric().equals(Nric)) {
                         Officer.addAssignedProject(project);
                         project.addOfficers(Officer);
@@ -76,7 +81,8 @@ public class ProjectRepository {
         }
     }
 
-    public void saveProjects() {
+    @Override
+    public void update() {
         List<String[]> data = new ArrayList<>();
         // Add a header
         data.add(new String[]{"Project Name","Neighborhood","Type 1",
@@ -103,23 +109,29 @@ public class ProjectRepository {
         FileUtils.writeCSV(projectFilePath, data);
     }
     
-    public void addProject(BTOProject project) {
+    @Override
+    public void add(BTOProject project) {
         projects.add(project);
     }
 
-    public void removeProject(BTOProject project) {
+    @Override
+    public void remove(BTOProject project) {
         projects.remove(project);
     }
 
-    public List<BTOProject> getProjects() {
+    @Override
+    public List<BTOProject> getAll() {
         return projects;
     }
 
-    public BTOProject getProjectById(int id) {
-        for (BTOProject p : projects) {
-            if(p.getProjectId() == id)
-                return p;
+    @Override
+    public BTOProject getById(Object id) {
+        for (BTOProject project : this.projects) {
+            if (id instanceof Integer && project.getProjectId() == (Integer) id) {
+                return project;
+            }
         }
         return null;
     }
+
 }

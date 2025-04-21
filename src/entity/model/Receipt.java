@@ -1,4 +1,4 @@
-package model;
+package entity.model;
 
 public class Receipt {
     private String applicantNric;

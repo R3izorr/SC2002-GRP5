@@ -1,21 +1,21 @@
 package system.service.officer;
 
+import controller.ApplicationController;
+import entity.model.Application;
+import entity.model.ApplicationStatus;
+import entity.model.BTOProject;
+import entity.user.HDBOfficer;
 import java.util.List;
-import model.Application;
-import model.ApplicationStatus;
-import model.BTOProject;
-import model.user.HDBOfficer;
-import repository.ApplicationRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class ProcessFlatBookingService extends AbstractMenu {
     private HDBOfficer officer;
-    private ApplicationRepository applicationRepository;
+    private ApplicationController applicationController;
     
-    public ProcessFlatBookingService(HDBOfficer officer, ApplicationRepository applicationRepository) {
+    public ProcessFlatBookingService(HDBOfficer officer, ApplicationController applicationController) {
         this.officer = officer;
-        this.applicationRepository = applicationRepository;
+        this.applicationController = applicationController;
     }
     
     @Override
@@ -30,7 +30,7 @@ public class ProcessFlatBookingService extends AbstractMenu {
     public void handleInput() {
         List<Application> bookingApps = new java.util.ArrayList<>();
         for (BTOProject proj : officer.getAssignedProjects()) {
-            for (Application app : applicationRepository.getApplications()) {
+            for (Application app : applicationController.getAllApplications()) {
                 if (app.getProject().getProjectId() == proj.getProjectId() &&
                     app.getStatus() == ApplicationStatus.BOOKING) {
                     bookingApps.add(app);
@@ -77,9 +77,8 @@ public class ProcessFlatBookingService extends AbstractMenu {
             targetApp.setStatus(ApplicationStatus.BOOKED);
             System.out.println("Flat booking processed for applicant " 
                 + targetApp.getApplicant().getName() + ". Application status updated to BOOKED.");
-                applicationRepository.saveApplications();
+                applicationController.updateApplication();
             }
-            applicationRepository.saveApplications();
             String back = Prompt.prompt("Type 'b' to go back: ");
             if (back.equalsIgnoreCase("b")) {
             exit();

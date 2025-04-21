@@ -1,22 +1,22 @@
 package system.service.manager;
 
+import controller.ProjectController;
+import entity.model.BTOProject;
+import entity.user.HDBManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import model.BTOProject;
-import model.user.HDBManager;
-import repository.ProjectRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class CreateProjectService extends AbstractMenu {
     private HDBManager manager;
-    private ProjectRepository projectRepository;
+    private ProjectController projectController;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
-    public CreateProjectService(HDBManager manager, ProjectRepository projectRepository) {
+    public CreateProjectService(HDBManager manager, ProjectController projectController) {
         this.manager = manager;
-        this.projectRepository = projectRepository;
+        this.projectController = projectController;
     }
     
     @Override
@@ -62,10 +62,9 @@ public class CreateProjectService extends AbstractMenu {
             
             BTOProject newProject = new BTOProject(name, neighborhood, price2, units2, price3, units3,
                     openDate, closeDate, manager, slots, true);
-            projectRepository.addProject(newProject);
+            projectController.createProject(newProject);
             manager.addManagedProject(newProject);
             System.out.println("Project created successfully.");
-            projectRepository.saveProjects();
         } catch (ParseException e) {
             System.out.println("Date parse error. Project creation failed.");
         }

@@ -1,19 +1,19 @@
 package system.service.manager;
 
+import controller.ProjectController;
+import entity.model.BTOProject;
+import entity.user.HDBManager;
 import java.util.List;
-import model.BTOProject;
-import model.user.HDBManager;
-import repository.ProjectRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class ToggleProjectVisibilityService extends AbstractMenu {
     private HDBManager manager;
-    private ProjectRepository projectRepository;
+    private ProjectController projectController;
     
-    public ToggleProjectVisibilityService(HDBManager manager, ProjectRepository projectRepository) {
+    public ToggleProjectVisibilityService(HDBManager manager, ProjectController projectController) {
         this.manager = manager;
-        this.projectRepository = projectRepository;
+        this.projectController = projectController;
     }
     
     @Override
@@ -49,7 +49,7 @@ public class ToggleProjectVisibilityService extends AbstractMenu {
         }
         selected.setVisible(!selected.isVisible());
         System.out.println("Project visibility toggled. Now: " + (selected.isVisible() ? "Visible" : "Not Visible"));
-        projectRepository.saveProjects();
+        projectController.updateProject();
         String back = Prompt.prompt("Type 'b' to go back: ");
         if (back.equalsIgnoreCase("b")) {
             exit();

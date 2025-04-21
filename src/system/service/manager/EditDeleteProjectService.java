@@ -1,22 +1,22 @@
 package system.service.manager;
 
+import controller.ProjectController;
+import entity.model.BTOProject;
+import entity.user.HDBManager;
+import entity.user.HDBOfficer;
 import java.util.List;
-import model.BTOProject;
-import model.user.HDBManager;
-import model.user.HDBOfficer;
-import repository.ProjectRepository;
 import ui.AbstractMenu;
 import ui.Prompt;
 
 public class EditDeleteProjectService extends AbstractMenu {
     private HDBManager manager;
     private List<HDBOfficer> officers;
-    private ProjectRepository projectRepository;
+    private ProjectController projectController;
     
-    public EditDeleteProjectService(HDBManager manager, ProjectRepository projectRepository, List<HDBOfficer> officers) {
+    public EditDeleteProjectService(HDBManager manager, List<HDBOfficer> officers, ProjectController projectController) {
         this.officers = officers;
         this.manager = manager;
-        this.projectRepository = projectRepository;
+        this.projectController = projectController;
     }
     
     @Override
@@ -108,7 +108,7 @@ public class EditDeleteProjectService extends AbstractMenu {
                     System.out.println("Invalid option.");
             }
             System.out.println("Project updated.");
-            projectRepository.saveProjects();
+            
         } else if (action.equalsIgnoreCase("d")){
             manager.getManagedProjects().remove(selected);
             for(HDBOfficer officer: officers) {
@@ -119,9 +119,9 @@ public class EditDeleteProjectService extends AbstractMenu {
                     }
                 }
             }
-            projectRepository.removeProject(selected);
+            projectController.removeProject(selected);
             System.out.println("Project deleted.");
-            projectRepository.saveProjects();
+            projectController.updateProject();
         } else {
             System.out.println("Invalid action.");
         }

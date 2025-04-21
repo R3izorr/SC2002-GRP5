@@ -1,7 +1,7 @@
 package system.service.common;
 
 import controller.UserController;
-import model.user.User;
+import entity.user.User;
 import ui.AbstractMenu;
 import ui.Prompt;
 

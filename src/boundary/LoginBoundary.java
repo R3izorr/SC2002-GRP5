@@ -1,7 +1,7 @@
 package boundary;
 
 import controller.UserController;
-import model.user.User;
+import entity.user.User;
 
 import java.util.Scanner;
 

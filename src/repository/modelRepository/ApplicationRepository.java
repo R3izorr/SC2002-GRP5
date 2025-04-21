@@ -1,41 +1,53 @@
-package repository;
+package repository.modelRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.Application;
-import model.ApplicationStatus;
-import model.BTOProject;
-import model.user.Applicant;
-import model.user.HDBOfficer;
+
+import entity.model.Application;
+import entity.model.ApplicationStatus;
+import entity.model.BTOProject;
+import entity.user.Applicant;
+import entity.user.HDBOfficer;
+import repository.ICRUDRepository;
 import utils.FileUtils;
 
-public class ApplicationRepository {
+public class ApplicationRepository implements ICRUDRepository<Application> {
     private String applicationFilePath;
     private List<Application> applications;
+    private List<Applicant> applicants;
+    private List<HDBOfficer> officers;
+    private List<BTOProject> projects;
     
-    public ApplicationRepository(String applicationFilePath) {
+    public ApplicationRepository(String applicationFilePath, List<Applicant> applicants, List<HDBOfficer> officers, List<BTOProject> projects) {
         this.applicationFilePath = applicationFilePath;
+        this.applicants = applicants;
+        this.officers = officers;
+        this.projects = projects;
         applications = new ArrayList<>();
     }
     
-    public void addApplication(Application application) {
+    @Override
+    public void add(Application application) {
         applications.add(application);
     }
     
-    public List<Application> getApplications() {
+    @Override
+    public List<Application> getAll() {
         return applications;
     }
     
-    public Application getApplicationByApplicant(Applicant applicant) {
+    @Override
+    public Application getById(Object Nric) {
         for (Application app : applications) {
-            if (app.getApplicant().getNric().equals(applicant.getNric())) {
+            if (app.getApplicant().getNric().equals(String.valueOf(Nric))) {
                 return app;
             }
         }
         return null;
     }
 
-    public void loadApplications(List<Applicant> applicants, List<HDBOfficer> officers, List<BTOProject> projects) {
+    @Override
+    public void load() {
         // Load applications from a data source (e.g., database, file)
         // This is a placeholder for the actual implementation
         List<String[]> lines = FileUtils.readCSV(this.applicationFilePath);
@@ -81,7 +93,8 @@ public class ApplicationRepository {
         }
     }
 
-    public void saveApplications() {
+    @Override
+    public void update() {
         List<String[]> data = new ArrayList<>();
         // Add a header
         data.add(new String[]{"Applicant Name", "NRIC", "Project ID", "Project Name", "Flat Type", "Status"});
@@ -98,9 +111,9 @@ public class ApplicationRepository {
         FileUtils.writeCSV(this.applicationFilePath, data);
     }
 
-    public void removeApplication(Application application) {
+    @Override
+    public void remove(Application application) {
         applications.remove(application);
-        saveApplications();
     }
 
 }

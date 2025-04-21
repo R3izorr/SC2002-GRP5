@@ -1,6 +1,6 @@
-package model;
+package entity.model;
 import java.util.Date;
-import model.user.Applicant;
+import entity.user.Applicant;
 
 public class Enquiry {
     private static int counter = 0; 
@@ -11,13 +11,13 @@ public class Enquiry {
     private Date date;
     private String reply;
   
-    public Enquiry(Applicant applicant, BTOProject project, String message) {
+    public Enquiry(Applicant applicant, BTOProject project, String message, String reply, Date date) {
         this.enquiryId = ++counter;
         this.applicant = applicant;
         this.project = project;
         this.message = message;
-        this.date = new Date();
-        this.reply = "";
+        this.date = date;
+        this.reply = reply;
     }
     
     public int getEnquiryId() {

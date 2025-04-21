@@ -1,7 +1,7 @@
 package system.service.common;
 
+import entity.model.BTOProject;
 import java.util.List;
-import model.BTOProject;
 import ui.AbstractViewProjectsMenu;
 import utils.FilterSettings;
 
