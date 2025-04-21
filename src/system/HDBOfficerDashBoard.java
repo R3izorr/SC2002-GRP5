@@ -9,15 +9,16 @@ import ui.UserOption;
 import utils.FilterSettings;
 
 public class HDBOfficerDashBoard extends SimpleMenu {
-    private FilterSettings filterSettings = new FilterSettings();
+    private FilterSettings filterSettings1 = new FilterSettings();
+    private FilterSettings filterSettings2 = new FilterSettings();
     public HDBOfficerDashBoard(HDBOfficer officer,ProjectController projectController,ApplicationController applicationController,
                                  EnquiryController enquiryController,UserController userController) {
-        addOption(new UserOption("1", "View your Registered Project Details", input -> new ViewRegisteredProjectsService(officer.getAssignedProjects(), filterSettings).run()));
+        addOption(new UserOption("1", "View your Registered Project Details", input -> new ViewRegisteredProjectsService(officer.getAssignedProjects(), filterSettings1).run()));
         addOption(new UserOption("2", "Register for a New Project", input -> new RegisterForProjectService(officer, projectController).run()));
         addOption(new UserOption("3", "View your Registration Status", input -> new ViewRegistrationStatusService(officer).run()));
         addOption(new UserOption("4", "Process Flat Booking for an Applicant", input -> new ProcessFlatBookingService(officer, applicationController).run()));
         addOption(new UserOption("5", "Generate Receipt for Booked Applicants", input -> new GenerateReceiptService(officer, applicationController.getAllApplications()).run()));
-        addOption(new UserOption("6", "View Available Projects", input -> new ViewAvailableProjectsService(projectController.getVisibleProjects(), filterSettings, officer.getMaritalStatus()).run()));
+        addOption(new UserOption("6", "View Available Projects", input -> new ViewAvailableProjectsService(projectController.getVisibleProjects(), filterSettings2, officer.getMaritalStatus()).run()));
         addOption(new UserOption("7", "Apply for a Project (as Applicant)", input -> new ApplyForProjectService(projectController, officer).run()));
         addOption(new UserOption("8", "View your Application Status", input -> new ViewApplicationStatusService(officer).run()));
         addOption(new UserOption("9", "Withdraw your Application", input -> new WithdrawApplicationService(applicationController).run()));

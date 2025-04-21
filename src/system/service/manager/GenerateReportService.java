@@ -68,36 +68,43 @@ public class GenerateReportService extends AbstractMenu {
             System.out.println("No booked applications found for this project.");
         } else {
             // Ask if manager wants to apply a filter.
+            Report report = new Report(bookedApps);
+            System.out.println(report.toString());
             String applyFilter = Prompt.prompt("Would you like to apply a filter? (Y/N): ");
             if(applyFilter.equalsIgnoreCase("Y")) {
                 System.out.println("Select filter option:");
                 System.out.println("1. Filter by Marital Status");
                 System.out.println("2. Filter by Flat Type");
                 System.out.println("3. Filter by both Marital Status and Flat Type");
-                int filterOption = Integer.parseInt(Prompt.prompt("Enter option: "));
-                switch (filterOption) {
-                    case 1 -> {
-                        String status = Prompt.prompt("Enter Marital Status to filter by (Single or Married): ");
-                        bookedApps.removeIf(app -> !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status));
+                try {
+                    int filterOption = Integer.parseInt(Prompt.prompt("Enter option: "));
+                    switch (filterOption) {
+                        case 1 -> {
+                            String status = Prompt.prompt("Enter Marital Status to filter by (Single or Married): ");
+                            bookedApps.removeIf(app -> !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status));
+                        }
+                        case 2 -> {
+                            String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
+                            bookedApps.removeIf(app -> !app.getFlatType().equalsIgnoreCase(flatType));
+                        }
+                        case 3 -> {
+                            String status = Prompt.prompt("Enter Marital Status to filter by (Single or Married): ");
+                            String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
+                            bookedApps.removeIf(app -> 
+                                !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status) ||
+                                !app.getFlatType().equalsIgnoreCase(flatType));
+                        }
+                        default -> System.out.println("Invalid filter option; no filter applied.");
                     }
-                    case 2 -> {
-                        String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
-                        bookedApps.removeIf(app -> !app.getFlatType().equalsIgnoreCase(flatType));
-                    }
-                    case 3 -> {
-                        String status = Prompt.prompt("Enter Marital Status to filter by (Single or Married): ");
-                        String flatType = Prompt.prompt("Enter Flat Type to filter by (2-Room or 3-Room): ");
-                        bookedApps.removeIf(app -> 
-                            !app.getApplicant().getMaritalStatus().equalsIgnoreCase(status) ||
-                            !app.getFlatType().equalsIgnoreCase(flatType));
-                    }
-                    default -> System.out.println("Invalid filter option; no filter applied.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input; no filter applied.");
                 }
             }
             if(bookedApps.isEmpty()){
                 System.out.println("No booked applications found after applying the filter.");
             } else {
-                Report report = new Report(bookedApps);
+                report = new Report(bookedApps);
+                System.out.println("Filtered Report:");
                 System.out.println(report.toString());
             }
         }
