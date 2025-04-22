@@ -1,6 +1,7 @@
 package system.service.manager;
 
 import controller.ApplicationController;
+import controller.NotificationController;
 import entity.model.Application;
 import entity.model.ApplicationStatus;
 import entity.model.BTOProject;
@@ -14,10 +15,13 @@ import ui.Prompt;
 public class ManageApplicantWithdrawalsService extends AbstractMenu {
     private HDBManager manager;
     private ApplicationController applicationController;
+    private NotificationController notificationController;
 
-    public ManageApplicantWithdrawalsService(HDBManager manager, ApplicationController applicationController) {
+    public ManageApplicantWithdrawalsService(HDBManager manager, ApplicationController applicationController, 
+            NotificationController notificationController) {
         this.manager = manager;
         this.applicationController = applicationController;
+        this.notificationController = notificationController;
     }
 
 
@@ -81,11 +85,23 @@ public class ManageApplicantWithdrawalsService extends AbstractMenu {
                 target.setStatus(ApplicationStatus.WITHDRAWN);
                 applicationController.updateApplication();
                 System.out.println("Withdrawal approved. Application status set to WITHDRAWN.");
+                // Notify the applicant
+                String message = "Your withdrawal request for project %s (ID: %d) has been approved.".formatted(
+                        target.getProject().getProjectName(),
+                        target.getProject().getProjectId()
+                );
+                notificationController.send(target.getApplicant().getNric(), message);
                 break;
             case 2:
                 target.setStatus(ApplicationStatus.PENDING);
                 applicationController.updateApplication();
                 System.out.println("Withdrawal rejected. Application status reset to PENDING.");
+                // Notify the applicant
+                String rejectionMessage = "Your withdrawal request for project %s (ID: %d) has been rejected.".formatted(
+                        target.getProject().getProjectName(),
+                        target.getProject().getProjectId()
+                );
+                notificationController.send(target.getApplicant().getNric(), rejectionMessage);
                 break;
             default:
                 System.out.println("Invalid decision.");

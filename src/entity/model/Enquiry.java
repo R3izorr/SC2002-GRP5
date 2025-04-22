@@ -1,6 +1,6 @@
 package entity.model;
-import java.util.Date;
 import entity.user.Applicant;
+import java.util.Date;
 
 public class Enquiry {
     private static int counter = 0; 
@@ -55,7 +55,7 @@ public class Enquiry {
     @Override
     public String toString() {
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
-        return "Enquiry ID: " + enquiryId + " For Project: " + project.getProjectName() + "(ID:" + project.getProjectId() + ")" +  "| Applicant: " + applicant.getNric() +
+        return "ID: " + enquiryId + "Enquiry for Project: " + project.getProjectName() + "(ID:" + project.getProjectId() + ")" +  "| Applicant: " + applicant.getName() +
             " | Message: " + message + " | Date: " + dateFormat.format(date) + 
             (reply.isEmpty() ? "" : " | Reply: " + reply);
     }

@@ -74,24 +74,16 @@ public class EnquiryController {
         System.out.println("Enquiry not found.");
     }
     
+    // For applicant deleting their own enquiry.
     public void deleteEnquiry(int enquiryId) {
-        List<Enquiry> allEnquiries = enquiryRepository.getAll();
-        boolean removed = allEnquiries.removeIf(e -> {
-            if(currentApplicant != null)
-                return e.getEnquiryId() == enquiryId && e.getApplicant().getNric().equals(currentApplicant.getNric());
-            else
-                return e.getEnquiryId() == enquiryId;
-        });
-        if(removed){
-            enquiryRepository.remove(allEnquiries.stream()
-                    .filter(e -> e.getEnquiryId() == enquiryId)
-                    .findFirst()
-                    .orElse(null));
-            System.out.println("Enquiry deleted.");
-            enquiryRepository.update(); // Save the updated enquiry to the repository
-        } else {
-            System.out.println("Enquiry not found or permission denied.");
-        }
+       Enquiry enquiry = enquiryRepository.getById(enquiryId);
+         if(enquiry != null) {
+              enquiryRepository.remove(enquiry); // Remove the enquiry from the repository
+              enquiryRepository.update(); // Save the updated enquiry to the repository
+              System.out.println("Enquiry deleted successfully.");
+         } else {
+              System.out.println("Enquiry not found.");
+         }
     }
     
     // Get all enquiries: if currentApplicant is set, return only their enquiries; else return all.

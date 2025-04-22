@@ -1,5 +1,6 @@
 package system.service.manager;
 
+import controller.NotificationController;
 import controller.ProjectController;
 import entity.model.BTOProject;
 import entity.user.HDBManager;
@@ -13,12 +14,15 @@ public class ManageOfficerRegistrationsService extends AbstractMenu {
     private HDBManager manager;
     private List<HDBOfficer> officers;
     private ProjectController projectController;
+    private NotificationController notificationController;
   
     
-    public ManageOfficerRegistrationsService(HDBManager manager, List<HDBOfficer> officers, ProjectController projectController) {
+    public ManageOfficerRegistrationsService(HDBManager manager, List<HDBOfficer> officers, ProjectController projectController, 
+            NotificationController notificationController) {
         this.manager = manager;
         this.officers = officers;
         this.projectController = projectController;
+        this.notificationController = notificationController;
     }
     
     @Override
@@ -87,9 +91,22 @@ public class ManageOfficerRegistrationsService extends AbstractMenu {
             selected.project.setOfficerSlots(selected.project.getOfficerSlots() - 1);
             projectController.updateProject();
             System.out.println("Registration approved.");
+            // Notify the officer
+            String message = "Your registration for project %s (ID: %d) has been approved.".formatted(
+                    selected.project.getProjectName(),
+                    selected.project.getProjectId()
+            );
+            notificationController.send(selected.officer.getNric(), message);
+
         } else if(decision.equalsIgnoreCase("R")){
             selected.officer.getPendingRegistrations().remove(selected.project);
             System.out.println("Registration rejected.");
+            // Notify the officer
+            String message = "Your registration for project %s (ID: %d) has been rejected.".formatted(
+                    selected.project.getProjectName(),
+                    selected.project.getProjectId()
+            );
+            notificationController.send(selected.officer.getNric(), message);
         } else {
             System.out.println("Invalid decision.");
         }

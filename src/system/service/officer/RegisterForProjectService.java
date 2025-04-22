@@ -1,5 +1,6 @@
 package system.service.officer;
 
+import controller.NotificationController;
 import controller.ProjectController;
 import entity.model.BTOProject;
 import entity.user.HDBOfficer;
@@ -9,10 +10,14 @@ import ui.Prompt;
 public class RegisterForProjectService extends AbstractMenu {
     private HDBOfficer officer;
     private ProjectController projectController;
+    private NotificationController notificationController;
+
     
-    public RegisterForProjectService(HDBOfficer officer, ProjectController projectController) {
+    public RegisterForProjectService(HDBOfficer officer, ProjectController projectController, 
+            NotificationController notificationController) {
         this.officer = officer;
         this.projectController = projectController;
+        this.notificationController = notificationController;
     }
     
     @Override
@@ -75,6 +80,16 @@ public class RegisterForProjectService extends AbstractMenu {
         // Add registration to pending registrations.
         officer.getPendingRegistrations().add(selected);
         System.out.println("Registration submitted for project " + selected.getProjectName() + "(ID: " + selected.getProjectId() + ")" + ". Awaiting manager approval.");
+        
+        // Notify the project manager
+        String message = "Officer %s has submitted a registration for project %s (ID: %d)".formatted(
+                officer.getName(),
+                selected.getProjectName(),
+                selected.getProjectId()
+        );
+        String managerNric = selected.getManager().getNric();
+        notificationController.send(managerNric, message);
+        
         String back = Prompt.prompt("Type 'b' to go back: ");
         if(back.equalsIgnoreCase("b")){
             exit();

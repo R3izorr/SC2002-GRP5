@@ -21,6 +21,7 @@ public class App implements ISystem {
     private static final String PROJECT_CSV     = "data\\ProjectList.csv";
     private static final String APPLICATION_CSV = "data\\ApplicationList.csv";
     private static final String ENQUIRY_CSV     = "data\\EnquiryList.csv";
+    private static final String NOTIFICATION_CSV = "data\\NotifcationList.csv";
 
     // Repositories (DIP: depend on interfaces)
     private IRepository<Applicant>              applicantRepo;
@@ -29,12 +30,14 @@ public class App implements ISystem {
     private ICRUDRepository<BTOProject>         projectRepo;
     private ICRUDRepository<Application>        applicationRepo;
     private ICRUDRepository<Enquiry>            enquiryRepo;
+    private ICRUDRepository<Notification>      notificationRepo; // Not used in this version
 
-    // Controllers
+    // Controllers (DIP: depend on interfaces)
     private UserController    userController;
     private ProjectController projectController;
     private ApplicationController applicationController;
     private EnquiryController enquiryController;
+    private NotificationController notificationController; 
 
     @Override
     public void initialize() {
@@ -53,9 +56,11 @@ public class App implements ISystem {
         applicationRepo.load();
         enquiryRepo     = new EnquiryRepository(ENQUIRY_CSV, applicantRepo.getAll(),projectRepo.getAll());
         enquiryRepo.load();
-        
+        notificationRepo = new NotificationRepository(NOTIFICATION_CSV);
+        notificationRepo.load();        
         // Instantiate controllers (high-level modules) against interfaces
         userController    = new UserController(applicantRepo, officerRepo, managerRepo);
+        notificationController = new NotificationController(notificationRepo);
         isInitialized = true;
     }
     
@@ -76,21 +81,21 @@ public class App implements ISystem {
                     projectController = new ProjectController(projectRepo, applicationRepo, (Applicant) loggedInUser);
                     applicationController = new ApplicationController(applicationRepo, (Applicant) loggedInUser);
                     enquiryController = new EnquiryController(projectRepo, enquiryRepo, (Applicant) loggedInUser);
-                    ApplicantDashBoard applicantDashBoard = new ApplicantDashBoard((Applicant) loggedInUser, projectController, applicationController, enquiryController, userController);
+                    ApplicantDashBoard applicantDashBoard = new ApplicantDashBoard((Applicant) loggedInUser, projectController, applicationController, enquiryController, userController, notificationController);
                     applicantDashBoard.run();
                     break;
                 case "HDBOfficer":
                     projectController = new ProjectController(projectRepo, applicationRepo, (HDBOfficer) loggedInUser);
                     applicationController = new ApplicationController(applicationRepo, (HDBOfficer) loggedInUser);
                     enquiryController = new EnquiryController(projectRepo, enquiryRepo);
-                    HDBOfficerDashBoard officerDashBoard = new HDBOfficerDashBoard((HDBOfficer) loggedInUser, projectController, applicationController, enquiryController, userController);
+                    HDBOfficerDashBoard officerDashBoard = new HDBOfficerDashBoard((HDBOfficer) loggedInUser, projectController, applicationController, enquiryController, userController, notificationController);
                     officerDashBoard.run();
                     break;
                 case "HDBManager":
                     projectController = new ProjectController(projectRepo, applicationRepo);
                     applicationController = new ApplicationController(applicationRepo);
                     enquiryController = new EnquiryController(projectRepo, enquiryRepo);
-                    HDBManagerDashBoard managerDashBoard = new HDBManagerDashBoard((HDBManager) loggedInUser, projectController, applicationController, enquiryController, userController);
+                    HDBManagerDashBoard managerDashBoard = new HDBManagerDashBoard((HDBManager) loggedInUser, projectController, applicationController, enquiryController, userController, notificationController);
                     managerDashBoard.run();
                     break;
                 default:

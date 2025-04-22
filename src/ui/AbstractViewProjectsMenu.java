@@ -1,9 +1,8 @@
 package ui;
 
+import entity.model.BTOProject;
 import java.util.ArrayList;
 import java.util.List;
-
-import entity.model.BTOProject;
 import utils.FilterSettings;
 
 public abstract class AbstractViewProjectsMenu extends AbstractMenu {
@@ -96,6 +95,16 @@ public abstract class AbstractViewProjectsMenu extends AbstractMenu {
                 case 2:
                     System.out.print("Enter Project ID (or 0 to clear): ");
                     int pid = Integer.parseInt(Prompt.prompt(""));
+                    // check invalid input
+                    try {
+                        if (pid < 0) {
+                            System.out.println("Invalid input. Project ID cannot be negative.");
+                            return;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input. Please enter a valid numeric Project ID.");
+                        return;
+                    }
                     filterSettings.setProjectId(pid == 0 ? null : pid);
                     break;
                 case 3:

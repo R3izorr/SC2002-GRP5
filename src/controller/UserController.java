@@ -55,6 +55,7 @@ public class UserController {
     public List<HDBOfficer> getAllOfficers() {
         return officerRepository.getAll();
     }
+    
     public List<HDBManager> getAllManagers() {
         return managerRepository.getAll();
     }

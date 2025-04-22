@@ -1,5 +1,6 @@
 package system.service.common;
 
+import controller.NotificationController;
 import controller.ProjectController;
 import entity.model.BTOProject;
 import entity.user.Applicant;
@@ -10,9 +11,11 @@ import ui.Prompt;
 
 public class ApplyForProjectService extends AbstractMenu {
     private ProjectController projectController;
+    private NotificationController notiController;
     private Applicant applicant; // Can be an Applicant or HDBOfficer
-    public ApplyForProjectService(ProjectController projectController, Applicant applicant) {
+    public ApplyForProjectService(ProjectController projectController, NotificationController notiController  ,Applicant applicant) {
         this.projectController = projectController;
+        this.notiController = notiController;
         this.applicant = applicant;
     }
 
@@ -56,6 +59,11 @@ public class ApplyForProjectService extends AbstractMenu {
         }
         if (applied) {
             System.out.println("Application submitted successfully. Status: Pending");
+            String managerNric = projectController.getProjectById(projId).getManager().getNric();
+            notiController.send(managerNric, String.format("New application by %s for project %s (Project ID: %d)", applicant.getName(),
+                             projectController.getProjectById(projId).getProjectName(),
+                             projId));
+
         } else {
             System.out.println("Application submission failed.");
         }

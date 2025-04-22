@@ -1,6 +1,7 @@
 package system.service.officer;
 
 import controller.ApplicationController;
+import controller.NotificationController;
 import entity.model.Application;
 import entity.model.ApplicationStatus;
 import entity.model.BTOProject;
@@ -12,10 +13,13 @@ import ui.Prompt;
 public class ProcessFlatBookingService extends AbstractMenu {
     private HDBOfficer officer;
     private ApplicationController applicationController;
+    private NotificationController notificationController;
     
-    public ProcessFlatBookingService(HDBOfficer officer, ApplicationController applicationController) {
+    public ProcessFlatBookingService(HDBOfficer officer, ApplicationController applicationController, 
+            NotificationController notificationController) {
         this.officer = officer;
         this.applicationController = applicationController;
+        this.notificationController = notificationController;
     }
     
     @Override
@@ -78,6 +82,12 @@ public class ProcessFlatBookingService extends AbstractMenu {
             System.out.println("Flat booking processed for applicant " 
                 + targetApp.getApplicant().getName() + ". Application status updated to BOOKED.");
                 applicationController.updateApplication();
+            String message = "Flat booking processed for %s for project %s (ID: %d) is completed".formatted(
+                    targetApp.getApplicant().getName(),
+                    targetApp.getProject().getProjectName(),
+                    targetApp.getProject().getProjectId()
+            );
+            notificationController.send(targetApp.getApplicant().getNric(), message);
             }
             String back = Prompt.prompt("Type 'b' to go back: ");
             if (back.equalsIgnoreCase("b")) {

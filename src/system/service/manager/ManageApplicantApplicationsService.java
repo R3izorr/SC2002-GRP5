@@ -1,6 +1,7 @@
 package system.service.manager;
 
 import controller.ApplicationController;
+import controller.NotificationController;
 import entity.model.Application;
 import entity.model.ApplicationStatus;
 import entity.model.BTOProject;
@@ -13,10 +14,12 @@ import ui.Prompt;
 public class ManageApplicantApplicationsService extends AbstractMenu {
     private HDBManager manager;
     private ApplicationController applicationController;
+    private NotificationController notificationController;
     
-    public ManageApplicantApplicationsService(HDBManager manager, ApplicationController applicationController) {
+    public ManageApplicantApplicationsService(HDBManager manager, ApplicationController applicationController, NotificationController notificationController) {
         this.manager = manager;
         this.applicationController = applicationController;
+        this.notificationController = notificationController;
     }
     
     @Override
@@ -83,6 +86,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
                     selectedApp.setStatus(ApplicationStatus.SUCCESSFUL);
                     System.out.println("Application approved (SUCCESSFUL).");
                     applicationController.updateApplication();
+                    notificationController.send(selectedApp.getApplicant().getNric(), "Your application for a 2-Room flat has been APPROVED.");
                 } else {
                     System.out.println("Insufficient 2-Room units. Cannot approve.");
                 }
@@ -91,6 +95,7 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
                     selectedApp.setStatus(ApplicationStatus.SUCCESSFUL);
                     System.out.println("Application approved (SUCCESSFUL).");
                     applicationController.updateApplication();
+                    notificationController.send(selectedApp.getApplicant().getNric(), "Your application for a 3-Room flat has been APPROVED.");
                 } else {
                     System.out.println("Insufficient 3-Room units. Cannot approve.");
                 }
@@ -100,6 +105,8 @@ public class ManageApplicantApplicationsService extends AbstractMenu {
         } else if(decision.equalsIgnoreCase("R")){
             selectedApp.setStatus(ApplicationStatus.UNSUCCESSFUL);
             System.out.println("Application rejected.");
+            applicationController.updateApplication();
+            notificationController.send(selectedApp.getApplicant().getNric(), "Your application for a flat has been REJECTED.");
         } else {
             System.out.println("Invalid decision.");
         }

@@ -38,6 +38,10 @@ public class ApplicationController {
         return filteredApplications;
     }
 
+    public Application getApplication() {
+        return currentApplicant.getApplication(); // Return the current applicant's application
+    }
+    
     public void updateApplication() {
         applicationRepository.update(); // Save the updated application to the repository
     }
