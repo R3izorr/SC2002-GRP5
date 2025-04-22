@@ -1,4 +1,4 @@
-package repository.modelRepository;
+package repository.modelrepository;
 
 import entity.model.Notification;
 import java.text.SimpleDateFormat;

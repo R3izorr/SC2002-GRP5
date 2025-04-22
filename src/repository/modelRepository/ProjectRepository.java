@@ -1,4 +1,4 @@
-package repository.modelRepository;
+package repository.modelrepository;
 
 import entity.model.BTOProject;
 import entity.user.HDBManager;

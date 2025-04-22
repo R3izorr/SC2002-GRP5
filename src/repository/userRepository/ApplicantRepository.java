@@ -1,9 +1,8 @@
-package repository.userRepository;
-
-import java.util.ArrayList;
-import java.util.List;
+package repository.userrepository;
 
 import entity.user.Applicant;
+import java.util.ArrayList;
+import java.util.List;
 import repository.IRepository;
 import utils.FileUtils;
 
