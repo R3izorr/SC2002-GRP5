@@ -6,29 +6,29 @@ import java.util.stream.Collectors;
 import repository.ICRUDRepository;
 
 public class NotificationController {
-    private ICRUDRepository<Notification> repo;
+    private ICRUDRepository<Notification> notficationRepository;
 
-    public NotificationController(ICRUDRepository<Notification> repo) {
-        this.repo = repo;
+    public NotificationController(ICRUDRepository<Notification> notificationRepository) {
+        this.notficationRepository = notificationRepository;
     }
 
     public List<Notification> getForUser(String nric) {
-        return repo.getAll().stream()
+        return notficationRepository.getAll().stream()
             .filter(n -> n.getRecipientNric().equals(nric))
             .collect(Collectors.toList());
     }
 
     public void send(String recipientNric, String message) {
         Notification notif = new Notification(recipientNric, message);
-        repo.add(notif);
-        repo.update();
+        notficationRepository.add(notif);
+        notficationRepository.update();
     }
 
     public void markAsRead(int notificationId) {
-        Notification n = repo.getById(notificationId);
+        Notification n = notficationRepository.getById(notificationId);
         if (n != null) {
             n.markAsRead();
-            repo.update();
+            notficationRepository.update();
         }
     }
 }

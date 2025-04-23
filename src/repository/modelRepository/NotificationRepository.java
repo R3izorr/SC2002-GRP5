@@ -10,15 +10,15 @@ import utils.FileUtils;
 
 public class NotificationRepository implements ICRUDRepository<Notification> {
     private List<Notification> notifications = new ArrayList<>();
-    private String filePath;
+    private String notificationfilePath;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    public NotificationRepository(String filePath) {
-        this.filePath = filePath;
+    public NotificationRepository(String notificationfilePath) {
+        this.notificationfilePath = notificationfilePath;
     }
     @Override
     public void load() {
-        List<String[]> lines = FileUtils.readCSV(this.filePath);
+        List<String[]> lines = FileUtils.readCSV(notificationfilePath);
         for (String[] tokens : lines) {
             if (tokens.length < 4) continue;
             String recipient = tokens[1];
@@ -68,6 +68,6 @@ public class NotificationRepository implements ICRUDRepository<Notification> {
                 String.valueOf(n.isRead())
             });
         }
-        FileUtils.writeCSV(filePath, out);
+        FileUtils.writeCSV(notificationfilePath, out);
 }
 }
