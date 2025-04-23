@@ -12,11 +12,12 @@ import ui.SimpleMenu;
 import ui.UserOption;
 import utils.FilterSettings;
 
+
 public class ApplicantDashBoard extends SimpleMenu{
     private FilterSettings filterSettings = new FilterSettings();
     public ApplicantDashBoard(Applicant applicant, ProjectController projectController, ApplicationController applicationController,
                               EnquiryController enquiryController, UserController userController, NotificationController notificationController) {
-        addOption(new UserOption("1", "View Available Projects", input -> new ViewAvailableProjectsService(projectController.getVisibleProjects(), filterSettings, applicant.getMaritalStatus()).run()));
+        addOption(new UserOption("1", "View Available Projects", input -> new ViewAvailableProjectsService(projectController.getAvailaBTOProjects(), filterSettings, applicant.getMaritalStatus()).run()));
         addOption(new UserOption("2", "Apply for a Project", input -> new ApplyForProjectService(projectController, notificationController, applicant).run()));
         addOption(new UserOption("3", "View your Application Status", input -> new ViewApplicationStatusService(applicant).run()));
         addOption(new UserOption("4", "Withdraw your Application", input -> new WithdrawApplicationService(applicationController, notificationController).run()));

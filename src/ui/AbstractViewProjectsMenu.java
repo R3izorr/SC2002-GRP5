@@ -1,6 +1,6 @@
 package ui;
 
-import entity.model.BTOProject;
+import entity.model.BTOProject; 
 import java.util.ArrayList;
 import java.util.List;
 import utils.FilterSettings;
@@ -13,7 +13,7 @@ public abstract class AbstractViewProjectsMenu extends AbstractMenu {
         this.projects = projects;
         this.filterSettings = filterSettings;
     }
-    
+
     // Subclasses provide the desired project string representation.
     protected abstract String getProjectString(BTOProject proj);
     
@@ -54,7 +54,7 @@ public abstract class AbstractViewProjectsMenu extends AbstractMenu {
         }
         
         if(filtered.isEmpty()){
-            System.out.println("No projects match your filter criteria.");
+            System.out.println("No projects match your criteria.");
         } else {
             for(BTOProject proj : filtered){
                 System.out.println(getProjectString(proj));
