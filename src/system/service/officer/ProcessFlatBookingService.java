@@ -2,6 +2,7 @@ package system.service.officer;
 
 import controller.ApplicationController;
 import controller.NotificationController;
+import controller.ProjectController;
 import entity.model.Application;
 import entity.model.ApplicationStatus;
 import entity.model.BTOProject;
@@ -14,12 +15,14 @@ public class ProcessFlatBookingService extends AbstractMenu {
     private HDBOfficer officer;
     private ApplicationController applicationController;
     private NotificationController notificationController;
+    private ProjectController projectController;    
     
     public ProcessFlatBookingService(HDBOfficer officer, ApplicationController applicationController, 
-            NotificationController notificationController) {
+            NotificationController notificationController, ProjectController projectController) {
         this.officer = officer;
         this.applicationController = applicationController;
         this.notificationController = notificationController;
+        this.projectController = projectController;
     }
     
     @Override
@@ -82,6 +85,7 @@ public class ProcessFlatBookingService extends AbstractMenu {
             System.out.println("Flat booking processed for applicant " 
                 + targetApp.getApplicant().getName() + ". Application status updated to BOOKED.");
                 applicationController.updateApplication();
+                projectController.updateProject();
             String message = "Flat booking processed for %s for project %s (ID: %d) is completed".formatted(
                     targetApp.getApplicant().getName(),
                     targetApp.getProject().getProjectName(),

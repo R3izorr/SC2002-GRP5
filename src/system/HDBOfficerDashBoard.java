@@ -16,7 +16,7 @@ public class HDBOfficerDashBoard extends SimpleMenu {
         addOption(new UserOption("1", "View your Registered Project Details", input -> new ViewRegisteredProjectsService(officer.getAssignedProjects(), filterSettings1).run()));
         addOption(new UserOption("2", "Register for a New Project", input -> new RegisterForProjectService(officer, projectController, notificationController).run()));
         addOption(new UserOption("3", "View your Registration Status", input -> new ViewRegistrationStatusService(officer).run()));
-        addOption(new UserOption("4", "Process Flat Booking for an Applicant", input -> new ProcessFlatBookingService(officer, applicationController, notificationController).run()));
+        addOption(new UserOption("4", "Process Flat Booking for an Applicant", input -> new ProcessFlatBookingService(officer, applicationController, notificationController, projectController).run()));
         addOption(new UserOption("5", "Generate Receipt for Booked Applicants", input -> new GenerateReceiptService(officer, applicationController.getAllApplications()).run()));
         addOption(new UserOption("6", "View Available Projects", input -> new ViewAvailableProjectsService(projectController.getVisibleProjects(), filterSettings2, officer.getMaritalStatus()).run()));
         addOption(new UserOption("7", "Apply for a Project (as Applicant)", input -> new ApplyForProjectService(projectController, notificationController , officer).run()));
