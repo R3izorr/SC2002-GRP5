@@ -5,6 +5,7 @@ import controller.ProjectController;
 import entity.model.BTOProject;
 import entity.user.Applicant;
 import entity.user.HDBOfficer;
+import java.util.ArrayList;
 import java.util.List;
 import ui.AbstractMenu;
 import ui.Prompt;
@@ -23,8 +24,8 @@ public class ApplyForProjectService extends AbstractMenu {
     public void display() {
         System.out.println("\n=== Apply for a Project ===");
         System.out.println("Available Projects:");
-        List<BTOProject> projects = projectController.getVisibleProjects();
-        // When an applicant is Single, call toStringForApplicant(true)
+        List<BTOProject> projects = new ArrayList<>(projectController.getAvailaBTOProjects());
+
         boolean isSingle = applicant.getMaritalStatus().equalsIgnoreCase("Single");
         for(BTOProject project : projects) {
             if(isSingle){
@@ -37,6 +38,23 @@ public class ApplyForProjectService extends AbstractMenu {
 
     @Override
     public void handleInput() {
+        int age = applicant.getAge();
+        boolean isSingle = applicant.getMaritalStatus().equalsIgnoreCase("Single");
+        if ((isSingle && age < 35) || (!isSingle && age < 21)) {
+            String input = Prompt.prompt("Type 'b' to go back: ");
+            if (input.equalsIgnoreCase("b")) {
+                exit();
+            }
+            return;
+        }
+        else if (projectController.getAvailaBTOProjects().isEmpty()) {
+            System.out.println("No available projects to apply for.");
+            String input = Prompt.prompt("Type 'b' to go back: ");
+            if (input.equalsIgnoreCase("b")) {
+                exit();
+            }
+            return;
+        }
         String projIdInput = Prompt.prompt("Enter project ID to apply for or type 'b' to go back: ");
         if (projIdInput.equalsIgnoreCase("b")) {
             exit();

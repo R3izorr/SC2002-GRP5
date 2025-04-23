@@ -5,6 +5,8 @@ import entity.model.ApplicationStatus;
 import entity.model.BTOProject;
 import entity.user.Applicant;
 import entity.user.HDBOfficer;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import repository.ICRUDRepository;
 
@@ -30,6 +32,23 @@ public class ProjectController {
         return projectRepository.getAll().stream()
                 .filter(BTOProject::isVisible)
                 .toList();
+    }
+
+    public List<BTOProject> getAvailaBTOProjects() {
+        int age = currentApplicant.getAge();
+        boolean isSingle = currentApplicant.getMaritalStatus().equalsIgnoreCase("Single");
+        // Check if the applicant is eligible based on age and marital status
+        if ((isSingle && age < 35) || (!isSingle && age < 21)) {
+            return new ArrayList<BTOProject>();
+        }
+
+        // Get all projects that are visible and within the application open/close dates.
+        List<BTOProject> availableProjects = new ArrayList<BTOProject>(projectRepository.getAll().stream()
+        .filter(BTOProject::isVisible)
+        .toList());
+        availableProjects.removeIf(project -> project.getApplicationOpen().after(new Date()) || project.getApplicationClose().before(new Date()));
+
+        return availableProjects;
     }
     
     public BTOProject getProjectById(int projectId) {
@@ -85,6 +104,7 @@ public class ProjectController {
             System.out.println("Project is not visible.");
             return false;
         }
+        
         // Check if officer already has an application
         if(officer.getApplication() != null && 
             officer.getApplication().getStatus() == ApplicationStatus.UNSUCCESSFUL &&
@@ -93,6 +113,8 @@ public class ProjectController {
             System.out.println("You have already applied for a project.");
             return false;
         }
+       
+        // Check if officer is handling the project or registering for it
         for(BTOProject proj: officer.getAssignedProjects()) {
             if(proj.getProjectId() == projectId) {
                 System.out.println("Cannot apply as Applicant for a project that you are handling.");
@@ -105,6 +127,7 @@ public class ProjectController {
                 return false;
             }
         }
+       
         // Eligibility rules for officer as applicant (you may adjust as needed)
         if(currentApplicant.CheckEligiblity(project, flatType)) {
             Application application = new Application(currentApplicant, project, flatType, ApplicationStatus.PENDING);
