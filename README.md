@@ -39,7 +39,7 @@ To better view the UML Sequence Diagram, join this link: https://www.mermaidchar
     ```
 4. Compile the source code:
     ```
-    & javac -encoding UTF-8 -d bin sourcepath src src/main/Main.java
+    & javac -encoding UTF-8 -d bin -sourcepath src src/main/Main.java
     ```
 5. Run the program:
     ```
