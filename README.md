@@ -19,7 +19,7 @@ This is the GitHub repository for NTU SC2002 Assignment AY24/25 Semester 2. The 
 ## UML Diagrams
 To better view the UML Class Diagram, join this link and open by draw.io: https://drive.google.com/file/d/1R51URH0tb6Jj-BOYzYs5MhkEOZpVuxJ1/view?usp=sharing
 
-To better view the UML Sequence Diagram, join this link: https://www.mermaidchart.com/raw/8c20d377-f32c-41e9-bf0f-d3bbcf144f63?theme=light&version=v0.1&format=svg
+To better view the UML Sequence Diagram, join this link: https://www.notion.so/sequence-diagram-main-1dee971444e480249fa8c8977ed74fa9?pvs=4
 
 
 ## Compiling this project
