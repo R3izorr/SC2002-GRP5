@@ -39,11 +39,11 @@ To better view the UML Sequence Diagram, join this link: https://www.notion.so/s
     ```
 4. Compile the source code:
     ```
-    javac -d bin -sourcepath src [App.java]
+    & javac -encoding UTF-8 -d bin -sourcepath src src/main/Main.java
     ```
 5. Run the program:
     ```
-    java -cp bin main.App
+    java -cp bin main.Main
     ```
     
 **Notes:**
