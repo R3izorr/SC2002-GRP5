@@ -17,9 +17,9 @@ This is the GitHub repository for NTU SC2002 Assignment AY24/25 Semester 2. The 
 - html: Javadocs link
 
 ## UML Diagrams
-To better view the UML Class Diagram, join this link:
+To better view the UML Class Diagram, join this link and open by draw.io: https://drive.google.com/file/d/1R51URH0tb6Jj-BOYzYs5MhkEOZpVuxJ1/view?usp=sharing
 
-To better view the UML Sequence Diagram, join this link:
+To better view the UML Sequence Diagram, join this link: https://cedar-fine-96a.notion.site/sequence-diagram-main-1dee971444e480249fa8c8977ed74fa9?pvs=4
 
 
 ## Compiling this project
@@ -39,11 +39,11 @@ To better view the UML Sequence Diagram, join this link:
     ```
 4. Compile the source code:
     ```
-    javac -d bin -sourcepath src [App.java]
+    & javac -encoding UTF-8 -d bin -sourcepath src src/main/Main.java
     ```
 5. Run the program:
     ```
-    java -cp bin main.App
+    java -cp bin main.Main
     ```
     
 **Notes:**
