@@ -32,8 +32,6 @@ public class ChangePasswordService extends AbstractMenu {
             exit();
         } else {
             System.out.println("Invalid input. Please try again.");
-            return;
         }
     }
-
 }
