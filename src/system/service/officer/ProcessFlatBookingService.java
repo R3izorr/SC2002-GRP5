@@ -89,7 +89,6 @@ public class ProcessFlatBookingService extends AbstractMenu {
                     }
                     proj.setUnits3Room(proj.getUnits3Room() - 1);
                 } 
-                else {
                 targetApp.setStatus(ApplicationStatus.BOOKED);
                 System.out.println("Flat booking processed for applicant " 
                     + targetApp.getApplicant().getName() + ". Application status updated to BOOKED.");
@@ -101,7 +100,6 @@ public class ProcessFlatBookingService extends AbstractMenu {
                         targetApp.getProject().getProjectId()
                 );
                 notificationController.send(targetApp.getApplicant().getNric(), message);
-                }
             }
         }
     }
