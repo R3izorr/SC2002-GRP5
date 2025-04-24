@@ -33,7 +33,6 @@ public class DeleteEnquiryService extends AbstractMenu {
         try {
             int enquiryId = Integer.parseInt(input);
             enquiryController.deleteEnquiry(enquiryId);
-            System.out.println("Enquiry deleted successfully.");
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a valid enquiry ID or 'b' to go back.");
         }

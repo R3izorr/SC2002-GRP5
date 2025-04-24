@@ -33,7 +33,6 @@ public class EditEnquiryService extends AbstractMenu {
         int enquiryId = Integer.parseInt(input);
         String newMessage = Prompt.prompt("Enter new message: ");
         enquiryController.editEnquiry(enquiryId, newMessage);
-        System.out.println("Enquiry updated successfully.");
         System.out.println("Type 'b' to go back.");
         if(input.equalsIgnoreCase("b")){
             exit();
