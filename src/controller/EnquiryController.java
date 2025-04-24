@@ -64,7 +64,8 @@ public class EnquiryController {
                     
                 } else {
                     // Append new reply without overwriting existing reply.
-                    enquiry.setReply(currentReply + "\n" + newReply);
+                    System.out.println("Cannot overwrite existing reply");
+                    return;
                 }
                 System.out.println("Reply sent successfully.");
                 enquiryRepository.update(); // Save the updated enquiry to the repository

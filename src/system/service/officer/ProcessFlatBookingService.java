@@ -46,11 +46,18 @@ public class ProcessFlatBookingService extends AbstractMenu {
         }
         if (bookingApps.isEmpty()) {
             System.out.println("No request for flat booking found.");
-            String back = Prompt.prompt("Type 'b' to go back: ");
-            if (back.equalsIgnoreCase("b")) {
-            exit();
+            while (true) {
+                String back = Prompt.prompt("Type 'b' to go back: ");
+                if (back.equalsIgnoreCase("b")) {
+                    exit();
+                    break;
+                } else {
+                    System.out.println("Invalid input.");
+                }
             }
-        } else {
+        } 
+        
+        else {
             System.out.println("=== Request Booking Flat for Your Assigned Projects ===");
             for (int i = 0; i < bookingApps.size(); i++) {
                 Application app = bookingApps.get(i);
@@ -61,42 +68,43 @@ public class ProcessFlatBookingService extends AbstractMenu {
             int choice = Prompt.promptInt("Enter the number of the application to process booking (or 0 to stop): ");
             if (choice == 0) {
                 System.out.println("Stopping booking process.");
+                exit();
+                return;
             }
             if (choice < 1 || choice > bookingApps.size()) {
                 System.out.println("Invalid selection.");
             }
-            Application targetApp = bookingApps.get(choice - 1);
-            String flatType = targetApp.getFlatType();
-            BTOProject proj = targetApp.getProject();
-            if (flatType.equalsIgnoreCase("2-Room")) {
-                if (proj.getUnits2Room() <= 0) {
-                System.out.println("No 2-Room units available.");
+            else {
+                Application targetApp = bookingApps.get(choice - 1);
+                String flatType = targetApp.getFlatType();
+                BTOProject proj = targetApp.getProject();
+                if (flatType.equalsIgnoreCase("2-Room")) {
+                    if (proj.getUnits2Room() <= 0) {
+                    System.out.println("No 2-Room units available.");
+                    }
+                    proj.setUnits2Room(proj.getUnits2Room() - 1);
+                } else if (flatType.equalsIgnoreCase("3-Room")) {
+                    if (proj.getUnits3Room() <= 0) {
+                    System.out.println("No 3-Room units available.");
+                    }
+                    proj.setUnits3Room(proj.getUnits3Room() - 1);
+                } 
+                else {
+                targetApp.setStatus(ApplicationStatus.BOOKED);
+                System.out.println("Flat booking processed for applicant " 
+                    + targetApp.getApplicant().getName() + ". Application status updated to BOOKED.");
+                    applicationController.updateApplication();
+                    projectController.updateProject();
+                String message = "Flat booking processed for %s for project %s (ID: %d) is completed".formatted(
+                        targetApp.getApplicant().getName(),
+                        targetApp.getProject().getProjectName(),
+                        targetApp.getProject().getProjectId()
+                );
+                notificationController.send(targetApp.getApplicant().getNric(), message);
                 }
-                proj.setUnits2Room(proj.getUnits2Room() - 1);
-            } else if (flatType.equalsIgnoreCase("3-Room")) {
-                if (proj.getUnits3Room() <= 0) {
-                System.out.println("No 3-Room units available.");
-                }
-                proj.setUnits3Room(proj.getUnits3Room() - 1);
-            } else {
-                System.out.println("Invalid flat type in application.");
             }
-            targetApp.setStatus(ApplicationStatus.BOOKED);
-            System.out.println("Flat booking processed for applicant " 
-                + targetApp.getApplicant().getName() + ". Application status updated to BOOKED.");
-                applicationController.updateApplication();
-                projectController.updateProject();
-            String message = "Flat booking processed for %s for project %s (ID: %d) is completed".formatted(
-                    targetApp.getApplicant().getName(),
-                    targetApp.getProject().getProjectName(),
-                    targetApp.getProject().getProjectId()
-            );
-            notificationController.send(targetApp.getApplicant().getNric(), message);
-            }
-            String back = Prompt.prompt("Type 'b' to go back: ");
-            if (back.equalsIgnoreCase("b")) {
-            exit();
         }
     }
 }
+
 

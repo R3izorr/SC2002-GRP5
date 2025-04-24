@@ -67,7 +67,21 @@ public class ApplyForProjectService extends AbstractMenu {
             flatType = "2-Room";
             System.out.println("As a single applicant, you can only apply for 2-Room flats.");
         } else {
-            flatType = Prompt.prompt("Enter flat type (2-Room/3-Room): ");
+            while (true) {
+            System.out.println("Choose flat type:");
+            System.out.println("1: 2-Room");
+            System.out.println("2: 3-Room");
+            String choice = Prompt.prompt("Enter your choice (1 or 2): ");
+            if (choice.equals("1")) {
+                flatType = "2-Room";
+                break;
+            } else if (choice.equals("2")) {
+                flatType = "3-Room";
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter 1 or 2.");
+            }
+            }
         }
         boolean applied;
         if (applicant instanceof HDBOfficer) {

@@ -22,7 +22,6 @@ public class SubmitEnquiryService extends AbstractMenu {
         int projId = Prompt.promptInt("Enter project ID for enquiry: ");
         String message = Prompt.prompt("Enter your enquiry message: ");
         enquiryController.submitEnquiry(projId, message);
-        System.out.println("Enquiry submitted successfully.");
         System.out.println("Type 'b' to go back.");
         String input = Prompt.prompt("");
         if(input.equalsIgnoreCase("b")){

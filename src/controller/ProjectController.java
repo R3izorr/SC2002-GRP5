@@ -63,7 +63,8 @@ public class ProjectController {
     public boolean applyForProject(int projectId, String flatType) {
         if(currentApplicant.getApplication() != null && 
            currentApplicant.getApplication().getStatus() != ApplicationStatus.UNSUCCESSFUL && 
-           currentApplicant.getApplication().getStatus() != ApplicationStatus.WITHDRAWN
+           currentApplicant.getApplication().getStatus() != ApplicationStatus.WITHDRAWN &&
+           currentApplicant.getApplication().getStatus() != ApplicationStatus.SUCCESSFUL 
           ) {
             System.out.println("You have already applied for a Project. Cannot apply for multiple projects!");
             return false;
