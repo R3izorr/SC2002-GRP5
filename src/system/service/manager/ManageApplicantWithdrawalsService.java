@@ -47,12 +47,11 @@ public class ManageApplicantWithdrawalsService extends AbstractMenu {
                 i+1, app.getApplicant().getName(),
                 app.getProject().getProjectId(), app.getProject().getProjectName(), app.getFlatType());
         }
-        System.out.println("Type the number to process, or 'b' to go back.");
     }
 
     @Override
     public void handleInput() {
-        String input = Prompt.prompt("Your choice: ");
+        String input = Prompt.prompt("Type the number to process, or 'b' to go back: ");
         if (input.equalsIgnoreCase("b")) {
             exit();
             return;
