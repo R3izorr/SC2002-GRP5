@@ -1,0 +1,15 @@
+boundary
+controller
+entity.model
+entity.user
+main
+repository
+repository.modelrepository
+repository.userrepository
+system
+system.service.applicant
+system.service.common
+system.service.manager
+system.service.officer
+ui
+utils
