@@ -14,7 +14,7 @@ This is the GitHub repository for NTU SC2002 Assignment AY24/25 Semester 2. The 
 - bin: The folder containing compiled class files
 - data: The data used in this program
 - report: The assignment report, containing main report, UML diagrams: class diagram and sequence diagram, test outputs, and declaration of GAI use
-- testcase: The testcase folder
+- Testcase: The testcase folder
 - html: Javadocs link
 
 ## UML Diagrams
