@@ -34,7 +34,7 @@ public class EnquiryRepository implements ICRUDRepository<Enquiry> {
             if (tokens.length < 6) {
                 continue; // Skip this line if it doesn't have enough tokens
             }
-            String Name      = tokens[0];
+            String Name      = tokens[0];//no use
             String Nric      = tokens[1];
             int projId       = Integer.parseInt(tokens[2]);
             String msg       = tokens[3];

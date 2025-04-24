@@ -23,7 +23,7 @@ public class NotificationRepository implements ICRUDRepository<Notification> {
             if (tokens.length < 4) continue;
             String recipient = tokens[1];
             String msg = tokens[2];
-            Date ts;
+            Date ts;//no use
             try { ts = dateFormat.parse(tokens[3]); }
             catch (Exception e) { ts = new Date(); }
             boolean read = Boolean.parseBoolean(tokens[4]);

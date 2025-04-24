@@ -54,7 +54,7 @@ public class ApplicationRepository implements ICRUDRepository<Application> {
             if (tokens.length < 6) {
                 continue; // Skip this line if it doesn't have enough tokens
             }
-            String Name = tokens[0];
+            String Name = tokens[0];//no use
             String NRIC = tokens[1];
             String projectId = tokens[2]; 
             String projectName = tokens[3];
