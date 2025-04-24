@@ -108,6 +108,7 @@ public class EditDeleteProjectService extends AbstractMenu {
                     System.out.println("Invalid option.");
             }
             System.out.println("Project updated.");
+            projectController.updateProject();
             
         } else if (action.equalsIgnoreCase("d")){
             manager.getManagedProjects().remove(selected);
