@@ -1,7 +1,7 @@
 package main;
 
 /**
- * A minimal “system” contract: initialize once, then run.
+ * A minimal "system" contract: initialize once, then run.
  */
 public interface ISystem {
     /** Bootstrap repositories, controllers, etc. */
